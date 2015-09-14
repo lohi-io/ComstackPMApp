@@ -4,6 +4,6 @@
 app.controller('InboxCtrl', ['$scope',
     function($scope)
     {
-        $scope.message = "here is the inbox";
+        $scope.message = "Messages";
     }
 ]);
