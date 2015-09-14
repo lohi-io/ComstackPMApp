@@ -5,12 +5,8 @@ app.config([
                 .otherwise("/");
 
             $stateProvider
-                .state("home", {
-                    url: "/",
-                    templateUrl: "/app/html/home.html"
-                })
                 .state('inbox',{
-                    url: '/Inbox',
+                    url: '/',
                     controller: 'InboxCtrl',
                     templateUrl: '/app/html/inbox.html'
                 });
