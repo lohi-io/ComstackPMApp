@@ -1,5 +1,7 @@
 # ComstackPMApp
 
+[![Build Status](https://travis-ci.org/lohi-io/ComstackPMApp.svg?branch=master)](https://travis-ci.org/lohi-io/ComstackPMApp)
+
 This is an Angular Application which integrates with the [Comstack Private Messaging REST API Module](https://github.com/lohi-io/comstack_pm/tree/7.x-1.x/modules/comstack_pm_rest_api).
 
 Documentation on the REST API can be found here:
