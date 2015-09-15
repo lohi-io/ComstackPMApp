@@ -10,21 +10,21 @@ app.controller('InboxCtrl', ['$scope', 'currentUser', 'conversations', '$state',
         $scope.conversationsCount = conversations.count;
 
         $scope.goToPage = function(page){
+            $state.go('inbox', {page: page})
+        };
 
-        }
+        $scope.previous = function(){
+            if(angular.isDefined($scope.conversations.previous)){
+                $scope.goToPage($scope.currentPage - 1);
+            }
+        };
 
-        //$scope.previous = function(){
-        //    if(angular.isDefined($scope.conversations.previous)){
-        //
-        //    }
-        //    var page = $scope.page == 1?  $scope.page :  $scope.page - 1;
-        //
-        //}
-        //
-        //$scope.next = function(){
-        //    var page = $scope.page == 1?  $scope.page :  $scope.page - 1;
-        //    $scope.goToPage(page);
-        //}
+        $scope.next = function(){
+            if(angular.isDefined($scope.conversations.next)){
+                $scope.goToPage($scope.currentPage + 1);
+            }
+        };
+
     }
 ]);
 
