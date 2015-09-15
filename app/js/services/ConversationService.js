@@ -12,6 +12,7 @@ services.factory('Conversation', [
                 get: {
                     method: 'GET',
                     url: ApiUrl +'/cs-pm/conversations?access_token='+AccessToken,
+                    params: { page: '@page'},
                     isArray: false
                 }
             }
@@ -22,10 +23,10 @@ services.factory('Conversation', [
 services.factory('GetConversations', [
     'Conversation', '$q', function(Conversation, $q)
     {
-        return function()
+        return function(page)
         {
             var delay = $q.defer();
-            Conversation.get(
+            Conversation.get({page: page},
                 function (conversation) { delay.resolve(conversation); },
                 function() { delay.reject("Unable to fetch the conversation"); });
             return delay.promise;

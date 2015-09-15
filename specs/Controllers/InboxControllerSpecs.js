@@ -20,7 +20,7 @@
             });
         }));
         it('Should have current user in scope', function () { expect(scope.currentUser).toEqual(currentUser); });
-        it('Should have conversations in scope', function () { expect(scope.conversations).toEqual(conversations); });
+        it('Should have conversations in scope', function () { expect(scope.conversations).toEqual(conversations.data); });
     });
 })(describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, angular.mock.module);
 

@@ -4,15 +4,19 @@ app.config([
         "$urlRouterProvider",
         "$stateProvider", function($urlRouterProvider, $stateProvider) {
             $urlRouterProvider
-                .otherwise("/");
+                .otherwise("/1");
 
             $stateProvider
                 .state('inbox',{
-                    url: '/',
+                    url: '/:page',
                     controller: 'InboxCtrl',
                     resolve: {
                       currentUser: ['GetCurrentUser', function (GetCurrentUser) { return GetCurrentUser(); }],
-                      conversations : ['GetConversations', function (GetConversations) { return GetConversations(); }],
+                      conversations : ['GetConversations', '$stateParams', function (GetConversations, $stateParams)
+                          {
+                              return GetConversations($stateParams.page);
+                          }
+                      ],
                     },
                     templateUrl: 'html/inbox.html'
                 });
