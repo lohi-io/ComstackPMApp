@@ -14,9 +14,8 @@ module.exports = function(config){
         'bower_components/angular-mocks/angular-mocks.js',
         'app/js/app.js',
         'app/js/services/*.js',
-        'app/js/directives/*.js',
         'app/js/controllers/*.js',
-        'Specs/**/*.js'
+        'specs/**/*.js'
 
     ],
     //exclude:['app/js/pcg.tpls.js'],

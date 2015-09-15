@@ -7,13 +7,8 @@ app.config([
                 .otherwise("/");
 
             $stateProvider
-                .state("home", {
-                    url: "/",
-                    controller: 'HomeCtrl',
-                    templateUrl: "html/home.html"
-                })
                 .state('inbox',{
-                    url: '/Inbox',
+                    url: '/',
                     controller: 'InboxCtrl',
                     resolve: {
                       currentUser: ['GetCurrentUser', function (GetCurrentUser) { return GetCurrentUser(); }],
