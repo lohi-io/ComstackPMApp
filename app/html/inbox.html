@@ -18,7 +18,7 @@
               <div class="cs-pm-body media-body">
                   <a href="" class="message-trigger">
                       <h4 class="media-heading">{{conversation.last_message.sender.name}}<span class="notifications-count">{{conversation.unread_count}}</span></h4>
-                      <p><strong>{{conversation.last_message.text}}</strong></p>
+                      <p><strong ng-bind-html="conversation.last_message.text | truncate:70 | htmlsafe "></strong></p>
                   </a>
                   <div class="date">
                       <span class="hidden-xs">Last message </span><abbr class="timeago" title="conversation.updated">3 months ago</abbr>
