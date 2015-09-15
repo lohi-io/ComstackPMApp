@@ -13,9 +13,8 @@
     <link rel="stylesheet" href="css/app.css">
     <script src="../bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
-<body ng-controller="HomeCtrl">
-<a ui-sref="home">Home</a> <a ui-sref="inbox">Inbox</a>
-<div>{{message}}</div>
+<body>
+<a ui-sref="home">Home</a><a ui-sref="inbox">Inbox</a>
 <ui-view></ui-view>
 
 
@@ -26,7 +25,9 @@
 <script src="js/controllers/HomeController.js"></script>
 <script src="js/controllers/InboxController.js"></script>
 <script src="js/services/01_bootstrap.js"></script>
-
+<script src="js/services/SettingsService.js"></script>
+<script src="js/services/UserService.js"></script>
+<script src="js/services/ConversationService.js"></script>
 
 
 
