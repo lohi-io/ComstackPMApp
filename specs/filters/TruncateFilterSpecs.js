@@ -1,4 +1,4 @@
-/* global describe, it, expect, inject, beforeEach, afterEach, spyOn, module, kendo */
+/* global describe, it, expect, inject, beforeEach, module */
 (function (describe, it, expect, inject, beforeEach) {
 
   describe('truncate filter', function () {
@@ -9,14 +9,14 @@
     beforeEach(inject(function(truncateFilter) {
       truncate = truncateFilter;
       shortString = '<p>Some text</p>';
-      longString = '<p>This is a reply to a conversation, it should be long enough so there&#039;s enough to truncate. Quack quack quack quack quack quack quack quack quack.</p>';
+      longString = '<p>This is a reply to a conversation, it should be long enough to truncate.</p>';
       suffix = '...';
       limit = 70;
     }));
 
     it('Should add a suffix to the end of the string if it was truncated', function () {
       var changedString = truncate(longString, limit, suffix);
-      var changedStringEmptySuffix = truncate(longString, limit, "");
+      var changedStringEmptySuffix = truncate(longString, limit, '');
       expect(changedString).toEqual(changedStringEmptySuffix + suffix);
     });
 
@@ -28,7 +28,7 @@
 
     it('Should add ellipsis by default if no suffix is provided', function () {
       var changedString = truncate(longString, limit);
-      var changedStringEmptySuffix = truncate(longString, limit, "");
+      var changedStringEmptySuffix = truncate(longString, limit, '');
       expect(changedString).toEqual(changedStringEmptySuffix + '...');
     });
 
