@@ -1,27 +1,24 @@
 var app = angular.module('ComstackPmApp', ['ui.router', 'ComstackPmApp.Services']);
 
 app.config([
-        "$urlRouterProvider",
-        "$stateProvider", function($urlRouterProvider, $stateProvider) {
-            $urlRouterProvider
-                .otherwise("/1");
+  '$urlRouterProvider',
+  '$stateProvider', function($urlRouterProvider, $stateProvider) {
+    $urlRouterProvider.otherwise('/1');
 
-            $stateProvider
-                .state('inbox',{
-                    url: '/:page',
-                    controller: 'InboxCtrl',
-                    resolve: {
-                      currentUser: ['GetCurrentUser', function (GetCurrentUser) { return GetCurrentUser(); }],
-                      conversations : ['GetConversations', '$stateParams', function (GetConversations, $stateParams)
-                          {
-                              return GetConversations($stateParams.page);
-                          }
-                      ],
-                    },
-                    templateUrl: 'html/inbox.html'
-                });
-
-    }
+    $stateProvider.state('inbox',{
+      url: '/:page',
+      controller: 'InboxCtrl',
+      resolve: {
+        currentUser: ['GetCurrentUser', function (GetCurrentUser) {
+          return GetCurrentUser();
+        }],
+        conversations : ['GetConversations', '$stateParams', function (GetConversations, $stateParams) {
+          return GetConversations($stateParams.page);
+        }]
+      },
+      templateUrl: 'html/inbox.html'
+    });
+  }
 ]);
 
 app.config(['$httpProvider', function ($httpProvider) {
@@ -30,10 +27,3 @@ app.config(['$httpProvider', function ($httpProvider) {
   $httpProvider.defaults.withCredentials = true;
 }
 ]);
-
-
-
-
-
-
-
