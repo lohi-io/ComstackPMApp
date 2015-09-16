@@ -1,4 +1,4 @@
-/* global describe, it, expect, inject, beforeEach, afterEach, spyOn, module, kendo */
+/* global describe, it, expect, inject, beforeEach spyOn, module */
 describe('htmlsafe filter', function() {
   var htmlsafe, $sce, untrustedString;
 
