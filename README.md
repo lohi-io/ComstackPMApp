@@ -9,6 +9,18 @@ https://rawgit.com/lohi-io/comstack_pm/7.x-1.x/modules/comstack_pm_rest_api/docs
 
 ## Setting up
 
+### Installation
+
+You will need to have [node.js](http://www.nodejs.org/) and [npm](http://www.npmjs.com) installed.
+
+Assuming these dependencies are installed:
+- Install Bower globally: `npm install bower -g`
+- Clone this repository and `cd` into it: `git clone https://github.com/lohi-io/ComstackPMApp.git && cd ComstackPMApp`
+- Install project dependencies: `npm install`
+- Copy example_index.html to index.html: `cp app/example_index.html app/index.html`
+- Start the webserver: `npm start`
+
+### Configuration
 Well, you'll need an API setup and configured properly somewhere. When instantiating this App you'll need to pass in a series of settings which are as follows. If you're on a Drupal site you can use the [Comstack PM UI module](https://github.com/lohi-io/comstack_pm_ui) which will do all this for you.
 
 | Setting | Type | Description |
