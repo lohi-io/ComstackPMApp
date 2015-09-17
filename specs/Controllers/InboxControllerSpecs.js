@@ -2,14 +2,26 @@
 (function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module) {
 
     describe('InboxCtrl', function () {
-        var ctrl, scope, currentUser, conversations, state, stateParams;
+        var ctrl, scope, currentUser, conversations, state, stateParams, $window;
 
         beforeEach(module('ComstackPmApp'));
+
+        beforeEach(inject(function(_$window_) {
+          $window = _$window_;
+        }));
 
         beforeEach(inject(function(_$rootScope_, $controller)
         {
             currentUser = {"data":{"user":{"type":"user","id":66531,"name":"basic_user_1"}}};
-            conversations = {"data":[], "previous":{}, "next":{} };
+            conversations = {
+              "data":[],
+              "paging": {
+                "previous": {},
+                "next":{},
+                "range": 12,
+                "total": 10
+              }
+            };
             state = { "go": function () { } };
             stateParams = { page: 1 };
             scope = _$rootScope_.$new();
@@ -42,7 +54,8 @@
         });
 
         it('should change state if previous exists when calling previous() function ', function () {
-            scope.conversations = {"data":[], "previous":{} };
+            scope.conversations = {"data":[]};
+            scope.paging = {"previous": "stuff"};
             scope.currentPage = 2;
             spyOn(state, 'go');
             scope.previous();
@@ -51,6 +64,7 @@
 
         it('should not change state if previous does not exists when calling previous() function ', function () {
             scope.conversations = {"data":[], "next":{} };
+            scope.paging = {};
             scope.currentPage = 1;
             spyOn(state, 'go');
             scope.previous();
@@ -63,7 +77,8 @@
         });
 
         it('should change state if next exists when calling next() function ', function () {
-            scope.conversations = {"data":[], "next":{} };
+            scope.conversations = {"data":[]};
+            scope.paging = {"next": "stuff"}
             scope.currentPage = 2;
             spyOn(state, 'go');
             scope.next();
@@ -72,12 +87,16 @@
 
         it('should not change state if next does not exists when calling next() function ', function () {
             scope.conversations = {"data":[], "previous":{} };
+            scope.paging = {};
             scope.currentPage = 1;
             spyOn(state, 'go');
             scope.next();
             expect(state.go.calls.count()).toEqual(0);;
         });
 
+        it('should determine the number of pages needed', function() {
+          expect(scope.paging.pages_count).toEqual(2);
+        });
     });
 })(describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, angular.mock.module);
 

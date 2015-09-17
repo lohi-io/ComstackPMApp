@@ -1,26 +1,31 @@
-/**
- * Created by fechit01 on 11/09/2015.
- */
-app.controller('InboxCtrl', ['$scope', 'currentUser', 'conversations', '$state', '$stateParams',
-    function($scope, currentUser, conversations, $state, $stateParams)
-    {
-        $scope.currentPage = $stateParams.page;
+app.controller('InboxCtrl', ['$scope', '$window', 'currentUser', 'conversations', '$state', '$stateParams',
+    function($scope, $window, currentUser, conversations, $state, $stateParams) {
         $scope.currentUser = currentUser;
         $scope.conversations = conversations.data;
-        $scope.conversationsCount = conversations.count;
+
+        $scope.paging = conversations.paging;
+        $scope.paging.pages_count = $window.Math.ceil($scope.paging.total / $scope.paging.range);
+
+        $scope.pages = [];
+
+        for (var i = 0; i < $scope.paging.pages_count; i++) {
+          $scope.pages[i] = {
+            number: i + 1
+          };
+        }
 
         $scope.goToPage = function(page){
             $state.go('inbox', {page: page})
         };
 
         $scope.previous = function(){
-            if(angular.isDefined($scope.conversations.previous)){
+            if(angular.isDefined($scope.paging.previous)){
                 $scope.goToPage($scope.currentPage - 1);
             }
         };
 
         $scope.next = function(){
-            if(angular.isDefined($scope.conversations.next)){
+            if(angular.isDefined($scope.paging.next)){
                 $scope.goToPage($scope.currentPage + 1);
             }
         };
