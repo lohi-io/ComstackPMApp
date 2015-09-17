@@ -68,6 +68,7 @@
   },
   "globals": {
     "angular": false,
-    "$": false
+    "$": false,
+    "app": false
   }
 }
