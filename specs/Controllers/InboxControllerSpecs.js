@@ -18,8 +18,8 @@
               "paging": {
                 "previous": {},
                 "next":{},
-                "range": 12,
-                "total": 10
+                "range": 10,
+                "total": 12
               }
             };
             state = { "go": function () { } };

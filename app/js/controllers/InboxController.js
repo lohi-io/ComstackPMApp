@@ -20,13 +20,13 @@ app.controller('InboxCtrl', ['$scope', '$window', 'currentUser', 'conversations'
 
         $scope.previous = function(){
             if(angular.isDefined($scope.paging.previous)){
-                $scope.goToPage($scope.currentPage - 1);
+                $scope.goToPage($scope.paging.current_page - 1);
             }
         };
 
         $scope.next = function(){
             if(angular.isDefined($scope.paging.next)){
-                $scope.goToPage($scope.currentPage + 1);
+                $scope.goToPage($scope.paging.current_page + 1);
             }
         };
 
