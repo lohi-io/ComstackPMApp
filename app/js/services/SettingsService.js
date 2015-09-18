@@ -1,9 +1,7 @@
-/**
- * Created by fechit01 on 11/09/2015.
- */
 var services = angular.module('ComstackPmApp.Services');
 
 services.service('SettingsService', function () {
+  // @TODO Pull in this object from the global settings object.
   var settings = {
     'api_url': 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/',
     'authorization_header': 'Basic Q1JVSzAxOnl1RGFiOG5lIQ==',
@@ -22,10 +20,14 @@ services.service('SettingsService', function () {
       'heading__conversation_with': 'Conversation with @name',
       'text__last_message': 'Last message',
       'text__no_available_users': '',
+      /* eslint-disable max-len */
       'text__read_only': 'You\'re currently opted out of private messaging, <a href="@url">click here</a> to go the the account settings form.',
-      'text__select_messages_to_delete': "Select the messages you'd like to delete",
-      'text__select_messages_to_report': "Select the messages you'd like to report",
+      /* eslint-enable max-len */
+      'text__select_messages_to_delete': 'Select the messages you\'d like to delete',
+      'text__select_messages_to_report': 'Select the messages you\'d like to report',
+      /* eslint-disable max-len */
       'form__new_conversation__header': 'You must be friends with a person before you can send them messages. <a href="@url">Find and add friends</a>',
+      /* eslint-enable max-len */
       'form__to__label': 'To',
       'form__to__placeholder__singular': 'Enter recipients username...',
       'form__to__placeholder__plural': 'Enter recipients username...',
