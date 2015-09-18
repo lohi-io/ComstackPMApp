@@ -55,8 +55,10 @@
 
         it('should change state if previous exists when calling previous() function ', function () {
             scope.conversations = {"data":[]};
-            scope.paging = {"previous": "stuff"};
-            scope.currentPage = 2;
+            scope.paging = {
+              "previous": "stuff",
+              "current_page": 2
+            };
             spyOn(state, 'go');
             scope.previous();
             expect(state.go).toHaveBeenCalledWith('inbox', {page: 1});
@@ -64,8 +66,9 @@
 
         it('should not change state if previous does not exists when calling previous() function ', function () {
             scope.conversations = {"data":[], "next":{} };
-            scope.paging = {};
-            scope.currentPage = 1;
+            scope.paging = {
+              currentPage: 1
+            };
             spyOn(state, 'go');
             scope.previous();
             expect(state.go.calls.count()).toEqual(0);;
@@ -78,8 +81,11 @@
 
         it('should change state if next exists when calling next() function ', function () {
             scope.conversations = {"data":[]};
-            scope.paging = {"next": "stuff"}
-            scope.currentPage = 2;
+            scope.paging = {
+              "next": "stuff",
+              "current_page": 2
+            }
+
             spyOn(state, 'go');
             scope.next();
             expect(state.go).toHaveBeenCalledWith('inbox', {page: 3});
