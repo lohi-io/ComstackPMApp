@@ -2,7 +2,7 @@
 (function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module) {
 
   describe('InboxCtrl', function () {
-    var scope, currentUser, conversations, state, stateParams;
+    var scope, currentUser, conversations, state;
 
     beforeEach(module('ComstackPmApp'));
 
@@ -26,14 +26,12 @@
         }
       };
       state = { 'go': function () { } };
-      stateParams = { page: 1 };
       scope = _$rootScope_.$new();
       $controller('InboxCtrl', {
         $scope: scope,
         currentUser: currentUser,
         conversations: conversations,
-        $state: state,
-        $stateParams: stateParams
+        $state: state
       });
     }));
 
@@ -109,7 +107,27 @@
     });
 
     it('should determine the number of pages needed', function() {
+      scope.paging = {
+        total: 15,
+        range: 10
+      };
+      scope.calculatePages();
       expect(scope.paging.pagesCount).toEqual(2);
+    });
+
+    it('should create a page for each needed page', function() {
+      scope.paging = {
+        total: 15,
+        range: 10
+      };
+      scope.calculatePages();
+      expect(scope.pages).toEqual([
+        {
+          number: 1
+        }, {
+          number: 2
+        }
+      ]);
     });
   });
 })(describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, angular.mock.module);

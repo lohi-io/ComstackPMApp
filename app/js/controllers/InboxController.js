@@ -4,15 +4,19 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', 'currentUser', 'conv
     $scope.conversations = conversations.data;
 
     $scope.paging = conversations.paging;
-    $scope.paging.pagesCount = $window.Math.ceil($scope.paging.total / $scope.paging.range);
+    $scope.paging.pagesCount = 0;
 
     $scope.pages = [];
 
-    for (var i = 0; i < $scope.paging.pagesCount; i++) {
-      $scope.pages[i] = {
-        number: i + 1
-      };
-    }
+    $scope.calculatePages = function() {
+      $scope.paging.pagesCount = $window.Math.ceil($scope.paging.total / $scope.paging.range);
+
+      for (var i = 0; i < $scope.paging.pagesCount; i++) {
+        $scope.pages[i] = {
+          number: i + 1
+        };
+      }
+    };
 
     $scope.goToPage = function(page) {
       $state.go('inbox', {
@@ -31,5 +35,7 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', 'currentUser', 'conv
         $scope.goToPage($scope.paging.current_page + 1);
       }
     };
+
+    $scope.calculatePages();
   }
 ]);
