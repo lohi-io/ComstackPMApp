@@ -1,6 +1,3 @@
-/**
- * Created by fechit01 on 11/09/2015.
- */
 var services = angular.module('ComstackPmApp.Services');
 
 services.service('SettingsService', function () {

@@ -1,6 +1,3 @@
-/**
- * Created by fechit01 on 15/09/2015.
- */
 var services = angular.module('ComstackPmApp.Services');
 
 services.factory('Conversation', ['$resource', 'ApiUrl', 'AccessToken',
