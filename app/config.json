@@ -1,0 +1,9 @@
+{
+  "name": "ComstackPmApp",
+  "version": "0.0.1",
+  "apiUrl" : "https://test.cancerresearchuk.org/about-cancer/cancer-chat/api/v1",
+  "baseUrl": "https://test.cancerresearchuk.org/about-cancer/cancer-chat/",
+  "domain": "test.cancerresearchuk.org/about-cancer/cancer-chat"
+
+
+}

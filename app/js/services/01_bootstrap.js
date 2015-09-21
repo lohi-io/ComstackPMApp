@@ -3,10 +3,23 @@
  */
 'use strict';
 var serviceModule = angular.module('ComstackPmApp.Services', ['ngResource']);
+
 serviceModule.constant(
   'ApiUrl',
-  'https://cancerchat01dev.prod.acquia-sites.com/api/v1');
-serviceModule.constant(
+  'https://test.cancerresearchuk.org/about-cancer/cancer-chat/api/v1');
+serviceModule.value(
   'AccessToken',
-  'qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc');
+  '');
+
+
+
+serviceModule.config(['$httpProvider', function ($httpProvider) {
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    $httpProvider.defaults.useXDomain = true;
+    $httpProvider.defaults.withCredentials = true;
+    //$httpProvider.defaults.headers.common.Authorization = "Basic Q1JVSzAxOnl1RGFiOG5lIQ==";
+   // $httpProvider.interceptors.push('AuthInterceptor');
+}
+
+]);
 

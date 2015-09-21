@@ -7,7 +7,7 @@
 
         beforeEach(angular.mock.module("ComstackPmApp.Services", function ($provide) {
             $provide.constant("ApiUrl", "https://cancerchat01dev.prod.acquia-sites.com/api/v1");
-            $provide.constant("AccessToken", "qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc");
+            $provide.value("AccessToken", "qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc");
         }));
 
 
