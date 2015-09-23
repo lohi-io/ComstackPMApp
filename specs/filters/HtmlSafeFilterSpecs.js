@@ -3,7 +3,7 @@
 describe('htmlsafe filter', function() {
   var htmlsafe, $sce, untrustedString;
 
-  beforeEach(module('ComstackPmApp'));
+  beforeEach(module('ComstackPMApp'));
   beforeEach(inject(function(_$sce_, htmlsafeFilter) {
     htmlsafe = htmlsafeFilter;
     untrustedString = '<p>Untrusted</p>';

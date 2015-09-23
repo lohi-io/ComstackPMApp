@@ -1,11 +1,12 @@
-var services = angular.module('ComstackPmApp.Services');
+var services = angular.module('ComstackPMApp.Services');
 
-services.factory('Conversation', ['$resource', 'ApiUrl', 'AccessToken',
-  function($resource, ApiUrl, AccessToken) {
+services.factory('Conversation', ['$resource', 'ConfigurationService',
+  function($resource, config) {
+    var settings = config.get();
     return $resource('/cs-pm/conversations', {}, {
       get: {
         method: 'GET',
-        url: ApiUrl +'/cs-pm/conversations?access_token=' + AccessToken,
+        url: settings.api_url+'/cs-pm/conversations?access_token='+settings.access_token,
         params: {
           page: '@page'
         },
@@ -15,17 +16,35 @@ services.factory('Conversation', ['$resource', 'ApiUrl', 'AccessToken',
   }
 ]);
 
-services.factory('GetConversations', ['Conversation', '$q', function(Conversation, $q) {
-  return function(page) {
+services.factory('getConversations', ['Conversation', '$q', function(Conversation, $q) {
+  var service = {};
+  service.get = function(page)
+  {
     var delay = $q.defer();
-    Conversation.get({
-      page: page
+    Conversation.get({page: page
     }, function (conversation) {
       delay.resolve(conversation);
     }, function() {
       delay.reject('Unable to fetch the conversation');
     });
-
     return delay.promise;
   };
+  return service;
 }]);
+
+
+
+//services.factory('GetConversations', ['Conversation', '$q', function(Conversation, $q) {
+//  return function(page) {
+//    var delay = $q.defer();
+//    Conversation.get({
+//      page: page
+//    }, function (conversation) {
+//      delay.resolve(conversation);
+//    }, function() {
+//      delay.reject('Unable to fetch the conversation');
+//    });
+//
+//    return delay.promise;
+//  };
+//}]);

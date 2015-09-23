@@ -23,7 +23,7 @@ describe('ComstackPmApp', function(){
     });
 
     it('Should display correct title', function(){
-        browser.pause();
+       // browser.pause();
         expect(homePage.title()).toEqual('Cancer Chat');
     });
 

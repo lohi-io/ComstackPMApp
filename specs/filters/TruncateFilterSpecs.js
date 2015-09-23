@@ -1,10 +1,10 @@
 /* global describe, it, expect, inject, beforeEach, module */
-(function (describe, it, expect, inject, beforeEach) {
+(function (describe, it, expect, inject, beforeEach, module) {
 
   describe('truncate filter', function () {
     var truncate, limit, shortString, longString, suffix;
 
-    beforeEach(module('ComstackPmApp'));
+    beforeEach(module('ComstackPMApp'));
 
     beforeEach(inject(function(truncateFilter) {
       truncate = truncateFilter;
@@ -38,4 +38,4 @@
       expect(changedString.length).toEqual(limit + suffix.length);
     });
   });
-})(describe, it, expect, inject, beforeEach);
+})(describe, it, expect, inject, beforeEach, angular.mock.module);

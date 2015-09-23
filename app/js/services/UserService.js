@@ -1,26 +1,31 @@
-var services = angular.module('ComstackPmApp.Services');
+var services = angular.module('ComstackPMApp.Services');
 
-services.factory('User', ['$resource', 'ApiUrl', 'AccessToken',
-  function($resource, ApiUrl, AccessToken) {
+services.factory('User', ['$resource', 'ConfigurationService',
+  function($resource, config) {
+    var settings = config.get();
     return $resource('', {}, {
       getCurrentUser: {
         method: 'GET',
-        url: ApiUrl + '/cs-pm/users/current-user?access_token=' + AccessToken,
+        url: settings.api_url+'/cs-pm/users/current-user?access_token='+settings.access_token,
         isArray: false
       }
     });
   }
 ]);
 
-services.factory('GetCurrentUser', ['User', '$q', function(User, $q) {
-  return function() {
+services.factory('getCurrentUser', ['User', '$q', function(User, $q) {
+  var service = {};
+  service.get = function()
+  {
     var delay = $q.defer();
     User.getCurrentUser(function (user) {
-        delay.resolve(user);
-      }, function() {
+      delay.resolve(user);
+    }, function() {
         delay.reject('Unable to fetch current user');
       }
     );
     return delay.promise;
   };
+  return service;
 }]);
+

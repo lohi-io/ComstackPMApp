@@ -26,9 +26,27 @@ module.exports = function(grunt){
             grunt: {
                 files: ['gruntfile.js']
             }
-        }
+        },
+        uglify: {
+          app: {
+            src: [
+              'app/js/app.js',
+              'app/js/configuration/01_bootstrap.js',
+              'app/js/filters/HtmlSafeFilter.js',
+              'app/js/filters/TruncateFilter.js',
+              'app/js/controllers/HomeController.js',
+              'app/js/controllers/InboxController.js',
+              'app/js/services/01_bootstrap.js',
+              'app/js/services/ConfigurationService.js',
+              'app/js/services/AuthenticationService.js',
+              'app/js/services/UserService.js',
+              'app/js/services/ConversationService.js'
+            ],
+            dest:'app/js/ComstackPMApp.js'
+          }
+      }
     });
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
-    grunt.registerTask('default', ['karma:unitbg','watch']);
+    grunt.registerTask('default', ['karma:unitbg','uglify', 'watch']);
 
 };

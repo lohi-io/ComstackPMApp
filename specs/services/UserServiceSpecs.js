@@ -1,19 +1,21 @@
 /* globals describe, it, expect, inject, beforeEach */
 (function (describe, it, expect, inject, angular, beforeEach) {
   describe('UserService', function() {
-    var mockBackend, loader;
+    var mockBackend, loader, config;
 
-    beforeEach(angular.mock.module('ComstackPmApp.Services', function ($provide) {
-      $provide.constant('ApiUrl', 'https://cancerchat01dev.prod.acquia-sites.com/api/v1');
-      $provide.constant('AccessToken', 'qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc');
-    }));
+    beforeEach(angular.mock.module("ComstackPMApp.Services"));
+    beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
 
-    beforeEach(inject(function($injector) {
+    beforeEach(inject(function($injector,$httpBackend) {
+
       mockBackend = $injector.get('$httpBackend');
-      loader = $injector.get('GetCurrentUser');
+      loader = $injector.get('getCurrentUser');
+      config =  $injector.get('ConfigurationService');
     }));
 
-    it('Should load current user', function() {
+
+
+    it('Should load current user using ConfigurationService', function() {
       var response = {
         'data': {
           'user': {
@@ -25,15 +27,13 @@
       };
 
       var result;
-
-      /* eslint-disable max-len */
-      mockBackend.expectGET('https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/users/current-user?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc').respond(response);
-      /* eslint-enable max-len */
-
-      var promise = loader();
+      var url = config.appSettings.api_url+'/cs-pm/users/current-user?access_token='+config.appSettings.access_token;
+      mockBackend.expectGET(url).respond(response);
+      var promise = loader.get();
       promise.then(function(rec) {
         result = rec;
       });
+
 
       expect(result).toBeUndefined();
       mockBackend.flush();

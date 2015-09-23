@@ -4,12 +4,14 @@
 (function(angular)
 {
 'use strict';
-var module = angular.module('ComstackPmApp.Services');
+var services = angular.module('ComstackPMApp.Services');
 
-module.factory('Authentication', ['$http', '$q', '$location', '$window', '$state', 'ApiUrl', 'AccessToken',
-    function($http, $q, $location, $window, $state, ApiUrl, AccessToken){
+services.factory('Authentication', ['$http', '$q', 'ConfigurationService',
+    function($http, $q, config){
+      var settings = config.get();
+      var auth = atob(settings.authorization_header.replace('Basic ', ''));
+      var baseUrl = settings.base_url.replace('https://', 'https://'+auth+'@');
 
-        var baseUrl = 'https://test.cancerresearchuk.org/about-cancer/cancer-chat';
         var formLogin = function(){
             var deferred = $q.defer();
 
@@ -35,7 +37,7 @@ module.factory('Authentication', ['$http', '$q', '$location', '$window', '$state
         {
             var deferred = $q.defer();
             console.log("Starting basic auth...");
-            $http.get('https://CRUK01:yuDab8ne!@test.cancerresearchuk.org/about-cancer/cancer-chat', {}
+            $http.get(baseUrl, {}
             ).success(function (response)
             {
                 console.log("Succeeded basic auth...");
@@ -81,7 +83,7 @@ module.factory('Authentication', ['$http', '$q', '$location', '$window', '$state
                         console.log("Succeeded form auth...");
                         getToken().then(function(response){
                             console.log("Succeeded get token...");
-                            AccessToken = response.access_token;
+                            config.updateAccessToken(response.access_token);
                             deferred.resolve(response);
                         }, function(err){
                             console.log("Failed get token...");
