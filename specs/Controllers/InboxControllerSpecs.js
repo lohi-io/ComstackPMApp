@@ -1,12 +1,16 @@
-/* global describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module */
+/* global describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module, kendo */
 (function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module) {
 
   describe('InboxCtrl', function () {
-    var scope, currentUser, conversations, state;
+    var ctrl, scope, currentUser, conversations, state, stateParams, fakeUserService, fakeConversationService;
+    var userService, conversationsService, rootScope, $httpBackend;
 
-    beforeEach(module('ComstackPmApp'));
+    beforeEach(angular.mock.module("ComstackPMApp"));
+    beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
 
-    beforeEach(inject(function(_$rootScope_, $controller) {
+
+    beforeEach(inject(function (_$rootScope_, $controller, _$httpBackend_) {
+      rootScope = _$rootScope_;
       currentUser = {
         data: {
           user: {
@@ -16,36 +20,57 @@
           }
         }
       };
+
       conversations = {
-        data:[],
+        data: [],
         paging: {
           previous: {},
-          next:{},
+          next: {},
           range: 10,
-          total: 12
+          total: 12,
+          current_page: 2
         }
       };
-      state = { 'go': function () { } };
+      state = {
+        "go": function () {
+        }
+      };
+      $httpBackend = _$httpBackend_;
+      stateParams = {page: 1};
       scope = _$rootScope_.$new();
-      $controller('InboxCtrl', {
-        $scope: scope,
-        currentUser: currentUser,
-        conversations: conversations,
-        $state: state
+      userService = fakeUserService;
+      conversationsService = fakeConversationService;
+
+      var urlUser = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/users/current-user?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+      $httpBackend.expectGET(urlUser).respond(currentUser);
+      var urlConversation = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/conversations?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc&page=1';
+      $httpBackend.expectGET(urlConversation).respond(conversations);
+
+
+      ctrl = $controller('InboxCtrl', {
+        '$scope': scope,
+        '$state': state,
+        '$stateParams': stateParams
       });
+      $httpBackend.flush();
     }));
 
-    it('Should have current user in scope', function () {
-      expect(scope.currentUser).toEqual(currentUser);
+    afterEach(function () {
+      $httpBackend.verifyNoOutstandingExpectation();
+      $httpBackend.verifyNoOutstandingRequest();
+      $httpBackend.resetExpectations();
     });
 
+    it('Should have current user in scope', function () {
+      expect(angular.equals(scope.currentUser, currentUser)).toBeTruthy();
+    });
     it('Should have conversations in scope', function () {
-      expect(scope.conversations).toEqual(conversations.data);
+      expect(angular.equals(scope.conversations, conversations.data)).toBeTruthy();
     });
 
     it('Should have a goToPage() function', function () {
       expect(scope.goToPage).toBeDefined();
-      expect(typeof scope.goToPage).toEqual('function');
+      expect(typeof scope.goToPage).toEqual("function");
     });
 
     it('Should have change the state when calling goToPage() function', function () {
@@ -56,25 +81,26 @@
 
     it('Should have a previous() function', function () {
       expect(scope.previous).toBeDefined();
-      expect(typeof scope.previous).toEqual('function');
+      expect(typeof scope.previous).toEqual("function");
     });
 
     it('should change state if previous exists when calling previous() function ', function () {
-      scope.conversations = {'data':[]};
-      scope.paging = {
-        'previous': 'stuff',
-        'current_page': 2
-      };
+      scope.conversations = {"data":[], "previous":{} };
+      scope.currentPage = 2;
       spyOn(state, 'go');
       scope.previous();
       expect(state.go).toHaveBeenCalledWith('inbox', {page: 1});
     });
 
     it('should not change state if previous does not exists when calling previous() function ', function () {
-      scope.conversations = {'data':[], 'next':{} };
-      scope.paging = {
-        currentPage: 1
+
+      scope.paging =   {
+        next: {},
+        range: 10,
+          total: 12,
+          current_page: 2
       };
+      scope.currentPage = 1;
       spyOn(state, 'go');
       scope.previous();
       expect(state.go.calls.count()).toEqual(0);
@@ -82,54 +108,31 @@
 
     it('Should have a next() function', function () {
       expect(scope.next).toBeDefined();
-      expect(typeof scope.next).toEqual('function');
+      expect(typeof scope.next).toEqual("function");
     });
 
     it('should change state if next exists when calling next() function ', function () {
-      scope.conversations = {'data':[]};
-      scope.paging = {
-        'next': 'stuff',
-        'current_page': 2
-      };
-
+      scope.conversations = {"data":[], "next":{} };
+      scope.currentPage = 2;
       spyOn(state, 'go');
       scope.next();
       expect(state.go).toHaveBeenCalledWith('inbox', {page: 3});
     });
 
     it('should not change state if next does not exists when calling next() function ', function () {
-      scope.conversations = {'data':[], 'previous':{} };
-      scope.paging = {};
+      scope.paging =   {
+        range: 10,
+        total: 12,
+        current_page: 2
+      };
       scope.currentPage = 1;
       spyOn(state, 'go');
       scope.next();
-      expect(state.go.calls.count()).toEqual(0);
+      expect(state.go.calls.count()).toEqual(0);;
     });
 
-    it('should determine the number of pages needed', function() {
-      scope.paging = {
-        total: 15,
-        range: 10
-      };
-      scope.calculatePages();
-      expect(scope.paging.pagesCount).toEqual(2);
-    });
-
-    it('should create a page for each needed page', function() {
-      scope.paging = {
-        total: 15,
-        range: 10
-      };
-      scope.calculatePages();
-      expect(scope.pages).toEqual([
-        {
-          number: 1
-        }, {
-          number: 2
-        }
-      ]);
-    });
   });
 })(describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, angular.mock.module);
+
 
 
