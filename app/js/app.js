@@ -1,8 +1,5 @@
 var app = angular.module('ComstackPmApp', ['ui.router', 'ComstackPmApp.Services']);
-//app.run(['$rootScope', 'Authentication',
-//    function ($rootScope, Authentication) {
-//        Authentication.apiLogin();
-//}]);
+
 app.config([
         "$urlRouterProvider",
         "$stateProvider", function($urlRouterProvider, $stateProvider) {
