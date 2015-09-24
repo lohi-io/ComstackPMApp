@@ -62,7 +62,7 @@
     });
 
     it('Should have current user in scope', function () {
-      expect(angular.equals(scope.currentUser, currentUser)).toBeTruthy();
+      expect(angular.equals(scope.currentUser, currentUser.data)).toBeTruthy();
     });
     it('Should have conversations in scope', function () {
       expect(angular.equals(scope.conversations, conversations.data)).toBeTruthy();
