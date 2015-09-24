@@ -9,10 +9,11 @@ module.exports = function () {
     this.get = function () {
         browser.get('/app');
     }
+  this.loginWait = function(){
+    return element(by.id('loginWait'));
+  }
 
-    this.message = function(){
-      var div = element.all(by.tagName('div')).first();
-      return div.getText();
-    }
-
+  this.loginDone = function(){
+    return element(by.id('loginDone'));
+  }
 };

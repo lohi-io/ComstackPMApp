@@ -5,6 +5,7 @@
 var HomePage = require('../automation/Home.js');
 var request = require('request');
 
+
 describe('ComstackPmApp', function () {
   var homePage;
 
@@ -13,10 +14,9 @@ describe('ComstackPmApp', function () {
   });
 
   beforeEach(function () {
-
     if (!homePage) {
       homePage = new HomePage();
-      browser.get('https://CRUK01:yuDab8ne!@test.cancerresearchuk.org/about-cancer/cancer-chat');
+      browser.get('https://CRUK01:yuDab8ne!@cancerchat01dev.prod.acquia-sites.com');
       homePage.get();
     }
 
@@ -27,16 +27,22 @@ describe('ComstackPmApp', function () {
     expect(homePage.title()).toEqual('Cancer Chat');
   });
 
-  it('Should display correct messasge', function () {
-    expect(homePage.message()).toEqual('Loading please wait...');
+  it('Should display correct message', function () {
+    expect(homePage.loginWait().getText()).toEqual('Login please wait...');
   });
 
-
   //it('change page and current url', function() {
-  //  ptor.findElement(protractor.By.className('.button').click().then(function() {
-  //    ptor.waitForAngular();
-  //    expect(ptor.currentUrl()).toContain('#/new_page');
+  //
+  //  element(by.id('loginDone')).then(function(){
+  //    expect(browser.getCurrentUrl()).toEqual('/inbox/1')
   //  });
+  //
+  //  //browser.wait(function() {
+  //  //  return homePage.loginDone().isDisplayed();
+  //  //}, 30000);
+  //
+  //  //expect(browser.getCurrentUrl()).toEqual('/inbox/1');
+  //
   //});
 
   //it('Should provide ability to return to home page', function(){

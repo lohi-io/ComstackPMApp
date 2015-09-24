@@ -48,6 +48,14 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
       }
     };
 
+    $scope.fromNow = function(date){
+      return moment(date).fromNow();
+    };
+
+    $scope.formatDate = function(date){
+      return moment(date).format("hh:mm MMMM Do, YYYY")
+    }
+
     $scope.calculatePages();
   }
 ]);
