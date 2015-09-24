@@ -60,10 +60,20 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
     'heading__conversation_with': 'Conversation with @name',
     'text__last_message': 'Last message',
     'text__no_available_users': '',
-    'text__read_only': 'You\'re currently opted out of private messaging, <a href="@url">click here</a> to go the the account settings form.',
+    'text__read_only': {
+      'text': 'You\'re currently opted out of private messaging, <a href="@url">click here</a> to go the the account settings form.',
+      'replacements': {
+        '@url': 'http://...',
+      }
+    },
     'text__select_messages_to_delete': "Select the messages you'd like to delete",
     'text__select_messages_to_report': "Select the messages you'd like to report",
-    'form__new_conversation__header': 'You must be friends with a person before you can send them messages. <a href="@url">Find and add friends</a>',
+    'form__new_conversation__header': {
+      'text': 'You must be friends with a person before you can send them messages. <a href="@url">Find and add friends</a>',
+      'replacements': {
+        '@url': 'http://...',
+      }
+    },
     'form__to__label': 'To',
     'form__to__placeholder__singular': 'Enter recipients username...',
     'form__to__placeholder__plural': 'Enter recipients username...',
