@@ -10,4 +10,9 @@ module.exports = function () {
         browser.get('/app');
     }
 
+    this.message = function(){
+      var div = element.all(by.tagName('div')).first();
+      return div.getText();
+    }
+
 };

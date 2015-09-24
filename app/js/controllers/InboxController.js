@@ -7,7 +7,7 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
 
     userService.get()
       .then(function (data) {
-        $scope.currentUser = data;
+        $scope.currentUser = data.data;
       });
 
     conversationsService.get($stateParams.page)
