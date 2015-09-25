@@ -29,6 +29,7 @@
     "phantomjs": "^1.9.18",
     "protractor": "^2.1.0",
     "protractor-html-screenshot-reporter": "0.0.21",
+    "request": "^2.63.0",
     "shelljs": "^0.2.6"
   },
   "scripts": {

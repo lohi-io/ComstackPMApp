@@ -2,8 +2,8 @@
 var configurationModule = angular.module('ComstackPMApp.Configuration', []);
 configurationModule.factory('LocalSettings', function(){
   return {
-    "base_url": "https://test.cancerresearchuk.org/about-cancer/cancer-chat",
-    "api_url": "https://test.cancerresearchuk.org/about-cancer/cancer-chat/api/v1",
+    "base_url": "https://cancerchat01dev.prod.acquia-sites.com",
+    "api_url": "https://cancerchat01dev.prod.acquia-sites.com/api/v1",
     "local_host": "cancerchatdev.localweb",
     "authorization_header": "Basic Q1JVSzAxOnl1RGFiOG5lIQ==",
     "access_token": "",

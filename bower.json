@@ -16,6 +16,7 @@
     "angular-resource": "~1.4.5",
     "angular-ui-router": "~0.2.15",
     "jasmine-expect": "~1.22.3",
-    "jsBuilder": "~1.0.1"
+    "jsBuilder": "~1.0.1",
+    "moment": "~2.10.6"
   }
 }

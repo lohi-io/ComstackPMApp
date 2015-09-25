@@ -7,7 +7,7 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
 
     userService.get()
       .then(function (data) {
-        $scope.currentUser = data;
+        $scope.currentUser = data.data;
       });
 
     conversationsService.get($stateParams.page)
@@ -47,6 +47,14 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
         $scope.goToPage($scope.paging.current_page + 1);
       }
     };
+
+    $scope.fromNow = function(date){
+      return moment(date).fromNow();
+    };
+
+    $scope.formatDate = function(date){
+      return moment(date).format("hh:mm MMMM Do, YYYY")
+    }
 
     $scope.calculatePages();
   }
