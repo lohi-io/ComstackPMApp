@@ -26,11 +26,22 @@ services.factory('ConfigurationService', ['$http', '$q', 'LocalSettings', functi
     appSettings = data;
   };
 
+  var getString = function(name, values){
+
+    var regExp = /@(\w*)@/gi;
+    return appSettings.strings[name].replace(regExp, function(match) {
+      console.log(match);
+      match = match.replace(/@/gi,'');
+      return values[match];
+    });
+  }
+
   return {
     appSettings: appSettings,
     get: get,
     set: set,
     updateAccessToken: updateAccessToken,
+    getString: getString
   }
 }]);
 

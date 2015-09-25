@@ -4,6 +4,7 @@
 app.controller('HomeCtrl', ['$scope', 'Authentication', '$timeout', '$state', '$location', 'ConfigurationService',
   function ($scope, Authentication, $timeout, $state, $location, config) {
     $scope.isAuthenticated = false;
+    $scope.message = "";
 
     var localHost = $location.host();
     var settings = config.get();
@@ -11,6 +12,7 @@ app.controller('HomeCtrl', ['$scope', 'Authentication', '$timeout', '$state', '$
       Authentication.apiLogin().then(function () {
         console.log("Login done")
         $scope.isAuthenticated = true;
+        $scope.message = "Login done";
         $state.go('inbox', {page: 1});
       }, function (error) {
         console.error(error);

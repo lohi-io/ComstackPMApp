@@ -1,5 +1,7 @@
-app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'getCurrentUser', 'getConversations',
-  function ($scope, $window, $state, $stateParams, userService, conversationsService) {
+app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'getCurrentUser', 'getConversations', 'ConfigurationService',
+  function ($scope, $window, $state, $stateParams, userService, conversationsService, config) {
+
+    var settings = config.get();
 
     $scope.conversations = [];
     $scope.paging = {};
@@ -17,10 +19,9 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
       });
 
     $scope.paging.pagesCount = 0;
-
     $scope.pages = [];
 
-    $scope.calculatePages = function () {
+    var calculatePages = function () {
       $scope.paging.pagesCount = $window.Math.ceil($scope.paging.total / $scope.paging.range);
 
       for (var i = 0; i < $scope.paging.pagesCount; i++) {
@@ -56,6 +57,9 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
       return moment(date).format("hh:mm MMMM Do, YYYY")
     }
 
-    $scope.calculatePages();
+    $scope.testString = config.getString('text__read_only', {user_id: "12345", name: "faustina"});
+
+
+    calculatePages();
   }
 ]);

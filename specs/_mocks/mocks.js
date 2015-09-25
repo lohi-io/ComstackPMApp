@@ -7,15 +7,30 @@ serviceMockModule.factory("ConfigurationService", function () {
     return {
       appSettings: {
         api_url: "https://cancerchat01dev.prod.acquia-sites.com/api/v1",
-        access_token: "qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc"
+        access_token: "qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc",
+        "strings": {
+          "heading__messages": "Messages",
+          "heading__conversation_with": "Conversation with @name",
+          "text__last_message": "Last message",
+          "text__no_available_users": "",
+          "text__read_only": "You are @name@ with @user_id@"
+        }
       },
       get: function () {
         return {
           api_url: "https://cancerchat01dev.prod.acquia-sites.com/api/v1",
-          access_token: "qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc"
+          access_token: "qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc",
+          "strings": {
+            "heading__messages": "Messages",
+            "heading__conversation_with": "Conversation with @name",
+            "text__last_message": "Last message",
+            "text__no_available_users": "",
+            "text__read_only": "You are @name@ with @user_id@"
+          }
         }
       },
-      getLocalAppSettings: function () {
+      getString: function () {
+          return "";
       },
       updateAccessToken: function () {
       }
