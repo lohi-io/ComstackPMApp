@@ -36,5 +36,12 @@
       expect(appSettings).toEqual(mergeResult);
 
     });
+
+    //it('Should replace the place holders for the strings', function(){
+    //  var result = configurationService.getString("text__read_only", {name: "my name", user_id: "1234"});
+    //  expect(result).toEqual("You are my name with 1234");
+    //
+    //});
+
   });
 })(describe, it, expect, inject, angular, beforeEach);

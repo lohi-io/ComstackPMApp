@@ -31,20 +31,8 @@ describe('ComstackPmApp', function () {
     expect(homePage.loginWait().getText()).toEqual('Login please wait...');
   });
 
-  //it('change page and current url', function() {
-  //
-  //  //element(by.id('loginDone')).then(function(){
-  //  //  expect(browser.getCurrentUrl()).toEqual('/inbox/1')
-  //  //});
-  //  //
-  //
-  //  browser.wait(function() {
-  //    return homePage.loginDone().isDisplayed();
-  //  });
-  //
-  // expect(browser.getCurrentUrl()).toEqual('http://cancerchatdev.localweb:8000/app/#/inbox/1');
-  //
-  //});
+
+
 
   //it('Should provide ability to return to home page', function(){
   //    expect(homePage.homeLink.isPresent()).toBe(true);
