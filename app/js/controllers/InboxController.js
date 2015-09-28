@@ -1,5 +1,5 @@
-app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'getCurrentUser', 'getConversations', 'configurationService',
-  function ($scope, $window, $state, $stateParams, userService, conversationsService, config) {
+app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'getCurrentUser', 'Conversations', 'configurationService',
+  function ($scope, $window, $state, $stateParams, userService, Conversations, config) {
 
     var calculatePages = function () {
       $scope.paging.pagesCount = $window.Math.ceil($scope.paging.total / $scope.paging.range);
@@ -28,8 +28,7 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
         $scope.currentUser = data.data;
       });
 
-    conversationsService.get($stateParams.page)
-      .then(function (data) {
+    Conversations.get({page: $stateParams.page}).$promise.then(function (data) {
         $scope.conversations = data.data;
         $scope.paging = data.paging;
         calculatePages();

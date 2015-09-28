@@ -1,14 +1,14 @@
 /* globals describe, it, expect, inject, beforeEach */
 (function (describe, it, expect, inject, angular, beforeEach,module) {
   describe('ConversationService', function() {
-    var mockBackend, loader;
+    var mockBackend, Conversation;
 
     beforeEach(angular.mock.module("ComstackPMApp.Services"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
 
     beforeEach(inject(function($injector){
       mockBackend = $injector.get('$httpBackend');
-      loader = $injector.get('getConversations');
+      Conversation = $injector.get('Conversations');
       config =  $injector.get('configurationService');
 
     }));
@@ -27,7 +27,7 @@
 
         var url = config.appSettings.api_url+'/cs-pm/conversations?access_token='+config.appSettings.access_token+'&page=1';
         mockBackend.expectGET(url).respond(response);
-        var promise = loader.get(1);
+        var promise = Conversation.get({page: 1}).$promise;
 
         promise.then(function(rec) {
           result = rec;
