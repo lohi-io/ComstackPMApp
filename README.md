@@ -51,7 +51,7 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
   'max_participants': 2,
   'allow_separate_conversations': false,
   'share_data_storage': true,
-  'library_path': '',
+  'library_path': 'https://example.com/sites/all/libraries/ComstackPMApp',
   'poll_intervals': {
     'conversations': 30,
     'messages': 15,
