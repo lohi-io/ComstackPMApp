@@ -31,13 +31,12 @@ module.exports = function(grunt){
           app: {
             src: [
               'app/js/app.js',
-              'app/js/configuration/01_bootstrap.js',
+              'app/js/providers/ConfigurationServiceProvider.js',
               'app/js/filters/HtmlSafeFilter.js',
               'app/js/filters/TruncateFilter.js',
               'app/js/controllers/HomeController.js',
               'app/js/controllers/InboxController.js',
               'app/js/services/01_bootstrap.js',
-              'app/js/services/ConfigurationService.js',
               'app/js/services/AuthenticationService.js',
               'app/js/services/UserService.js',
               'app/js/services/ConversationService.js'

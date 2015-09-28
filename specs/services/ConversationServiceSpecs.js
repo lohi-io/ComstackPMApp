@@ -9,7 +9,7 @@
     beforeEach(inject(function($injector){
       mockBackend = $injector.get('$httpBackend');
       loader = $injector.get('getConversations');
-      config =  $injector.get('ConfigurationService');
+      config =  $injector.get('configurationService');
 
     }));
 

@@ -3,7 +3,7 @@
  */
 var serviceMockModule = angular.module('ComstackPMApp.ServicesMock',[]);
 
-serviceMockModule.factory("ConfigurationService", function () {
+serviceMockModule.factory("configurationService", function () {
     return {
       appSettings: {
         api_url: "https://cancerchat01dev.prod.acquia-sites.com/api/v1",
@@ -43,6 +43,10 @@ configurationMockModule.factory("LocalSettings", function () {
     "api_url": "https://test.cancerresearchuk.org/about-cancer/cancer-chat/api/v1",
     "authorization_header": "Basic Q1JVSzAxOnl1RGFiOG5lIQ==",
     "access_token": "",
-    "base_url" : "baseUrl"
+    "base_url" : "baseUrl",
+    strings:
+    {
+      "text__read_only": "You are @name@ with @user_id@"
+    }
   }
 });

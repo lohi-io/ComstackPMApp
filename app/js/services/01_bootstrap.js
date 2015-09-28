@@ -2,7 +2,7 @@
  * Created by fechit01 on 11/09/2015.
  */
 'use strict';
-var serviceModule = angular.module('ComstackPMApp.Services', ['ngResource', 'ComstackPMApp.Configuration']);
+var serviceModule = angular.module('ComstackPMApp.Services', ['ngResource']);
 
 serviceModule.config(['$httpProvider', function ($httpProvider) {
     delete $httpProvider.defaults.headers.common['X-Requested-With'];

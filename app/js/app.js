@@ -4,26 +4,15 @@ var app = angular.module('ComstackPMApp', ['ui.router', 'ComstackPMApp.Services'
 //}]);
 app.config([
   "$urlRouterProvider",
-  "$stateProvider", function ($urlRouterProvider, $stateProvider) {
+  "$stateProvider", 'configurationServiceProvider', function ($urlRouterProvider, $stateProvider, configurationServiceProvider) {
 
 
-    var scripts = document.getElementsByTagName("script");
-    var currentScriptPath = "";
-    var templatesPath = "";
+    var settings = configurationServiceProvider.get();
+    var templatesPath = settings.library_path;
 
-    for (var i = 0; i < scripts.length - 1; i++) {
-      console.log(scripts[i]);
-      if (scripts[i].src.indexOf("ComstackPMApp.js") != -1){
-        currentScriptPath = scripts[i].src;
-      }
+    if(templatesPath !== ""){
+      templatesPath += '/';
     }
-    if(currentScriptPath !== ""){
-      templatesPath = currentScriptPath.substring(0, currentScriptPath.indexOf('/js/'))+'/';
-    }
-
-    console.log(templatesPath + 'html/home.html');
-
-
 
     $urlRouterProvider
       .otherwise("/home");
@@ -37,6 +26,13 @@ app.config([
         url: '/inbox/:page',
         controller: 'InboxCtrl',
         templateUrl: templatesPath+'html/inbox.html'
-      });
+      })
+      .state('message', {
+        url: '/message',
+        controller: 'MessageCtrl',
+        templateUrl: templatesPath+'html/message.html'
+      })
+
+    ;
   }
 ]);

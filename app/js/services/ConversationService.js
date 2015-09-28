@@ -1,6 +1,6 @@
 var services = angular.module('ComstackPMApp.Services');
 
-services.factory('Conversation', ['$resource', 'ConfigurationService',
+services.factory('Conversation', ['$resource', 'configurationService',
   function($resource, config) {
     var settings = config.get();
     return $resource('/cs-pm/conversations', {}, {

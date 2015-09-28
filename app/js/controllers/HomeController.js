@@ -1,7 +1,7 @@
 /**
  * Created by fechit01 on 11/09/2015.
  */
-app.controller('HomeCtrl', ['$scope', 'Authentication', '$timeout', '$state', '$location', 'ConfigurationService',
+app.controller('HomeCtrl', ['$scope', 'Authentication', '$timeout', '$state', '$location', 'configurationService',
   function ($scope, Authentication, $timeout, $state, $location, config) {
     $scope.isAuthenticated = false;
     $scope.message = "";

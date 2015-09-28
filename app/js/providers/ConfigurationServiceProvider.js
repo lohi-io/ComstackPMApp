@@ -1,13 +1,14 @@
-'use strict';
-var configurationModule = angular.module('ComstackPMApp.Configuration', []);
-configurationModule.factory('LocalSettings', function(){
-  return {
+var app = angular.module('ComstackPMApp');
+app.provider("configurationService", function(){
+
+  var appSettings = {
     "base_url": "https://cancerchat01dev.prod.acquia-sites.com",
     "api_url": "https://cancerchat01dev.prod.acquia-sites.com/api/v1",
     "local_host": "cancerchatdev.localweb",
     "authorization_header": "Basic Q1JVSzAxOnl1RGFiOG5lIQ==",
     "access_token": "",
     "csrf_token": "",
+    "library_path": "http://cancerchatdev.localweb:8000/app",
     "max_participants": 2,
     "allow_separate_conversations": false,
     "share_data_storage": true,
@@ -51,9 +52,50 @@ configurationModule.factory('LocalSettings', function(){
     }
   };
 
+  if (typeof Comstack != "undefined") {
+    if (typeof Comstack.PMApp != "undefined") {
+      if (typeof Comstack.PMApp.Settings != "undefined") {
+        angular.merge(appSettings, Comstack.PMApp.Settings)
+      }
+    }
+  }
+
+  this.updateAccessToken = function(token){
+    appSettings.access_token = token;
+  };
+
+  this.get = function () {
+    return appSettings;
+  };
+
+  this.set = function (data) {
+    appSettings = data;
+  };
+
+  this.getString = function(name, values){
+
+    var regExp = /@(\w*)@/gi;
+    return appSettings.strings[name].replace(regExp, function(match) {
+      match = match.replace(/@/gi,'');
+      return values[match];
+    });
+  }
+
+  this.appSettings = appSettings;
+  var self = this;
+
+  this.$get = function(){
+    return {
+      appSettings: self.appSettings,
+      get: self.get,
+      set: self.set,
+      updateAccessToken: self.updateAccessToken,
+      getString: self.getString
+    }
+  }
+
+
+
+
+
 });
-
-
-
-
-
