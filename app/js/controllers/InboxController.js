@@ -1,5 +1,5 @@
-app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'getCurrentUser', 'getConversations', 'ConfigurationService',
-  function ($scope, $window, $state, $stateParams, userService, conversationsService, config) {
+app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'getCurrentUser', 'Conversations', 'ConfigurationService',
+  function ($scope, $window, $state, $stateParams, userService, Conversations, config) {
 
     var settings = config.get();
 
@@ -12,8 +12,7 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
         $scope.currentUser = data.data;
       });
 
-    conversationsService.get($stateParams.page)
-      .then(function (data) {
+    Conversations.get({page: $stateParams.page}).$promise.then(function (data) {
         $scope.conversations = data.data;
         $scope.paging = data.paging;
       });
