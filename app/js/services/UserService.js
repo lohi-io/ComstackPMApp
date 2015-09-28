@@ -9,7 +9,7 @@ services.factory('User', ['$resource', 'configurationService',
         url: settings.api_url+'/cs-pm/users/current-user?access_token='+settings.access_token,
         isArray: false
       },
-      getUserFriends: {
+      getAvailableUsers: {
         method: 'GET',
         url: settings.api_url+'/cs-pm/users/available-users?access_token='+settings.access_token,
         isArray: true
@@ -34,7 +34,7 @@ services.factory('getCurrentUser', ['User', '$q', function(User, $q) {
   return service;
 }]);
 
-services.factory('getUserFriends', ['User', '$q', function(User, $q) {
+services.factory('getAvailableUsers', ['User', '$q', function(User, $q) {
   var service = {};
   service.get = function()
   {
