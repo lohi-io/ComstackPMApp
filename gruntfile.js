@@ -36,6 +36,7 @@ module.exports = function(grunt){
               'app/js/filters/TruncateFilter.js',
               'app/js/controllers/HomeController.js',
               'app/js/controllers/InboxController.js',
+              'app/js/controllers/ConversationController.js',
               'app/js/services/01_bootstrap.js',
               'app/js/services/AuthenticationService.js',
               'app/js/services/UserService.js',

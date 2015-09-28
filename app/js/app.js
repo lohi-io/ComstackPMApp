@@ -32,7 +32,10 @@ app.config([
         controller: 'MessageCtrl',
         templateUrl: templatesPath+'html/message.html'
       })
-
-    ;
+      .state('conversation', {
+        url: '/conversation/:id',
+        controller: 'ConversationCtrl',
+        templateUrl: templatesPath+'html/conversation.html'
+      });
   }
 ]);
