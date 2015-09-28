@@ -8,7 +8,7 @@ app.provider("configurationService", function(){
     "authorization_header": "Basic Q1JVSzAxOnl1RGFiOG5lIQ==",
     "access_token": "",
     "csrf_token": "",
-    "library_path": "http://cancerchatdev.localweb:8000/app",
+    "library_path": "http://cancerchatdev.localweb:8000",
     "max_participants": 2,
     "allow_separate_conversations": false,
     "share_data_storage": true,

@@ -11,7 +11,11 @@ services.factory('User', ['$resource', 'configurationService',
       },
       getAvailableUsers: {
         method: 'GET',
-        url: settings.api_url+'/cs-pm/users/available-users?access_token='+settings.access_token,
+        url: settings.api_url+'/cs-pm/users/available-users',
+        params: {
+          "access_token": settings.access_token,
+          "autocomplete[string]": '@search'
+        },
         isArray: true
       },
     });
@@ -39,7 +43,7 @@ services.factory('getAvailableUsers', ['User', '$q', function(User, $q) {
   service.get = function()
   {
     var delay = $q.defer();
-    User.getCurrentUser(function (user) {
+    User.getAvailableUsers(function (user) {
       delay.resolve(user);
     }, function() {
         delay.reject('Unable to fetch current user');

@@ -10,9 +10,6 @@ app.config([
     var settings = configurationServiceProvider.get();
     var templatesPath = settings.library_path;
 
-    if(templatesPath !== ""){
-      templatesPath += '/';
-    }
 
     $urlRouterProvider
       .otherwise("/home");
@@ -20,17 +17,17 @@ app.config([
       .state('Home', {
         url: '/home',
         controller: 'HomeCtrl',
-        templateUrl: templatesPath+'html/home.html'
+        templateUrl: templatesPath+'/app/html/home.html'
       })
       .state('inbox', {
         url: '/inbox/:page',
         controller: 'InboxCtrl',
-        templateUrl: templatesPath+'html/inbox.html'
+        templateUrl: templatesPath+'/app/html/inbox.html'
       })
       .state('message', {
         url: '/message',
         controller: 'MessageCtrl',
-        templateUrl: templatesPath+'html/message.html'
+        templateUrl: templatesPath+'/app/html/message.html'
       })
 
     ;
