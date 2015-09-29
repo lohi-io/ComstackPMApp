@@ -1,11 +1,11 @@
 <div id="message" class="page-wrapper cs-pm-page-wrapper">
   <div class="messages-header cs-pm__header clearfix">
-    <h2 class="pull-left cs-pm-left"><a ui-sref="inbox({page: 1})" class="messages-trigger"><span class="icomoon icomoon-back cs-pm-icon--back"></span> Messages</a></h2>
-    <div class="pull-right cs-pm-right"><a class="btn btn-default cs-pm__new-message"><span class="icomoon icomoon-speech-bubble cs-pm-icon--new-message"></span> New message</a></div>
+    <h2 class="pull-left cs-pm-left"><a ui-sref="inbox({page: 1})" class="messages-trigger"><span class="icomoon icomoon-back cs-pm-icon--back"></span>Messages</a></h2>
+    <div class="pull-right cs-pm-right"><a class="btn btn-default cs-pm__new-message"><span class="icomoon icomoon-speech-bubble cs-pm-icon--new-message"></span>New message</a></div>
   </div>
 
   <div class="messages-header cs-pm__header conversation-header clearfix">
-    <h2 class="pull-left cs-pm-left" ng-bind="conversationHeading"></h2>
+    <h2 class="pull-left cs-pm-left" ng-cloak>{{ conversationHeading }}</h2>
     <div class="conversation-actions">
       <a href="" class="btn btn-link btn-small delete-conversation">Delete</a> <a href="" class="btn btn-link btn-small report-conversation">Report</a> <a href="#" class="btn btn-link btn-small">Block</a>
     </div>
@@ -18,40 +18,20 @@
     </div>
 
     <div class="clearfix text-center">
-      <a class="btn btn-primary btn-load-more" id="load-more">Load older messages</a>
+      <a ng-show="messages.paging.previous" class="btn btn-primary btn-load-more" id="load-more">Load older messages</a>
     </div>
 
     <ul class="media-list">
-      <li class="media">
-        <div class="media-left checkbox-wrap"><div class="checkbox"><label><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></label></div></div>
-        <div class="media-left  cs-pm__avatar">
-          <img class="media-object" src="https://www.cancerresearchuk.org/about-cancer/cancer-chat/sites/default/files/styles/scale-200-200/public/pictures/picture-8926-1423425880.jpg?itok=pyHWKN3v" alt="" style="width:50px;height:50px;">
-        </div>
-        <div class="cs-pm-body media-body">
-          <div class="cs-pm-message-meta message-meta small"><a href="#">Terry56</a> <abbr class="timeago" title="16:41 June 20th, 2015">3 months ago</abbr></div>
-          <div class="cs-pm-message message arrow_box"><p>Freemium customer www.discoverartisans.com burn rate analytics network effects growth hacking launch party advisor entrepreneur lean startup. Launch party handshake growth hacking funding early adopters iPhone infrastructure termsheet. Business plan scrum project startup ownership angel investor.</p></div>
-        </div>
-      </li>
-
-      <li class="media message-own">
-        <div class="media-left checkbox-wrap"><div class="checkbox"><label><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></label></div></div>
-        <div class="cs-pm-body media-body">
-          <div class="cs-pm-message-meta message-meta small"><abbr class="timeago" title="16:41 June 21st, 2015">3 months ago</abbr></div>
-          <div class="cs-pm-message message arrow_box-right"><p>The ash of stellar alchemy cosmic ocean extraplanetary billions upon billions gathered by gravity Vangelis, worldlets laws of physics, citizens of distant epochs.</p></div>
-        </div>
-      </li>
-
-      <li class="media">
-        <div class="media-left checkbox-wrap"><div class="checkbox"><label><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></label></div></div>
+      <li ng-repeat="message in messages.data" ng-class="{'message-own': message.sender.id === $parent.currentUser.user.id}" class="media">
+        <div ng-hide="'Hiding this until we implement message deletion'" class="media-left checkbox-wrap"><div class="checkbox"><label><input type="checkbox" value="message.id" aria-label="Delete this message"></label></div></div>
         <div class="media-left cs-pm__avatar">
-          <img class="media-object" src="https://www.cancerresearchuk.org/about-cancer/cancer-chat/sites/default/files/styles/scale-200-200/public/pictures/picture-8926-1423425880.jpg?itok=pyHWKN3v" alt="" style="width:50px;height:50px;">
+          <img class="media-object" ng-src="{{ message.sender.avatars['100-100'] }}" alt="">
         </div>
         <div class="cs-pm-body media-body">
-          <div class="cs-pm-message-meta message-meta small"><a href="#">Terry56</a> <abbr class="timeago" title="16:41 June 22nd, 2015">3 months ago</abbr></div>
-          <div class="cs-pm-message message arrow_box"><p>Bacon ipsum dolor amet salami flank, frankfurter pork chop strip steak meatloaf, short loin prosciutto spare ribs short ribs kielbasa cow ham hock.</p></div>
+          <div class="cs-pm-message-meta message-meta small"><a ng-hide="message.sender.id === $parent.currentUser.user.id" ng-href="message.sender.profile" ng-bind="message.sender.name">Terry56</a> <abbr class="timeago" ng-attr-title="{{message.sent | formatDate}}" ng-bind="message.sent | dateFromNow">3 months ago</abbr></div>
+          <div class="cs-pm-message message arrow_box"><p ng-bind-html="message.text | htmlsafe"></p></div>
         </div>
       </li>
-
     </ul>
 
   </div>
