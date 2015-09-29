@@ -19,7 +19,7 @@ app.provider("configurationService", function(){
     },
     "strings": {
       "heading__messages": "Messages",
-      "heading__conversation_with": "Conversation with @name",
+      "heading__conversation_with": "Conversation with @name@",
       "text__last_message": "Last message",
       "text__no_available_users": "",
       "text__read_only": "You're currently opted out of private @name@ messaging, <a href='https://blah.com/user/account/@user_id@'>click here</a> to go the the account settings form.",
