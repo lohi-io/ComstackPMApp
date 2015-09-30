@@ -57,7 +57,7 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
     "messages": 15,
     "available_users": 300
   }
-  "strings': {
+  "strings": {
     "heading__messages": "Messages",
     "heading__conversation_with": "Conversation with @participants@",
     "text__last_message": "Last message",
