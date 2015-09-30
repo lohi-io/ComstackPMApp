@@ -45,17 +45,17 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
 ```javascript
 {
   "api_url": "https://example.com/api",
-  "authorization_header': null,
+  "authorization_header": null,
   "access_token": "",
   "csrf_token": "",
-  "max_participants': 2,
-  "allow_separate_conversations': false,
-  "share_data_storage': true,
+  "max_participants": 2,
+  "allow_separate_conversations": false,
+  "share_data_storage": true,
   "library_path": "https://example.com/sites/all/libraries/ComstackPMApp",
-  "poll_intervals': {
-    "conversations': 30,
-    "messages': 15,
-    "available_users': 300
+  "poll_intervals": {
+    "conversations": 30,
+    "messages": 15,
+    "available_users": 300
   }
   "strings': {
     "heading__messages": "Messages",
