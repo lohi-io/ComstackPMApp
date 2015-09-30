@@ -1,8 +1,11 @@
 <div id="message" class="page-wrapper cs-pm-page-wrapper">
+
   <div class="messages-header cs-pm__header clearfix">
     <h2 class="pull-left cs-pm-left"><a ui-sref="inbox({page: 1})" class="messages-trigger"><span class="icomoon icomoon-back cs-pm-icon--back"></span>Messages</a></h2>
     <div class="pull-right cs-pm-right"><a class="btn btn-default cs-pm__new-message"><span class="icomoon icomoon-speech-bubble cs-pm-icon--new-message"></span>New message</a></div>
   </div>
+
+  <div class="alert alert-warning" ng-show="currentUser.preferences.read_only_mode" ng-bind-html="text_read_only | htmlsafe"></div>
 
   <div class="messages-header cs-pm__header conversation-header clearfix">
     <h2 class="pull-left cs-pm-left" ng-cloak>{{ conversationHeading }}</h2>
@@ -40,12 +43,13 @@
     <form>
 
       <div class="form-group">
-        <textarea id="reply-text" class="form-control" rows="3" placeholder="Reply..."></textarea>
+        <textarea id="reply-text" class="form-control" rows="3" placeholder="Reply..." ng-disabled="currentUser.preferences.read_only_mode"></textarea>
       </div>
 
       <div class="clearfix">
-        <button id="reply-submit" type="submit" class="btn btn-default pull-right cs-pm-right message-trigger">Send</button>
+        <button id="reply-submit" type="submit" class="btn btn-default pull-right cs-pm-right message-trigger" ng-disabled="currentUser.preferences.read_only_mode" ng-bind-html="form__new_conversation__submit | htmlsafe"></button>
       </div>
+
     </form>
   </div>
 

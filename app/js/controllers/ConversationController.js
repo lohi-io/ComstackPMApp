@@ -1,5 +1,5 @@
-app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams', '$filter', 'getCurrentUser', 'Conversations', 'configurationService',
-  function ($scope, $window, $state, $stateParams, $filter, userService, Conversations, config) {
+app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams', '$filter', '$sce', 'getCurrentUser', 'Conversations', 'configurationService',
+  function ($scope, $window, $state, $stateParams, $filter, $sce, userService, Conversations, config) {
 
     var settings = config.get();
     /**
@@ -35,21 +35,34 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       $scope.conversationHeading = config.getString('heading__conversation_with', { name: otherParticipantNames });
     };
 
+    $scope.computeStrings = function() {
+      $scope.text_read_only = config.getString('text__read_only', {name: $scope.currentUser.user.name, user_id: $scope.currentUser.user.id});
+      $scope.form__new_conversation__submit = config.getString('form__new_conversation__submit', {});
+    };
+
     $scope.messages = {};
     $scope.paging = {};
     $scope.currentUser = {};
     $scope.conversationHeading = 'Conversation';
 
+    // Fetch the current user.
     userService.get()
       .then(function (data) {
         $scope.currentUser = data.data;
 
+        $scope.computeStrings();
+
+        // Load the messages within the current conversation.
+        // This needs to happen after we get the current user
+        // as we need to know the current user as well as the other
+        // participants to calculate the heading.
         Conversations.get({
           id: $stateParams.id,
           access_token: settings.access_token
         }).$promise.then(function(conversation) {
             $scope.computeHeading(conversation);
         });
+
       });
 
     Conversations.getMessages({
