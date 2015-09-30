@@ -6,7 +6,7 @@
 'use strict';
 var services = angular.module('ComstackPMApp.Services');
 
-services.factory('Authentication', ['$http', '$q', 'ConfigurationService',
+services.factory('Authentication', ['$http', '$q', 'configurationService',
     function($http, $q, config){
       var settings = config.get();
       var auth = atob(settings.authorization_header.replace('Basic ', ''));

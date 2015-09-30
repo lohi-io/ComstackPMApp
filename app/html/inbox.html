@@ -1,19 +1,15 @@
-<div>{{testString}}</div>
-
 <div id="messages-wrapper"
      class="clearfix cs-pm__wrapper"
      style="margin-top: 10px;" ng-cloak>
   <div id="messages" class="page-wrapper cs-pm-page-wrapper" ng-show="conversations.length">
     <div class="messages-header cs-pm__header clearfix">
-      <div class="pull-right cs-pm-right"><a href="#" class="btn btn-link btn-link-outline">Friends list</a> <a
-        class="btn btn-default cs-pm__new-message" ng-hide="currentUser.preferences.read_only_mode"><span
+      <h2 class="pull-left cs-pm-left" style=""><a href="" class="messages-trigger">{{text_heading_messages}}</a></h2>
+
+      <div class="pull-right cs-pm-right" ng-hide="currentUser.preferences.read_only_mode"><a
+        class="btn btn-default cs-pm__new-message"ui-sref="message" ><span
         class="icomoon icomoon-speech-bubble cs-pm-icon--new-message"></span> New message</a></div>
     </div>
-
-    <div class="alert alert-warning" ng-show="currentUser.preferences.read_only_mode">You're currently opted out of
-      private messaging, <a href="#"><strong>click
-        here</strong></a> to go the the account settings form.
-    </div>
+    <div class="alert alert-warning" ng-show="currentUser.preferences.read_only_mode">{{text_read_only}}</div>
 
     <ul class="media-list conversations-list">
       <li class="media cs-pm-conversation" ng-class="{'conversation--unread': conversation.unread_count != 0}"
@@ -25,7 +21,7 @@
                style="width:50px;height:50px;">
         </div>
         <div class="cs-pm-body media-body">
-          <a href="" class="message-trigger">
+          <a ui-sref="conversation({id: conversation.id})" class="message-trigger">
             <h4 class="media-heading">{{conversation.last_message.sender.name}}<span ng-show="conversation.unread_count"
                                                                                      class="notifications-count"
                                                                                      ng-bind="conversation.unread_count"></span>
@@ -38,11 +34,12 @@
           </a>
 
           <div class="date">
-            <span class="hidden-xs">Last message </span><abbr class="timeago"
+            <span class="hidden-xs">{{text_last_message}}</span> <abbr class="timeago"
                                                               ng-attr-title="{{formatDate(conversation.updated)}}">{{fromNow(conversation.updated)}}</abbr>
           </div>
           <div class="controls">
-            <small><a href="" class="delete-conversation">Delete</a> | <a href="" class="report-conversation">Report</a>
+            <small>
+              <a href="" class="delete-conversation">{{text_link_delete}}</a> | <a href="" class="report-conversation">{{text_link_report}}</a>
             </small>
           </div>
         </div>
@@ -67,16 +64,13 @@
 
   <div id="messages-empty" class="page-wrapper cs-pm-page-wrapper" ng-hide="conversations.length" ng-cloak>
     <div class="messages-header cs-pm__header clearfix">
-      <h2 class="pull-left cs-pm-left" style=""><a href="" class="messages-trigger">Messages</a></h2>
+      <h2 class="pull-left cs-pm-left" style=""><a href="" class="messages-trigger">{{text_heading_messages}}</a></h2>
 
       <div class="pull-right cs-pm-right" ng-hide="currentUser.preferences.read_only_mode"><a
         class="btn btn-default cs-pm__new-message"><span
         class="icomoon icomoon-speech-bubble cs-pm-icon--new-message"></span> New message</a></div>
     </div>
-    <div class="alert alert-warning" ng-show="currentUser.preferences.read_only_mode">You're currently opted out of
-      private messaging, <a href="#"><strong>click
-        here</strong></a> to go the the account settings form.
-    </div>
+    <div class="alert alert-warning" ng-show="currentUser.preferences.read_only_mode">{{text_read_only}}</div>
     <div class="cs-pm-boxing messaging-boxing text-center">
       <p>You've not been part of any conversations yet!</p>
 

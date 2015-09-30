@@ -10,12 +10,12 @@
 
       mockBackend = $injector.get('$httpBackend');
       loader = $injector.get('getCurrentUser');
-      config =  $injector.get('ConfigurationService');
+      config =  $injector.get('configurationService');
     }));
 
 
 
-    it('Should load current user using ConfigurationService', function() {
+    it('Should load current user using configurationService', function() {
       var response = {
         'data': {
           'user': {

@@ -1,13 +1,9 @@
-/**
- * Created by fechit01 on 16/09/2015.
- */
-
-var HomePage = require('../automation/Home.js');
+var HomePage = require('../automation/HomePage.js');
 var request = require('request');
 
 
 describe('ComstackPmApp', function () {
-  var homePage;
+  var homePage, inboxPage;
 
   beforeEach(function () {
     return browser.ignoreSynchronization = true;
@@ -17,38 +13,15 @@ describe('ComstackPmApp', function () {
     if (!homePage) {
       homePage = new HomePage();
       browser.get('https://CRUK01:yuDab8ne!@cancerchat01dev.prod.acquia-sites.com');
-      homePage.get();
+      inboxPage = homePage.inbox();
     }
-
   });
 
   it('Should display correct title', function () {
-    // browser.pause();
     expect(homePage.title()).toEqual('Cancer Chat');
   });
 
-  it('Should display correct message', function () {
-    expect(homePage.loginWait().getText()).toEqual('Login please wait...');
+  it('Should display messages', function(){
+    expect(inboxPage.heading()).toEqual('Messages');
   });
-
-
-
-
-  //it('Should provide ability to return to home page', function(){
-  //    expect(homePage.homeLink.isPresent()).toBe(true);
-  //});
-  //
-  //it('Should provide ability to view about page', function(){
-  //    expect(homePage.aboutLink.isPresent()).toBe(true);
-  //});
-  //
-  //it('Should provide ability to initiate sign in', function(){
-  //    expect(homePage.signInButton.isPresent()).toBe(true);
-  //});
-  //
-  //it('Should open sign in dialog when sign in initiated', function(){
-  //    var signInDialog = homePage.signIn();
-  //    expect(signInDialog).toBeDefined();
-  //    expect(signInDialog instanceof SignInDialog).toBeTruthy();
-  //});
 });

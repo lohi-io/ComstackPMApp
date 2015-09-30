@@ -9,6 +9,11 @@ Comstack.PMApp = {
   Settings: {
     "api_url": "global url",
     "authorization_header": "Basic Q1JVSzAxOnl1RGFiOG5lIQ==",
-    "access_token": "newToken"
+    "access_token": "newToken",
+    "strings":
+    {
+      "text__read_only": "You are @name@ with @user_id@",
+      "heading__messages": "Messages"
+    }
   }
 };
