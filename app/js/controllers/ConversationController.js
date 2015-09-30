@@ -1,5 +1,5 @@
-app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams', '$filter', '$sce', 'getCurrentUser', 'Conversations', 'configurationService',
-  function ($scope, $window, $state, $stateParams, $filter, $sce, userService, Conversations, config) {
+app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams', '$filter', '$sce', 'getCurrentUser', 'Conversation', 'configurationService',
+  function ($scope, $window, $state, $stateParams, $filter, $sce, userService, Conversation, config) {
 
     var settings = config.get();
     /**
@@ -56,7 +56,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         // This needs to happen after we get the current user
         // as we need to know the current user as well as the other
         // participants to calculate the heading.
-        Conversations.get({
+        Conversation.get({
           id: $stateParams.id,
           access_token: settings.access_token
         }).$promise.then(function(conversation) {
@@ -65,7 +65,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
 
       });
 
-    Conversations.getMessages({
+    Conversation.getMessages({
       id: $stateParams.id,
       access_token: settings.access_token
     }).$promise.then(function(messages) {

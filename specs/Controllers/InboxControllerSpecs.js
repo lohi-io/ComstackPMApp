@@ -1,9 +1,9 @@
 /* global describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module, kendo */
-(function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module) {
+(function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn) {
 
   describe('InboxCtrl', function () {
-    var ctrl, scope, currentUser, conversations, state, stateParams, fakeUserService, fakeConversationService;
-    var userService, conversationsService, rootScope, $httpBackend;
+    var ctrl, scope, currentUser, conversations, state, stateParams, fakeUserService;
+    var userService, rootScope, $httpBackend;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
@@ -39,7 +39,6 @@
       stateParams = {page: 1};
       scope = _$rootScope_.$new();
       userService = fakeUserService;
-      conversationsService = fakeConversationService;
 
       var urlUser = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/users/current-user?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
       $httpBackend.expectGET(urlUser).respond(currentUser);
