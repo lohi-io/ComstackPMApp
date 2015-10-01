@@ -10,7 +10,7 @@
   <div class="messages-header cs-pm__header conversation-header clearfix">
     <h2 class="pull-left cs-pm-left" ng-cloak>{{ conversationHeading }}</h2>
     <div class="conversation-actions">
-      <a href="" class="btn btn-link btn-small delete-conversation">Delete</a> <a href="" class="btn btn-link btn-small report-conversation">Report</a> <a href="#" class="btn btn-link btn-small">Block</a>
+      <a href="" class="btn btn-link btn-small delete-conversation" ng-bind="link__delete"></a> <a href="" class="btn btn-link btn-small report-conversation" ng-bind="link__report"></a> <a href="#" class="btn btn-link btn-small" ng-bind="link__block"></a>
     </div>
   </div>
 

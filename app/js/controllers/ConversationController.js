@@ -38,6 +38,9 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     $scope.computeStrings = function() {
       $scope.text_read_only = config.getString('text__read_only', {name: $scope.currentUser.user.name, user_id: $scope.currentUser.user.id});
       $scope.form__new_conversation__submit = config.getString('form__new_conversation__submit', {});
+      $scope.link__delete = config.getString('link__delete', {});
+      $scope.link__report = config.getString('link__report', {});
+      $scope.link__block = config.getString('link__block', {});
     };
 
     $scope.messages = {};
