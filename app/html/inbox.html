@@ -14,7 +14,7 @@
     <ul class="media-list conversations-list">
       <li class="media cs-pm-conversation" ng-class="{'conversation--unread': conversation.unread_count != 0}"
           ng-repeat="conversation in conversations">
-        <div class="media-left cs-pm__avatar">
+        <div class="media-left cs-pm__avatar pull-left">
           <img class="media-object"
                ng-src="{{conversation.last_message.sender.avatars['200-200']}}"
                alt=""
