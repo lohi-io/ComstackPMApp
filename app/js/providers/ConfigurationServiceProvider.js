@@ -21,11 +21,12 @@ app.provider("configurationService", function(){
       "heading__messages": "Messages",
       "heading__conversation_with": "Conversation with @name@",
       "text__last_message": "Last message",
+      "text__no_conversations": '<p>You\'ve not been part of any conversations yet!</p><p>Make sure that you\'ve <a href="https://.com/friends/@user_id@">added your friends</a> then start a new conversation.</p>',
       "text__no_available_users": "",
-      "text__read_only": "You're currently opted out of private @name@ messaging, <a href='https://blah.com/user/account/@user_id@'>click here</a> to go the the account settings form.",
+      "text__read_only": "You're currently opted out of private messaging, <a href='https://blah.com/user/account/@user_id@'>click here</a> to go the the account settings form.",
       "text__select_messages_to_delete": "Select the messages you'd like to delete",
       "text__select_messages_to_report": "Select the messages you'd like to report",
-      "form__new_conversation__header": "You must be friends with a person before you can send them messages. <a href='https://blah.com/user/account/@user_id'>Find and add friends</a>",
+      "form__new_conversation__header": "You must be friends with a person before you can send them messages. <a href='https://blah.com/user/account/@user_id@'>Find and add friends</a>",
       "form__to__label": "To",
       "form__to__placeholder__singular": "Enter recipients username...",
       "form__to__placeholder__plural": "Enter recipients username...",
@@ -60,8 +61,8 @@ app.provider("configurationService", function(){
     }
   }
 
-  this.updateAccessToken = function(token){
-    appSettings.access_token = token;
+  this.setSettingValue = function(name, value){
+    appSettings[name] = value;
   };
 
   this.get = function () {
@@ -89,7 +90,7 @@ app.provider("configurationService", function(){
       appSettings: self.appSettings,
       get: self.get,
       set: self.set,
-      updateAccessToken: self.updateAccessToken,
+      setSettingValue: self.setSettingValue,
       getString: self.getString
     }
   }

@@ -1,4 +1,4 @@
-var app = angular.module('ComstackPMApp', ['ui.router', 'ComstackPMApp.Services', 'luegg.directives']);
+var app = angular.module('ComstackPMApp', ['ui.router', 'ui.bootstrap', 'ComstackPMApp.Services','ngTagsInput','luegg.directives']);
 //app.run(["$rootScope", "ConfigurationService", function ($rootScope, config) {
 //
 //}]);

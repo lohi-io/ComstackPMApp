@@ -19,9 +19,10 @@ module.exports = function(grunt){
             js: {
                 files: [
                     'app/js/**/*.js',
-                    'specs/**/*.js'
+                    'specs/**/*.js',
+                    '!app/js/ComstackPMApp.js'
                 ],
-                tasks: ['karma:unitbg:run']
+                tasks: ['karma:unitbg:run', 'uglify']
             },
             grunt: {
                 files: ['gruntfile.js']
@@ -39,6 +40,7 @@ module.exports = function(grunt){
               'app/js/controllers/HomeController.js',
               'app/js/controllers/InboxController.js',
               'app/js/controllers/ConversationController.js',
+              'app/js/controllers/MessageController.js',
               'app/js/services/01_bootstrap.js',
               'app/js/services/AuthenticationService.js',
               'app/js/services/UserService.js',

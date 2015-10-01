@@ -16,7 +16,7 @@ services.factory('User', ['$resource', 'configurationService',
           "access_token": settings.access_token,
           "autocomplete[string]": '@search'
         },
-        isArray: true
+        isArray: false
       },
     });
   }
@@ -40,10 +40,10 @@ services.factory('getCurrentUser', ['User', '$q', function(User, $q) {
 
 services.factory('getAvailableUsers', ['User', '$q', function(User, $q) {
   var service = {};
-  service.get = function()
+  service.get = function(search)
   {
     var delay = $q.defer();
-    User.getAvailableUsers(function (user) {
+    User.getAvailableUsers({"autocomplete[string]": search}, function (user) {
       delay.resolve(user);
     }, function() {
         delay.reject('Unable to fetch current user');

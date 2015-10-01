@@ -6,19 +6,28 @@ app.controller('HomeCtrl', ['$scope', 'Authentication', '$timeout', '$state', '$
     $scope.isAuthenticated = false;
     $scope.message = "";
 
-    var localHost = $location.host();
-    var settings = config.get();
-    if (localHost == settings.local_host && settings.access_token == "") {
-      Authentication.apiLogin().then(function () {
-        console.log("Login done")
-        $scope.isAuthenticated = true;
-        $scope.message = "Login done";
+    $scope.loginData = {
+      username: 'basic_user_1',
+      password: 'password'
+    };
+
+    $scope.login = function(){
+      var localHost = $location.host();
+      var settings = config.get();
+      if (localHost == settings.local_host && settings.access_token == "") {
+        Authentication.apiLogin($scope.loginData.username, $scope.loginData.password).then(function () {
+          console.log("Login done")
+          $scope.isAuthenticated = true;
+          $scope.message = "Login done";
+          $state.go('inbox', {page: 1});
+        }, function (error) {
+          console.error(error);
+        })
+      }else{
         $state.go('inbox', {page: 1});
-      }, function (error) {
-        console.error(error);
-      })
-    }else{
-      $state.go('inbox', {page: 1});
+      }
     }
+
+
   }
 ]);

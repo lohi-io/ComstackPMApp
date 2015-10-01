@@ -1,5 +1,5 @@
-app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'getCurrentUser', 'Conversation', 'configurationService',
-  function ($scope, $window, $state, $stateParams, userService, Conversation, config) {
+app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'getCurrentUser', 'Conversation', 'configurationService', '$filter',
+  function ($scope, $window, $state, $stateParams, userService, Conversation, config, $filter) {
 
     var calculatePages = function () {
       $scope.paging.pagesCount = $window.Math.ceil($scope.paging.total / $scope.paging.range);
@@ -17,6 +17,10 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
       $scope.text_read_only = config.getString('text__read_only', {name: $scope.currentUser.user.name, user_id: $scope.currentUser.user.id});
       $scope.text_link_delete = config.getString('link__delete',{});
       $scope.text_link_report = config.getString('link__report',{});
+      $scope.button_new_conversation = config.getString('button__new_conversation',{});
+      $scope.text_no_conversations = config.getString('text__no_conversations',{user_id: $scope.currentUser.user.id});
+
+
     };
 
     $scope.conversations = [];
@@ -26,13 +30,13 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
     userService.get()
       .then(function (data) {
         $scope.currentUser = data.data;
+        computeStrings();
       });
 
     Conversation.get({page: $stateParams.page}).$promise.then(function (data) {
         $scope.conversations = data.data;
         $scope.paging = data.paging;
-        calculatePages();
-        computeStrings();
+//        calculatePages();
       });
 
     $scope.paging.pagesCount = 0;
@@ -64,6 +68,35 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
 
     $scope.formatDate = function(date){
       return moment(date).format("hh:mm MMMM Do, YYYY")
+    };
+
+
+    $scope.computeHeading = function(conversation) {
+      // use historical participants if participants array is empty
+      var otherParticipants = conversation.participants;
+      var otherParticipantNames = '';
+      if (otherParticipants.length === 0) {
+        otherParticipants = conversation.historical_participants;
+      }
+
+      // exclude current user from heading title
+      otherParticipants = $filter('filter')(otherParticipants, { id: '!' + $scope.currentUser.user.id });
+
+      angular.forEach(otherParticipants, function(participant, key) {
+        var suffix = '';
+
+        // if 2nd to last, add ' and '
+        // if not last, add ', '
+        if (key === otherParticipants.length - 2) {
+          suffix = ' and ';
+        } else if (key !== otherParticipants.length - 1) {
+          suffix = ', ';
+        }
+
+        otherParticipantNames = otherParticipantNames + participant.name + suffix;
+      });
+
+      return  config.getString('heading__conversation_with', { name: otherParticipantNames });
     };
 
 

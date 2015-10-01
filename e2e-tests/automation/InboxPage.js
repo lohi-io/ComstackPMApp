@@ -7,7 +7,12 @@ module.exports = function () {
   PageBase.call(this);
 
   var messageLink = element(by.css('.messages-trigger'));
-  var messages = element.all(by.css('.cs-pm-conversation'));
+  var messages = element.all(by.css('.media-list conversations-list li'));
+  var newMessageLink = element(by.binding('button_new_conversation'));
+  var readOnlyAlert = element(by.binding('text_read_only'));
+  var noConversationsAlert = element(by.binding('text_no_conversations'));
+  var avatars = element.all(by.css('.media-object'));
+
 
   this.heading = function(){
     return messageLink.getText();
@@ -15,23 +20,32 @@ module.exports = function () {
 
   this.messageCount = function(){
     return messages.count();
+  };
+
+  this.newMessageLink = function(){
+    return newMessageLink;
+  };
+
+  this.readOnlyAlertMessage = function(){
+    return readOnlyAlert.getText();
+  };
+
+  this.readOnlyAlertIsDisplayed = function(){
+    return readOnlyAlert.isDisplayed();
+  };
+
+  this.noConversationsAlertMessage = function(){
+    return noConversationsAlert.getText();
+  };
+
+  this.noConversationsAlertIsDisplayed = function(){
+    return noConversationsAlert.isDisplayed();
+  };
+
+  this.avatarsCount = function(){
+    return avatars.count();
   }
 
 
-
-
-  //this.messageContainer = function(){
-  //  return return element(by.id('messages'));
-  //}
-  //
-  //this.messagesList = function(){
-  //  return return element(by.css('media-list conversations-list'));
-
-  //this.messages = function(){
-  //  return return element(by.css(' cs-pm-conversation'));
-  //}
-
-
-  //}
 
 };

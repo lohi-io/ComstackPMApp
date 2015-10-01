@@ -14,10 +14,12 @@
     "angular-scroll-glue": "~2.0.6"
   },
   "devDependencies": {
+    "angular-bootstrap": "~0.13.4",
     "angular-resource": "~1.4.5",
     "angular-ui-router": "~0.2.15",
     "jasmine-expect": "~1.22.3",
     "jsBuilder": "~1.0.1",
+    "ng-tags-input": "~3.0.0",
     "moment": "~2.10.6",
     "angular-scroll-glue": "~2.0.6"
   }
