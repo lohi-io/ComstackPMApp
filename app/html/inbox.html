@@ -21,9 +21,8 @@
                style="width:50px;height:50px;">
         </div>
         <div class="cs-pm-body media-body">
-          <a href="" class="message-trigger">
+          <a ui-sref="conversation({id: conversation.id})" class="message-trigger">
             <h4 class="media-heading" ng-bind="computeHeading(conversation)"><span ng-show="conversation.unread_count"
-                                                                                     class="notifications-count"
                                                                                      ng-bind="conversation.unread_count"></span>
             </h4>
             <span ng-switch="conversation.unread_count">

@@ -1,14 +1,15 @@
-var app = angular.module('ComstackPMApp', ['ui.router', 'ui.bootstrap', 'ComstackPMApp.Services','ngTagsInput']);
+var app = angular.module('ComstackPMApp', ['ui.router', 'ui.bootstrap', 'ComstackPMApp.Services','ngTagsInput','luegg.directives']);
 //app.run(["$rootScope", "ConfigurationService", function ($rootScope, config) {
 //
 //}]);
 app.config([
   "$urlRouterProvider",
-  "$stateProvider", 'configurationServiceProvider', '$httpProvider', function ($urlRouterProvider, $stateProvider, configurationServiceProvider, $httpProvider) {
+  "$stateProvider", 'configurationServiceProvider', function ($urlRouterProvider, $stateProvider, configurationServiceProvider) {
 
 
     var settings = configurationServiceProvider.get();
     var templatesPath = settings.library_path;
+
 
     $urlRouterProvider
       .otherwise("/home");
@@ -28,8 +29,10 @@ app.config([
         controller: 'MessageCtrl',
         templateUrl: templatesPath+'/app/html/message.html'
       })
-
-    ;
+      .state('conversation', {
+        url: '/conversation/:id',
+        controller: 'ConversationCtrl',
+        templateUrl: templatesPath+'/app/html/conversation.html'
+      });
   }
 ]);
-
