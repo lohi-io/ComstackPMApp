@@ -19,8 +19,6 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
       $scope.text_link_report = config.getString('link__report',{});
       $scope.button_new_conversation = config.getString('button__new_conversation',{});
       $scope.text_no_conversations = config.getString('text__no_conversations',{user_id: $scope.currentUser.user.id});
-
-
     };
 
     $scope.conversations = [];
@@ -36,7 +34,7 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
     Conversation.get({page: $stateParams.page}).$promise.then(function (data) {
         $scope.conversations = data.data;
         $scope.paging = data.paging;
-//        calculatePages();
+        calculatePages();
       });
 
     $scope.paging.pagesCount = 0;
@@ -72,6 +70,12 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
 
 
     $scope.computeHeading = function(conversation) {
+      // The return of this function is used in template bindings so
+      // we should make sure this doesn't error out if the current user hasn't been determined.
+      if (angular.isUndefined($scope.currentUser.user)) {
+        return '';
+      }
+
       // use historical participants if participants array is empty
       var otherParticipants = conversation.participants;
       var otherParticipantNames = '';
@@ -96,14 +100,7 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
         otherParticipantNames = otherParticipantNames + participant.name + suffix;
       });
 
-      return  config.getString('heading__conversation_with', { name: otherParticipantNames });
+      return config.getString('heading__conversation_with', { name: otherParticipantNames });
     };
-
-
-
-
-
-
-
   }
 ]);
