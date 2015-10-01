@@ -12,12 +12,12 @@ services.factory('Authentication', ['$http', '$q', 'configurationService',
       var auth = atob(settings.authorization_header.replace('Basic ', ''));
       var baseUrl = settings.base_url.replace('https://', 'https://'+auth+'@');
 
-        var formLogin = function(){
+        var formLogin = function(username,password){
             var deferred = $q.defer();
 
             console.log("Starting form auth...");
             var url = baseUrl+'/home?destination=home';
-            var data = "name=basic_user_1&login-do=yes&pass=password&form_id=user_login_block&op=Sign+in"
+            var data = "name="+username+"&login-do=yes&pass="+password+"&form_id=user_login_block&op=Sign+in"
 
             $http.post(url, data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function (response)
             {
@@ -73,17 +73,17 @@ services.factory('Authentication', ['$http', '$q', 'configurationService',
         }
 
 
-        var apiLogin = function(){
+        var apiLogin = function(username,password){
             var deferred = $q.defer();
 
             basicAuth().then(function(response)
                 {
                     console.log("Succeeded basic auth...");
-                    formLogin().then(function(response){
+                    formLogin(username,password).then(function(response){
                         console.log("Succeeded form auth...");
                         getToken().then(function(response){
                             console.log("Succeeded get token...");
-                            config.updateAccessToken(response.access_token);
+                            config.setSettingValue('access_token',response.access_token);
                             deferred.resolve(response);
                         }, function(err){
                             console.log("Failed get token...");

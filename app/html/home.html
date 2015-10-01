@@ -1,2 +1,27 @@
 <div id="loginWait" ng-hide="isAuthenticated">Login please wait...</div>
 <div id="loginDone" ng-show="isAuthenticated"></div>
+
+<div class="col-sm-4"></div>
+<div class="col-sm-4">
+<form name="loginForm" role="form" class="form-horizontal">
+  <div class="form-group">
+    <label class="control-label">Username :</label>
+    <div>
+      <input class="form-control" type="text" placeholder="Username" id="username" data-ng-model="loginData.username" required autofocus>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label">Password :</label>
+    <div>
+      <input id="password" type="password" class="form-control" placeholder="Password" data-ng-model="loginData.password" required>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div >
+      <button class="btn btn-lg btn-login btn-block" type="submit" id="login" data-ng-disabled="loginForm.$invalid" data-ng-click="login()">Log In</button>
+    </div>
+  </div>
+</form>
+  </div>
+<div class="col-sm-4"></div>

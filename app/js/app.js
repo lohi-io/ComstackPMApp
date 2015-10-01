@@ -1,15 +1,14 @@
-var app = angular.module('ComstackPMApp', ['ui.router', 'ComstackPMApp.Services']);
+var app = angular.module('ComstackPMApp', ['ui.router', 'ui.bootstrap', 'ComstackPMApp.Services','ngTagsInput']);
 //app.run(["$rootScope", "ConfigurationService", function ($rootScope, config) {
 //
 //}]);
 app.config([
   "$urlRouterProvider",
-  "$stateProvider", 'configurationServiceProvider', function ($urlRouterProvider, $stateProvider, configurationServiceProvider) {
+  "$stateProvider", 'configurationServiceProvider', '$httpProvider', function ($urlRouterProvider, $stateProvider, configurationServiceProvider, $httpProvider) {
 
 
     var settings = configurationServiceProvider.get();
     var templatesPath = settings.library_path;
-
 
     $urlRouterProvider
       .otherwise("/home");
@@ -33,3 +32,4 @@ app.config([
     ;
   }
 ]);
+

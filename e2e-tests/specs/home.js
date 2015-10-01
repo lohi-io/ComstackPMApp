@@ -12,8 +12,8 @@ describe('ComstackPmApp', function () {
   beforeEach(function () {
     if (!homePage) {
       homePage = new HomePage();
-      browser.get('https://CRUK01:yuDab8ne!@cancerchat01dev.prod.acquia-sites.com');
-      inboxPage = homePage.inbox();
+      inboxPage = homePage.signIn('basic_user_1', 'password');
+
     }
   });
 
@@ -22,6 +22,8 @@ describe('ComstackPmApp', function () {
   });
 
   it('Should display messages', function(){
+    return browser.ignoreSynchronization = false;
+    browser.waitForAngular();
     expect(inboxPage.heading()).toEqual('Messages');
   });
 });

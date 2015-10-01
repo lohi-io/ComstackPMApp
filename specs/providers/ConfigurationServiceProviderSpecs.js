@@ -11,10 +11,10 @@
     }));
 
 
-    it('Should set the access_token', function () {
-      configurationService.updateAccessToken("accessToken");
+    it('Should set the settings values', function () {
+      configurationService.setSettingValue('access_token', '1234');
       var appSettings = configurationService.get();
-      expect(appSettings.access_token).toEqual("accessToken");
+      expect(appSettings.access_token).toEqual("1234");
     });
 
     it('Should merge the local settings with the global settings if they exists', function () {

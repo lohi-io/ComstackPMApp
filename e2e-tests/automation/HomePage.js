@@ -5,24 +5,29 @@ var PageBase = require('./PageBase.js');
 var InboxPage = require('./InboxPage.js');
 
 module.exports = function () {
+
   PageBase.call(this);
+
   var loginWait = element(by.id('loginWait'));
+  var username = element(by.id('username'));
+  var password = element(by.id('password'));
+  var loginButton = element(by.id('login'));
+  var EC = protractor.ExpectedConditions;
 
-  this.inbox = function () {
-    browser.get('https://CRUK01:yuDab8ne!@cancerchat01dev.prod.acquia-sites.com');
+  var login = function(usernameTest, passwordTest){
+    username.clear();
+    password.clear();
+    username.sendKeys(usernameTest);
+    password.sendKeys(passwordTest);
+    loginButton.click();
+  }
+
+  this.signIn = function (username, password) {
+    //browser.get('https://CRUK01:yuDab8ne!@cancerchat01dev.prod.acquia-sites.com');
     browser.get('/app');
-    var EC = protractor.ExpectedConditions;
-    browser.driver.wait(EC.presenceOf(element(by.css('.messages-trigger'))),30000);
+    browser.driver.wait(EC.presenceOf(element(by.id('username'))),10000);
+    login(username, password);
+    browser.driver.wait(EC.presenceOf(element(by.css('.text-center'))),40000);
     return new InboxPage();
-  }
-
-  this.loginWaitMessage = function () {
-    return  loginWait.getText();
-  }
-
-  this.loginDone = function () {
-    return element(by.id('loginDone'));
-  }
-
-
+  };
 };
