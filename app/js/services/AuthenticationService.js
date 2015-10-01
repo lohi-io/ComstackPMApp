@@ -70,7 +70,26 @@ services.factory('Authentication', ['$http', '$q', 'configurationService',
 
             return deferred.promise;
 
-        }
+        };
+
+      var getCSRFToken = function(){
+        var deferred = $q.defer();
+        console.log("Starting get token...");
+        $http.get(baseUrl+'/api/session/token', {}).success(function (response)
+        {
+          console.log("Succeeded get CSRFToken...");
+          deferred.resolve(response);
+
+        }).error(function(err, status)
+        {
+          console.log("Failed get CSRFToken...");
+          deferred.reject(err);
+
+        });
+
+        return deferred.promise;
+
+      }
 
 
         var apiLogin = function(username,password){
@@ -84,7 +103,15 @@ services.factory('Authentication', ['$http', '$q', 'configurationService',
                         getToken().then(function(response){
                             console.log("Succeeded get token...");
                             config.setSettingValue('access_token',response.access_token);
+                          getCSRFToken().then(function(response){
+                            console.log("Succeeded get CSRFToken...");
+                            config.setSettingValue('csrf_token',response['X-CSRF-Token']);
                             deferred.resolve(response);
+                          }, function(err){
+                            console.log("Failed CSRFToken token...");
+                            console.log(err);
+                            deferred.reject(err);
+                          });
                         }, function(err){
                             console.log("Failed get token...");
                             console.log(err);

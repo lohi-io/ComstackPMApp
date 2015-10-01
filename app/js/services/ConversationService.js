@@ -1,7 +1,7 @@
 var services = angular.module('ComstackPMApp.Services');
 
 services.factory('Conversation', ['$resource', 'configurationService',
-  function($resource, config) {
+  function ($resource, config) {
     var settings = config.get();
     return $resource(settings.api_url + '/cs-pm/conversations/:id', {
       access_token: settings.access_token,
@@ -14,6 +14,12 @@ services.factory('Conversation', ['$resource', 'configurationService',
           access_token: settings.access_token
         },
         isArray: false
+      },
+      save: {
+        method: "POST",
+        headers: {
+          'X-CSRF-Token': settings.csrf_token
+        }
       }
     });
   }

@@ -53,7 +53,7 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers', 'configu
       //});
 
 
-      $http.defaults.headers.post['X-CSRF-Token']= 'aoEEbSiYSyFumm70UGc-lHCpdNAvr71jPq5g1vKe-QQ';
+     // $http.defaults.headers.post['X-CSRF-Token']= 'aoEEbSiYSyFumm70UGc-lHCpdNAvr71jPq5g1vKe-QQ';
       $scope.message.$save(function () {
         $state.go('conversation', {}, {
           reload: 'conversation',
