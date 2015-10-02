@@ -1,17 +1,23 @@
-var app = angular.module('ComstackPMApp');
-app.provider("configurationService", function () {
+/**
+ * Created by fechit01 on 02/10/2015.
+ */
+/**
+ * Created by fechit01 on 23/09/2015.
+ */
+var Comstack = (window.Comstack = window.Comstack || {});
 
-  var appSettings = {
+Comstack.PMApp = {
+  Settings: {
     "base_url": "https://cancerchat01dev.prod.acquia-sites.com",
     "api_url": "https://cancerchat01dev.prod.acquia-sites.com/api/v1",
     "local_host": "cancerchatdev.localweb",
-    "environment": "local",
+    "environment": "",
     "authorization_header": "Basic Q1JVSzAxOnl1RGFiOG5lIQ==",
     "access_token": "",
     "csrf_token": "",
     "library_path": "http://cancerchatdev.localweb:8000",
     "max_participants": 2,
-    "message_maxlength": 100000,
+    "message_maxlength": 10,
     "allow_separate_conversations": false,
     "share_data_storage": true,
     "poll_intervals": {
@@ -36,7 +42,7 @@ app.provider("configurationService", function () {
       "form__to__validation__empty": "Who would you like to talk to?",
       "form__text__placeholder": "Write a message...",
       "form__text__validation__empty": "You'll need to enter some text here...",
-      "form__text__validation__maxlength": "You can only have @@number@@ characters per message",
+      "form__text__validation__maxlength": "You can only have @number@ characters per message",
       "form__new_conversation__submit": "Send",
       "form__reply__placeholder": "Enter your reply...",
       "form__reply__submit": "Reply",
@@ -59,50 +65,5 @@ app.provider("configurationService", function () {
       "error__no_connection": "We're having trouble contacting the server, are you connected to the internet?",
       "error__api_bad_response": "The API returned an error so something has gone wrong, here it is @@error@@."
     }
-  };
-
-  if (typeof Comstack != "undefined") {
-    if (typeof Comstack.PMApp != "undefined") {
-      if (typeof Comstack.PMApp.Settings != "undefined") {
-        angular.merge(appSettings, Comstack.PMApp.Settings)
-      }
-    }
   }
-
-  this.setSettingValue = function (name, value) {
-    appSettings[name] = value;
-  };
-
-  this.get = function () {
-    return appSettings;
-  };
-
-  this.set = function (data) {
-    appSettings = data;
-  };
-
-  this.getString = function (name, values) {
-
-    values = values || {};
-    var regExp = /@(\w*)@/gi;
-    return appSettings.strings[name].replace(regExp, function (match) {
-      match = match.replace(/@/gi, '');
-      return values[match];
-    });
-  }
-
-  this.appSettings = appSettings;
-  var self = this;
-
-  this.$get = function () {
-    return {
-      appSettings: self.appSettings,
-      get: self.get,
-      set: self.set,
-      setSettingValue: self.setSettingValue,
-      getString: self.getString
-    }
-  }
-
-
-});
+};

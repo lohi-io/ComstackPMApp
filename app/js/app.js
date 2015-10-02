@@ -9,10 +9,20 @@ app.config([
 
     var settings = configurationServiceProvider.get();
     var templatesPath = settings.library_path;
+    var environment = settings.environment;
 
 
-    $urlRouterProvider
-      .otherwise("/home");
+    switch(environment){
+      case 'local':
+        $urlRouterProvider
+          .otherwise("/home");
+        break;
+      default:
+        $urlRouterProvider
+          .otherwise("/inbox/1");
+        break;
+    }
+
     $stateProvider
       .state('Home', {
         url: '/home',

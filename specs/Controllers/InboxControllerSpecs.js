@@ -31,6 +31,7 @@
           current_page: 2
         }
       };
+
       state = {
         "go": function () {
         }

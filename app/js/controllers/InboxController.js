@@ -19,8 +19,6 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
       $scope.text_link_report = config.getString('link__report',{});
       $scope.button_new_conversation = config.getString('button__new_conversation',{});
       $scope.text_no_conversations = config.getString('text__no_conversations',{user_id: $scope.currentUser.user.id});
-
-
     };
 
     $scope.conversations = [];
