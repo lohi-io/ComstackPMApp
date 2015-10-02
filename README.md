@@ -73,6 +73,9 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
     # @@number_label@@ should be something like "1 person" or "2 people" accounting for singular/plural max recipients (max participants - 1).
     "form__to__validation__limit_exceeded": "You cannot contact more than @@number_label@@ at once",
     "form__text__placeholder [validation???]": "Write a message...",
+    "form__text__maxlength": 100000,
+    "form__text__validation__empty": "You'll need to enter some text here...",
+    "form__text__validation__maxlength": "You can only have @@number@@ characters per message",
     "form__new_conversation__submit": "Send",
     "form__reply__placeholder": "Enter your reply...",
     "form__reply__submit": "Reply",
@@ -91,7 +94,9 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
     "modal__delete_conversation__text": "Are you sure you want to delete this conversation?",
     "modal__report__heading": "Report conversation",
     "modal__block__heading": "Block user",
-    "modal__block__text": "Are you sure you want to block this user?"
+    "modal__block__text": "Are you sure you want to block this user?",
+    "error__no_connection": "We're having trouble contacting the server, are you connected to the internet?",
+    "error__api_bad_response": "The API returned an error so something has gone wrong, here it is @@error@@."
   }
 }
 ```

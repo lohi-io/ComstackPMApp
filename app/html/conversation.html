@@ -1,8 +1,8 @@
 <div id="message" class="page-wrapper cs-pm-page-wrapper">
 
-  <div class="messages-header cs-pm__header clearfix">
-    <h2 class="pull-left cs-pm-left"><a ui-sref="inbox({page: 1})" class="messages-trigger"><span class="icomoon icomoon-back cs-pm-icon--back"></span>Messages</a></h2>
-    <div class="pull-right cs-pm-right"><a class="btn btn-default cs-pm__new-message"><span class="icomoon icomoon-speech-bubble cs-pm-icon--new-message"></span>New message</a></div>
+  <div class="messages-header cs-pm__header clearfix" ng-cloak>
+    <h2 class="pull-left cs-pm-left"><a ui-sref="inbox({page: 1})" class="messages-trigger"><span class="icomoon icomoon-back cs-pm-icon--back"></span>{{ heading__messages }}</a></h2>
+    <div class="pull-right cs-pm-right"><a class="btn btn-default cs-pm__new-message"><span class="icomoon icomoon-speech-bubble cs-pm-icon--new-message"></span>{{ button__new_conversation }}</a></div>
   </div>
 
   <div class="alert alert-warning" ng-show="currentUser.preferences.read_only_mode" ng-bind-html="text_read_only | htmlsafe"></div>
@@ -17,11 +17,11 @@
   <div id="conversation-wrapper" class="conversation-wrapper" scroll-glue>
 
     <div class="delete-message-msg collapse">
-      <div class="alert alert-info" role="alert">Select the messages you'd like to remove and then click <button id="delete-button" class="btn btn-default">Delete</button></div>
+      <div class="alert alert-info" role="alert" ng-cloak>{{ text__select_messages_to_delete }}</div>
     </div>
 
     <div class="clearfix text-center">
-      <a ng-show="messages.paging.previous" class="btn btn-primary btn-load-more" id="load-more">Load older messages</a>
+      <a class="btn btn-primary btn-load-more" id="load-more" ng-cloak>{{ button__load_older_messages }}</a>
     </div>
 
     <ul class="media-list">
@@ -31,7 +31,7 @@
           <img class="media-object" ng-src="{{ message.sender.avatars['100-100'] }}" alt="">
         </div>
         <div class="cs-pm-body media-body">
-          <div class="cs-pm-message-meta message-meta small"><a ng-hide="message.sender.id === $parent.currentUser.user.id" ng-href="message.sender.profile" ng-bind="message.sender.name">Terry56</a> <abbr class="timeago" ng-attr-title="{{message.sent | formatDate}}" ng-bind="message.sent | dateFromNow">3 months ago</abbr></div>
+          <div class="cs-pm-message-meta message-meta small"><a ng-hide="message.sender.id === $parent.currentUser.user.id" ng-href="message.sender.profile" ng-bind="message.sender.name">Terry56</a> <abbr class="timeago" ng-attr-title="{{message.sent | formatDate}}" ng-bind="message.sent | dateFromNow"></abbr></div>
           <div class="cs-pm-message message arrow_box"><p ng-bind-html="message.text | htmlsafe"></p></div>
         </div>
       </li>

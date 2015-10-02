@@ -41,6 +41,10 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       $scope.link__delete = config.getString('link__delete', {});
       $scope.link__report = config.getString('link__report', {});
       $scope.link__block = config.getString('link__block', {});
+      $scope.heading__messages = config.getString('heading__messages', {});
+      $scope.button__new_conversation = config.getString('button__new_conversation', {});
+      $scope.button__load_older_messages = config.getString('button__load_older_messages', {});
+      $scope.text__select_messages_to_delete = config.getString('text__select_messages_to_delete', {});
     };
 
     $scope.messages = {};
