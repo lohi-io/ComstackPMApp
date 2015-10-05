@@ -10,7 +10,10 @@
   <div class="messages-header cs-pm__header conversation-header clearfix">
     <h2 class="pull-left cs-pm-left" ng-cloak>{{ conversationHeading }}</h2>
     <div class="conversation-actions">
-      <a href="" class="btn btn-link btn-small delete-conversation" ng-bind="link__delete"></a> <a href="" class="btn btn-link btn-small report-conversation" ng-bind="link__report"></a> <a href="#" class="btn btn-link btn-small" ng-bind="link__block"></a>
+      <a href="" class="btn btn-link btn-small delete-conversation" ng-bind="link__delete"></a>
+      <a href="" class="btn btn-link btn-small report-conversation" ng-bind="link__report"></a>
+      <a ng-hide="isContactBlocked" href="#" class="btn btn-link btn-small" ng-bind="link__block"></a>
+      <a ng-show="isContactBlocked" href="#" class="btn btn-link btn-small" ng-bind="link__unblock"></a>
     </div>
   </div>
 
@@ -43,11 +46,11 @@
     <form>
 
       <div class="form-group">
-        <textarea id="reply-text" class="form-control" rows="3" placeholder="Reply..." ng-disabled="currentUser.preferences.read_only_mode"></textarea>
+        <textarea id="reply-text" class="form-control" rows="3" placeholder="Reply..." ng-disabled="currentUser.preferences.read_only_mode || !isContactAvailable"></textarea>
       </div>
 
       <div class="clearfix">
-        <button id="reply-submit" type="submit" class="btn btn-default pull-right cs-pm-right message-trigger" ng-disabled="currentUser.preferences.read_only_mode" ng-bind-html="form__new_conversation__submit | htmlsafe"></button>
+        <button id="reply-submit" type="submit" class="btn btn-default pull-right cs-pm-right message-trigger" ng-disabled="currentUser.preferences.read_only_mode || !isContactAvailable" ng-bind-html="form__new_conversation__submit | htmlsafe"></button>
       </div>
 
     </form>

@@ -1,5 +1,6 @@
-app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams', '$filter', '$sce', 'getCurrentUser', 'Conversation', 'configurationService',
-  function ($scope, $window, $state, $stateParams, $filter, $sce, userService, Conversation, config) {
+app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams', '$filter', '$sce', 'getCurrentUser',
+  'User', 'Conversation', 'configurationService',
+  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config) {
 
     var settings = config.get();
     /**
@@ -9,10 +10,10 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
      */
     $scope.computeHeading = function(conversation) {
       // use historical participants if participants array is empty
-      var otherParticipants = conversation.data.participants;
+      var otherParticipants = conversation.participants;
       var otherParticipantNames = '';
       if (otherParticipants.length === 0) {
-        otherParticipants = conversation.data.historical_participants;
+        otherParticipants = conversation.historical_participants;
       }
 
       // exclude current user from heading title
@@ -36,7 +37,10 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     };
 
     $scope.computeStrings = function() {
-      $scope.text_read_only = config.getString('text__read_only', {name: $scope.currentUser.user.name, user_id: $scope.currentUser.user.id});
+      $scope.text_read_only = config.getString('text__read_only', {
+        name: $scope.currentUser.user.name,
+        user_id: $scope.currentUser.user.id
+      });
       $scope.form__new_conversation__submit = config.getString('form__new_conversation__submit', {});
       $scope.link__delete = config.getString('link__delete', {});
       $scope.link__report = config.getString('link__report', {});
@@ -47,13 +51,60 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       $scope.text__select_messages_to_delete = config.getString('text__select_messages_to_delete', {});
     };
 
+    /**
+     * Sets the states of availability for the contact.
+     *
+     * The two states this affects are:
+     *  - $scope.isContactAvailable
+     *    -> This is true if and only if the contact is friends with the current user
+     *       and has private messaging enabled.
+     *  - $scope.isContactBlocked
+     *    -> This is true if and only if the contact is not found in the current user's
+     *       available contacts.
+     * @param conversation
+     *  The current conversation.
+     */
+    $scope.computeAvailability = function(conversation) {
+      if (angular.isUndefined($scope.currentUser.user)) {
+        $scope.isContactAvailable = false;
+        $scope.isContactBlocked = false;
+        return;
+      }
+
+      var contacts = $filter('filter')(conversation.participants, { id: '!' + $scope.currentUser.user.id });
+      var contactId = contacts[0].id;
+
+      User.getBlockedUsers({
+        'filter[user]': contactId
+      }).$promise.then(function(blockedUsers) {
+        $scope.isContactBlocked = blockedUsers.hasOwnProperty('data') &&
+          $filter('filter')(blockedUsers.data, { user: { id: contactId } }).length === 1;
+
+        // If contact is blocked, we won't be able to check if they are available, so assume they are not.
+        if ($scope.isContactBlocked) {
+          $scope.isContactAvailable = false;
+          return;
+        }
+
+        User.getAvailableUsers({
+          'filter[id]': contactId
+        }).$promise.then(function(response) {
+          // Check the response data only contains the contact's id.
+          $scope.isContactAvailable = response.hasOwnProperty('data') &&
+            $filter('filter')(response.data, { id: contactId }).length === 1;
+        });
+      });
+    };
+
     $scope.messages = {};
     $scope.paging = {};
     $scope.currentUser = {};
     $scope.conversationHeading = 'Conversation';
+    $scope.isContactAvailable = false;
+    $scope.isContactBlocked = false;
 
     // Fetch the current user.
-    userService.get()
+    getCurrentUser.get()
       .then(function (data) {
         $scope.currentUser = data.data;
 
@@ -67,9 +118,9 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
           id: $stateParams.id,
           access_token: settings.access_token
         }).$promise.then(function(conversation) {
-            $scope.computeHeading(conversation);
+          $scope.computeHeading(conversation.data);
+          $scope.computeAvailability(conversation.data);
         });
-
       });
 
     Conversation.getMessages({
@@ -78,7 +129,5 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     }).$promise.then(function(messages) {
       $scope.messages = messages;
     });
-
-
   }
 ]);
