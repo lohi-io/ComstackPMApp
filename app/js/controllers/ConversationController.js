@@ -74,26 +74,25 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       var contacts = $filter('filter')(conversation.participants, { id: '!' + $scope.currentUser.user.id });
       var contactId = contacts[0].id;
 
-      // Determine if isContactAvailable.
-      // - Call getAvailableUsers (needs to be injected as a dependency)
-      //   - When response is found, check if the contact is in the response.
-      //   - If so, set isContactAvailable = true, false otherwise.
-      //   - if available, isContactBlocked = false and return immediately.
-      User.getAvailableUsers({
-        'filter[id]': contactId
-      }).$promise.then(function(response) {
-        // Check the response data only contains the contact's id.
-        if ($filter('filter')(response.data, { id: contactId }).length === 1) {
-          $scope.isContactAvailable = true;
-          $scope.isContactBlocked = false;
+      User.getBlockedUsers({
+        'filter[user]': contactId
+      }).$promise.then(function(blockedUsers) {
+        $scope.isContactBlocked = blockedUsers.hasOwnProperty('data') &&
+          $filter('filter')(blockedUsers.data, { user: { id: contactId } }).length === 1;
+
+        // If contact is blocked, we won't be able to check if they are available, so assume they are not.
+        if ($scope.isContactBlocked) {
+          $scope.isContactAvailable = false;
           return;
         }
 
-        // Determine if isContactBlocked.
-        // REQUIRES: $resource with access to GET /api/v1/cs-fr/blocked (referred to as getBlockedUsers)
-        // - Call getBlockedUsers, filtered by the user ID of the contact
-        //   - When response is found, check that the contact is in the response.
-        //   - If so, set isContactBlocked = true, false otherwise.
+        User.getAvailableUsers({
+          'filter[id]': contactId
+        }).$promise.then(function(response) {
+          // Check the response data only contains the contact's id.
+          $scope.isContactAvailable = response.hasOwnProperty('data') &&
+            $filter('filter')(response.data, { id: contactId }).length === 1;
+        });
       });
     };
 

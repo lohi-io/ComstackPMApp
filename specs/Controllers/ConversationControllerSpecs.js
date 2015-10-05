@@ -1,10 +1,9 @@
-/* global describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, xit */
-(function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, xit) {
+(function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn) {
   'use strict';
 
   describe('ConversationCtrl', function () {
     var scope, currentUser, messages, conversation, state, stateParams, configurationService;
-    var urlUser, urlConversation, urlConversationMessages, urlAvailableUsers;
+    var urlUser, urlConversation, urlConversationMessages, urlAvailableUsers, urlBlockedUsers;
     var $httpBackend;
 
     var contact, availableUsers;
@@ -59,6 +58,7 @@
       urlConversation = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/conversations/123?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
       $httpBackend.expectGET(urlConversation).respond(conversation);
       urlAvailableUsers  = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/users/available-users?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc&filter%5Bid%5D=2';
+      urlBlockedUsers = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-fr/blocked?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc&filter%5Buser%5D=2';
       /* eslint-enable max-len */
       $controller('ConversationCtrl', {
         $scope: scope,
@@ -75,6 +75,7 @@
     });
 
     it('Should load in the conversation\'s messages on initialisation', function () {
+      $httpBackend.expectGET(urlBlockedUsers).respond({});
       $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
       // Let the initial XHRs finish.
       $httpBackend.flush();
@@ -83,6 +84,7 @@
     });
 
     it('Should load in the current user on initialisation', function () {
+      $httpBackend.expectGET(urlBlockedUsers).respond({});
       $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
       // Let the initial XHRs finish.
       $httpBackend.flush();
@@ -90,6 +92,7 @@
     });
 
     it('Should determine the conversation title for a conversation with 2 participants', function() {
+      $httpBackend.expectGET(urlBlockedUsers).respond({});
       $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
       // Let the initial XHRs finish.
       $httpBackend.flush();
@@ -109,6 +112,7 @@
     });
 
     it('Should determine the conversation title for a conversation with 3 participants', function() {
+      $httpBackend.expectGET(urlBlockedUsers).respond({});
       $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
       // Let the initial XHRs finish.
       $httpBackend.flush();
@@ -131,6 +135,7 @@
     });
 
     it('Should determine the conversation title for a conversation with 4 participants', function() {
+      $httpBackend.expectGET(urlBlockedUsers).respond({});
       $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
       // Let the initial XHRs finish.
       $httpBackend.flush();
@@ -159,6 +164,7 @@
     it('Should detect when the contact is available, assuming they are not blocked', function() {
       scope.computeAvailability(conversation);
 
+      $httpBackend.expectGET(urlBlockedUsers).respond({});
       $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
       // Expect controller defaults which assume user is not available for contact.
       expect(scope.isContactAvailable).toEqual(false);
@@ -186,6 +192,7 @@
           ]
         }
       };
+      $httpBackend.expectGET(urlBlockedUsers).respond({});
       $httpBackend.expectGET(urlAvailableUsers).respond(noAvailableUsers);
 
       scope.computeAvailability(conversationWithUnavailableContact);
@@ -199,10 +206,7 @@
       expect(scope.isContactBlocked).toEqual(false);
     });
 
-    xit('Should detect when the current user has blocked the contact', function() {
-      /* eslint-disable max-len */
-      var urlBlockedUser = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-fr/blocked?filter[id]=2&access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
-      /* eslint-enable max-len */
+    it('Should detect when the current user has blocked the contact', function() {
       var blockedUser = {
         id: 2,
         name: 'Blocked'
@@ -224,7 +228,7 @@
           blockedUser
         ]
       };
-      $httpBackend.expectGET(urlBlockedUser).respond(blockedRelationship);
+      $httpBackend.expectGET(urlBlockedUsers).respond(blockedRelationship);
 
       scope.computeAvailability(conversationWithBlockedUser);
 
@@ -237,4 +241,4 @@
       expect(scope.isContactBlocked).toEqual(true);
     });
   });
-})(describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, xit);
+})(describe, it, expect, inject, angular, beforeEach, afterEach, spyOn);

@@ -13,19 +13,25 @@ services.factory('User', ['$resource', 'configurationService',
         method: 'GET',
         url: settings.api_url+'/cs-pm/users/available-users',
         params: {
-          "access_token": settings.access_token,
-          "autocomplete[string]": '@search'
+          access_token: settings.access_token,
+          'autocomplete[string]': '@search'
         },
         isArray: false
       },
+      getBlockedUsers: {
+        method: 'GET',
+        url: settings.api_url + '/cs-fr/blocked',
+        params: {
+          access_token: settings.access_token
+        }
+      }
     });
   }
 ]);
 
 services.factory('getCurrentUser', ['User', '$q', function(User, $q) {
   var service = {};
-  service.get = function()
-  {
+  service.get = function() {
     var delay = $q.defer();
     User.getCurrentUser(function (user) {
       delay.resolve(user);
@@ -40,10 +46,9 @@ services.factory('getCurrentUser', ['User', '$q', function(User, $q) {
 
 services.factory('getAvailableUsers', ['User', '$q', function(User, $q) {
   var service = {};
-  service.get = function(search)
-  {
+  service.get = function(search) {
     var delay = $q.defer();
-    User.getAvailableUsers({"autocomplete[string]": search}, function (user) {
+    User.getAvailableUsers({'autocomplete[string]': search}, function (user) {
       delay.resolve(user);
     }, function() {
         delay.reject('Unable to fetch current user');
