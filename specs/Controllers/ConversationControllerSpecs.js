@@ -84,7 +84,7 @@
         }
       };
       scope.computeHeading(conversation);
-      expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {name: 'Boycey'});
+      expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {participants: 'Boycey'});
     });
 
     it('Should determine the conversation title for a conversation with 3 participants', function() {
@@ -104,7 +104,7 @@
         }
       };
       scope.computeHeading(conversation);
-      expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {name: 'Boycey and Craig'});
+      expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {participants: 'Boycey and Craig'});
     });
 
     it('Should determine the conversation title for a conversation with 4 participants', function() {
@@ -127,7 +127,7 @@
         }
       };
       scope.computeHeading(conversation);
-      expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {name: 'Boycey, Craig and David'});
+      expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {participants: 'Boycey, Craig and David'});
     });
   });
 })(describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, angular.mock.module);

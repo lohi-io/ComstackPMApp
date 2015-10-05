@@ -43,7 +43,7 @@
           </div>
           <div class="controls">
             <small>
-              <a href="" class="delete-conversation" ng-show="currentUser.permissions.conversations.leave"
+              <a ng-click="delete(conversation)" class="delete-conversation" ng-show="currentUser.permissions.conversations.leave"
                  ng-bind-html="text_link_delete | htmlsafe"></a>
               <span
                 ng-show="currentUser.permissions.conversations.leave && currentUser.permissions.conversations.report"> | </span>
