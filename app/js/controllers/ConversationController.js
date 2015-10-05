@@ -32,7 +32,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         otherParticipantNames = otherParticipantNames + participant.name + suffix;
       });
 
-      $scope.conversationHeading = config.getString('heading__conversation_with', { name: otherParticipantNames });
+      $scope.conversationHeading = config.getString('heading__conversation_with', { participants: otherParticipantNames });
     };
 
     $scope.computeStrings = function() {

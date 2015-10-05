@@ -3,13 +3,16 @@
      style="margin-top: 10px;" ng-cloak>
   <div id="messages" class="page-wrapper cs-pm-page-wrapper" ng-show="conversations.length">
     <div class="messages-header cs-pm__header clearfix">
-      <h2 class="pull-left cs-pm-left" style=""><a href="" class="messages-trigger" ng-bind-html="text_heading_messages | htmlsafe"></a></h2>
+      <h2 class="pull-left cs-pm-left" style="" ng-bind-html="text_heading_messages | htmlsafe"></h2>
 
-      <div class="pull-right cs-pm-right" ng-hide="currentUser.preferences.read_only_mode"><a
-        class="btn btn-default cs-pm__new-message" ui-sref="message" ng-bind-html="button_new_conversation | htmlsafe"><span
-        class="icomoon icomoon-speech-bubble cs-pm-icon--new-message"></span>New message</a></div>
+      <div class="pull-right cs-pm-right"
+           ng-hide="currentUser.preferences.read_only_mode">
+        <a href="{{friends_link}}" class="btn btn-link btn-link-outline">Friends list</a>
+        <a class="btn btn-default cs-pm__new-message"
+           ui-sref="message"><span class="icomoon icomoon-speech-bubble cs-pm-icon--new-message"></span>{{button_new_conversation}}</a></div>
     </div>
-    <div class="alert alert-warning" ng-show="currentUser.preferences.read_only_mode" ng-bind-html="text_read_only | htmlsafe"></div>
+    <div class="alert alert-warning" ng-show="currentUser.preferences.read_only_mode"
+         ng-bind-html="text_read_only | htmlsafe"></div>
 
     <ul class="media-list conversations-list">
       <li class="media cs-pm-conversation" ng-class="{'conversation--unread': conversation.unread_count != 0}"
@@ -22,8 +25,10 @@
         </div>
         <div class="cs-pm-body media-body">
           <a ui-sref="conversation({id: conversation.id})" class="message-trigger">
-            <h4 class="media-heading" ng-bind="computeHeading(conversation)"><span ng-show="conversation.unread_count"
-                                                                                     ng-bind="conversation.unread_count"></span>
+            <h4 class="media-heading">{{computeHeading(conversation)}}
+              <span ng-show="conversation.unread_count != 0"
+                    class="notifications-count"
+                    ng-bind="conversation.unread_count"></span>
             </h4>
             <span ng-switch="conversation.unread_count">
               <strong ng-switch-default
@@ -34,13 +39,16 @@
 
           <div class="date">
             <span class="hidden-xs">{{text_last_message}}</span> <abbr class="timeago"
-                                                              ng-attr-title="{{formatDate(conversation.updated)}}">{{fromNow(conversation.updated)}}</abbr>
+                                                                       ng-attr-title="{{formatDate(conversation.updated)}}">{{fromNow(conversation.updated)}}</abbr>
           </div>
           <div class="controls">
             <small>
-              <a href="" class="delete-conversation" ng-show="currentUser.permissions.conversations.leave" ng-bind-html="text_link_delete | htmlsafe"></a>
-              <span ng-show="currentUser.permissions.conversations.leave && currentUser.permissions.conversations.report" > | </span>
-              <a href="" class="report-conversation" ng-show="currentUser.permissions.conversations.report" ng-bind-html="text_link_report | htmlsafe"></a>
+              <a href="" class="delete-conversation" ng-show="currentUser.permissions.conversations.leave"
+                 ng-bind-html="text_link_delete | htmlsafe"></a>
+              <span
+                ng-show="currentUser.permissions.conversations.leave && currentUser.permissions.conversations.report"> | </span>
+              <a href="" class="report-conversation" ng-show="currentUser.permissions.conversations.report"
+                 ng-bind-html="text_link_report | htmlsafe"></a>
             </small>
           </div>
         </div>
@@ -65,13 +73,16 @@
 
   <div id="messages-empty" class="page-wrapper cs-pm-page-wrapper" ng-hide="conversations.length" ng-cloak>
     <div class="messages-header cs-pm__header clearfix">
-      <h2 class="pull-left cs-pm-left" style=""><a href="" class="messages-trigger" ng-bind-html="text_heading_messages | htmlsafe"></a></h2>
+      <h2 class="pull-left cs-pm-left" style=""><a href="" class="messages-trigger"
+                                                   ng-bind-html="text_heading_messages | htmlsafe"></a></h2>
 
       <div class="pull-right cs-pm-right" ng-hide="currentUser.preferences.read_only_mode"><a
         class="btn btn-default cs-pm__new-message"><span
-        class="icomoon icomoon-speech-bubble cs-pm-icon--new-message" ng-bind-html="button_new_conversation | htmlsafe"></span></a></div>
+        class="icomoon icomoon-speech-bubble cs-pm-icon--new-message"
+        ng-bind-html="button_new_conversation | htmlsafe"></span></a></div>
     </div>
-    <div class="alert alert-warning" ng-show="currentUser.preferences.read_only_mode" ng-bind-html="text_read_only | htmlsafe"></div>
+    <div class="alert alert-warning" ng-show="currentUser.preferences.read_only_mode"
+         ng-bind-html="text_read_only | htmlsafe"></div>
     <div class="cs-pm-boxing messaging-boxing text-center" ng-bind-html="text_no_conversations | htmlsafe"></div>
   </div>
 </div>

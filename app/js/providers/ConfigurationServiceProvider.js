@@ -5,7 +5,7 @@ app.provider("configurationService", function () {
     "base_url": "https://cancerchat01dev.prod.acquia-sites.com",
     "api_url": "https://cancerchat01dev.prod.acquia-sites.com/api/v1",
     "local_host": "cancerchatdev.localweb",
-    "environment": "local",
+    "environment": "",
     "authorization_header": "Basic Q1JVSzAxOnl1RGFiOG5lIQ==",
     "access_token": "",
     "csrf_token": "",
@@ -77,6 +77,10 @@ app.provider("configurationService", function () {
     return appSettings;
   };
 
+  this.getSetting = function (key) {
+    return appSettings.key;
+  };
+
   this.set = function (data) {
     appSettings = data;
   };
@@ -99,6 +103,7 @@ app.provider("configurationService", function () {
       appSettings: self.appSettings,
       get: self.get,
       set: self.set,
+      getSetting : self.getSetting,
       setSettingValue: self.setSettingValue,
       getString: self.getString
     }

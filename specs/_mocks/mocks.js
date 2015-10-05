@@ -56,6 +56,9 @@ serviceMockModule.factory("configurationService", function () {
       getString: function () {
           return "";
       },
+      getSetting: function () {
+        return "";
+      },
       updateAccessToken: function () {
       }
     }

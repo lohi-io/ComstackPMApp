@@ -2,12 +2,12 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers', 'configu
   function ($scope, $state, getAvailableUsers, config, Conversation, $http, $q) {
 
     var settings = config.get();
-    var maxTags = settings.max_participants - 1;
+    $scope.maxTags = settings.max_participants - 1;
     var numberLabel = '';
     $scope.textMaxLength = settings.message_maxlength;
     $scope.form_to_label = config.getString('form__to__label');
 
-    if(maxTags == 1){
+    if( $scope.maxTags == 1){
       $scope.form_to_placeholder = config.getString('form__to__placeholder__singular');
       numberLabel = '1 person'
     }else{

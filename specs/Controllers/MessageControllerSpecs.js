@@ -2,13 +2,15 @@
 (function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module) {
 
   describe('MessageCtrl', function () {
-    var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message;
+    var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
 
 
-    beforeEach(inject(function (_$rootScope_, $controller, _$httpBackend_) {
+
+
+    beforeEach(inject(function (_$rootScope_, $controller, _$httpBackend_,$injector) {
       rootScope = _$rootScope_;
 
       Conversation = function () { };
@@ -33,12 +35,14 @@
         }
       };
       $httpBackend = _$httpBackend_;
+      config =  $injector.get('configurationService');
 
       scope = _$rootScope_.$new();
-
+      spyOn(config, 'getString');
       ctrl = $controller('MessageCtrl', {
         '$scope': scope,
-        '$state': state
+        '$state': state,
+        'config': config
       });
 
     }));
@@ -48,6 +52,9 @@
       $httpBackend.verifyNoOutstandingRequest();
       $httpBackend.resetExpectations();
     });
+
+
+
 
     it('Should have current message in scope', function () {
       jasmine.createSpy('Conversation.prototype').and.callFake(function () { return message; });
@@ -77,16 +84,19 @@
       expect(message.$save).toHaveBeenCalled();
     });
 
-    //it('Should change the state on save success', function()
-    //{
-    //  spyOn(state, 'go');
-    //  scope.save();
-    //  expect(state.go).toHaveBeenCalledWith('conversation', {}, {
-    //    reload: 'conversation',
-    //    inherit: false,
-    //    notify: true
-    //  });
-    //});
+
+    it('Should get the strings from configuration', function(){
+        expect(config.getString.calls.count()).toBe(9);
+        expect(config.getString).toHaveBeenCalledWith('form__to__label');
+        expect(config.getString).toHaveBeenCalledWith('form__to__placeholder__singular');
+        expect(config.getString).toHaveBeenCalledWith('form__to__validation__empty');
+        expect(config.getString).toHaveBeenCalledWith('form__to__validation__limit_exceeded', {number_label: '1 person'});
+        expect(config.getString).toHaveBeenCalledWith('form__text__placeholder');
+        expect(config.getString).toHaveBeenCalledWith('form__text__validation__empty');
+        expect(config.getString).toHaveBeenCalledWith('form__text__validation__maxlength', {number: 10});
+        expect(config.getString).toHaveBeenCalledWith('form__new_conversation__submit');
+        expect(config.getString).toHaveBeenCalledWith('form__new_conversation__header', {user_id: ''});
+    });
 
 
   });

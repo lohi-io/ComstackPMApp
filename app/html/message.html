@@ -41,7 +41,7 @@
             ng-bind-html="form_to_validation_empty | htmlsafe">
       </span>
       <span class="help-block"
-            ng-show="newMessageForm.recipients.$dirty && !newMessageForm.recipients.$error.required && newMessageForm.recipients.$invalid && users.length>=2"
+            ng-show="newMessageForm.recipients.$dirty && !newMessageForm.recipients.$error.required && newMessageForm.recipients.$invalid && users.length > maxTags"
             ng-bind-html="form_to_validation_limit_exceeded | htmlsafe">
       </span>
 

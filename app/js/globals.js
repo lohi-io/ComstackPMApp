@@ -11,7 +11,7 @@ Comstack.PMApp = {
     "base_url": "https://cancerchat01dev.prod.acquia-sites.com",
     "api_url": "https://cancerchat01dev.prod.acquia-sites.com/api/v1",
     "local_host": "cancerchatdev.localweb",
-    "environment": "",
+    "environment": "local",
     "authorization_header": "Basic Q1JVSzAxOnl1RGFiOG5lIQ==",
     "access_token": "",
     "csrf_token": "",
