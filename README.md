@@ -84,6 +84,7 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
     "link__delete": "Delete",
     "link__report": "Report",
     "link__block": "Block",
+    "link__unblock": "Unblock",
     "link__no_available_users": "Find your friends",
     "button__new_conversation": "New message",
     "button__load_older_messages": "Load older messages",
