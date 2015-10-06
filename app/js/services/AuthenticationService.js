@@ -102,9 +102,11 @@ services.factory('Authentication', ['$http', '$q', 'configurationService',
                         console.log("Succeeded form auth...");
                         getToken().then(function(response){
                             console.log("Succeeded get token...");
+                            Comstack.PMApp.Settings.access_token = response.access_token;
                             config.setSettingValue('access_token',response.access_token);
                           getCSRFToken().then(function(response){
                             console.log("Succeeded get CSRFToken...");
+                            Comstack.PMApp.Settings.csrf_token = response['X-CSRF-Token'];
                             config.setSettingValue('csrf_token',response['X-CSRF-Token']);
                             deferred.resolve(response);
                           }, function(err){

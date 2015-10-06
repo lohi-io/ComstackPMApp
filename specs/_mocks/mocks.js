@@ -56,8 +56,8 @@ serviceMockModule.factory("configurationService", function () {
       getString: function () {
           return "";
       },
-      getSetting: function () {
-        return "";
+      getSetting: function (key) {
+       return "";
       },
       updateAccessToken: function () {
       }
@@ -69,7 +69,7 @@ configurationMockModule.factory("LocalSettings", function () {
   return {
     "api_url": "https://test.cancerresearchuk.org/about-cancer/cancer-chat/api/v1",
     "authorization_header": "Basic Q1JVSzAxOnl1RGFiOG5lIQ==",
-    "access_token": "",
+    "access_token": "qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc",
     "base_url" : "baseUrl",
     strings:
     {

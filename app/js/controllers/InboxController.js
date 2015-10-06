@@ -71,16 +71,7 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
 
 
     $scope.delete = function(conversation){
-      $scope.deleteModalInstance = $modal.open({
-        templateUrl: 'deleteConversation',
-        controller: 'DeleteConversationCtrl',
-        backdrop: 'static',
-        size: 'sm'
-      });
-
-      $scope.deleteModalInstance.result.then(function () {
-        conversation.$delete();
-      }, function () { });
+      $state.go('inbox.delete', {page: 1, id: conversation.id})
     };
 
 

@@ -1,32 +1,11 @@
 <div class="modal-header">
-  <h2 ng-bind="title"></h2>
+  <button type="button" class="bootbox-close-button close" aria-hidden="true">×</button>
+  <h4 class="modal-title">Delete conversation</h4>
 </div>
-<div class = "modal-body">
-  <form name="generalPracticeAddressForm" ng-submit="save()" class="form-horizontal">
-    <div class="form-group">
-      <label class="col-sm-3 control-label" for="line1">Line 1:</label>
-      <input class="form-control" ng-model="address.line1" id="line1" required>
-    </div>
-    <div class="form-group">
-      <label class="col-sm-3 control-label" for="line2">Line 2:</label>
-      <input class="form-control" ng-model="address.line2" id="line2">
-    </div>
-    <div class="form-group">
-      <label class="col-sm-3 control-label" for="postcode">Postcode:</label>
-      <input class="form-control" ng-model="address.postcode" id="postcode" required>
-    </div>
-    <div class="form-group">
-      <label class="col-sm-3 control-label" for="city">City:</label>
-      <input class="form-control" ng-model="address.city" id="city" required>
-    </div>
-    <div class="form-group">
-      <label class="col-sm-3 control-label" for="country">Country:</label>
-      <input class="form-control" ng-model="address.countryName" id="country" readonly>
-    </div>
-    <div class="modal-footer">
-      <button ng-disabled="generalPracticeAddressForm.$invalid" class="btn btn-success" ng-click="save()">Save</button>
-      <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-    </div>
-  </form>
+<div class="modal-body">
+  <div class="bootbox-body">Are you sure you want to delete this conversation?</div>
 </div>
-
+<div class="modal-footer">
+  <button ng-click="cancel()" type="button" class="btn btn-default">Cancel</button>
+  <button ng-click="confirm()" type="button" class="btn btn-primary">OK</button>
+</div>

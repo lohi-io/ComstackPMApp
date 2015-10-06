@@ -3,22 +3,24 @@
 
   describe('InboxCtrl', function () {
     var ctrl, scope, currentUser, conversations, state, stateParams, fakeUserService;
-    var userService, rootScope, $httpBackend;
+    var userService, rootScope, $httpBackend, configurationService;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
 
 
-    beforeEach(inject(function (_$rootScope_, $controller, _$httpBackend_) {
+    beforeEach(inject(function (_$rootScope_, $controller, _$httpBackend_, _configurationService_) {
       rootScope = _$rootScope_;
       currentUser = {
         data: {
           user: {
-            type: 'user',
-            id: 66531,
-            name: 'basic_user_1'
+            id: 1,
+            name: 'Alice'
           }
         }
+      };
+      messages = {
+        data: ['My conversation messages']
       };
 
       conversations = {
@@ -36,6 +38,7 @@
         "go": function () {
         }
       };
+      configurationService = _configurationService_;
       $httpBackend = _$httpBackend_;
       stateParams = {page: 1};
       scope = _$rootScope_.$new();
@@ -50,7 +53,8 @@
       ctrl = $controller('InboxCtrl', {
         '$scope': scope,
         '$state': state,
-        '$stateParams': stateParams
+        '$stateParams': stateParams,
+        'config': configurationService
       });
       $httpBackend.flush();
     }));
@@ -128,7 +132,94 @@
       scope.currentPage = 1;
       spyOn(state, 'go');
       scope.next();
-      expect(state.go.calls.count()).toEqual(0);;
+      expect(state.go.calls.count()).toEqual(0);
+    });
+
+    it('Should determine the conversation title for a conversation with 2 participants', function() {
+      spyOn(configurationService, 'getString');
+      var conversation = {
+          participants: [{
+            id: 1,
+            name: 'Alli'
+          }, {
+            id: 2,
+            name: 'Boycey'
+          }]
+      };
+      scope.computeHeading(conversation);
+      expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {participants: 'Boycey'});
+    });
+
+    it('Should determine the conversation title for a conversation with 3 participants', function() {
+      spyOn(configurationService, 'getString');
+      var conversation = {
+
+          participants: [{
+            id: 1,
+            name: 'Alli'
+          }, {
+            id: 2,
+            name: 'Boycey'
+          }, {
+            id: 3,
+            name: 'Craig'
+          }]
+
+      };
+      scope.computeHeading(conversation);
+      expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {participants: 'Boycey and Craig'});
+    });
+
+    it('Should determine the conversation title for a conversation with 4 participants', function() {
+      spyOn(configurationService, 'getString');
+      var conversation = {
+          participants: [{
+            id: 1,
+            name: 'Alli'
+          }, {
+            id: 2,
+            name: 'Boycey'
+          }, {
+            id: 3,
+            name: 'Craig'
+          }, {
+            id: 4,
+            name: 'David'
+          }]
+      };
+      scope.computeHeading(conversation);
+      expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {participants: 'Boycey, Craig and David'});
+    });
+
+    it('Should determine the conversation from historical participants when participants is empty', function() {
+      spyOn(configurationService, 'getString');
+      var conversation = {
+        participants: [],
+        historical_participants: [{
+          id: 1,
+          name: 'Alli'
+        }, {
+          id: 2,
+          name: 'Boycey'
+        }, {
+          id: 3,
+          name: 'Craig'
+        }, {
+          id: 4,
+          name: 'David'
+        }]
+      };
+      scope.computeHeading(conversation);
+      expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {participants: 'Boycey, Craig and David'});
+    });
+
+    it('Should have a delete function that goes to delete state', function(){
+      var conversation = {id: 1};
+      expect(scope.delete).toBeDefined();
+      expect(typeof scope.delete).toBe('function');
+      spyOn(state, 'go');
+      scope.delete(conversation);
+      expect(state.go).toHaveBeenCalledWith('inbox.delete', {page: 1, id: 1});
     });
 
   });
