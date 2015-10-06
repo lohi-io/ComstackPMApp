@@ -62,5 +62,81 @@
       mockBackend.flush();
       expect(angular.equals(result, response)).toBeTruthy();
     });
+
+    it('Should save a new conversation', function() {
+      var response = {
+        'data': {
+          'user': {
+            'type': 'user',
+            'id': 66531,
+            'name': 'basic_user_1'
+          }
+        }
+      };
+      var result;
+
+      var url = config.appSettings.api_url + '/cs-pm/conversations?access_token=' + config.appSettings.access_token;
+      mockBackend.expectPOST(url).respond(response);
+      var promise = Conversation.save({id: 123}).$promise;
+
+      promise.then(function(rec) {
+        result = rec;
+      });
+
+      expect(result).toBeUndefined();
+      mockBackend.flush();
+      expect(angular.equals(result, response)).toBeTruthy();
+    });
+
+    it('Should delete a conversation', function() {
+      var response = {
+        'data': {
+          'user': {
+            'type': 'user',
+            'id': 66531,
+            'name': 'basic_user_1'
+          }
+        }
+      };
+      var result;
+
+      var url = config.appSettings.api_url + '/cs-pm/conversations/123?access_token=' + config.appSettings.access_token;
+      mockBackend.expectDELETE(url).respond(response);
+      var promise = Conversation.delete({id: 123}).$promise;
+
+      promise.then(function(rec) {
+        result = rec;
+      });
+
+      expect(result).toBeUndefined();
+      mockBackend.flush();
+      expect(angular.equals(result, response)).toBeTruthy();
+    });
+
+    it('Should report a conversation', function() {
+      var response = {
+        'data': {
+          'user': {
+            'type': 'user',
+            'id': 66531,
+            'name': 'basic_user_1'
+          }
+        }
+      };
+      var result;
+
+      var url = config.appSettings.api_url + '/cs-pm/conversations/report?access_token=' + config.appSettings.access_token;
+      mockBackend.expectPOST(url).respond(response);
+      var promise = Conversation.report({id: 123}).$promise;
+
+      promise.then(function(rec) {
+        result = rec;
+      });
+
+      expect(result).toBeUndefined();
+      mockBackend.flush();
+      expect(angular.equals(result, response)).toBeTruthy();
+    });
+
   });
 })(describe, it, expect, inject, angular, beforeEach, angular.mock.module);

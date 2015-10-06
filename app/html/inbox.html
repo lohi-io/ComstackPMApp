@@ -7,7 +7,7 @@
 
       <div class="pull-right cs-pm-right"
            ng-hide="currentUser.preferences.read_only_mode">
-        <a href="{{friends_link}}" class="btn btn-link btn-link-outline">Friends list</a>
+        <a href="{{friends_link}}" class="btn btn-link btn-link-outline">{{button_friends_list}}</a>
         <a class="btn btn-default cs-pm__new-message"
            ui-sref="message"><span class="icomoon icomoon-speech-bubble cs-pm-icon--new-message"></span>{{button_new_conversation}}</a></div>
     </div>
@@ -47,7 +47,7 @@
                  ng-bind-html="text_link_delete | htmlsafe"></a>
               <span
                 ng-show="currentUser.permissions.conversations.leave && currentUser.permissions.conversations.report"> | </span>
-              <a href="" class="report-conversation" ng-show="currentUser.permissions.conversations.report"
+              <a href="" ng-click="report(conversation)" class="report-conversation" ng-show="currentUser.permissions.conversations.report"
                  ng-bind-html="text_link_report | htmlsafe"></a>
             </small>
           </div>

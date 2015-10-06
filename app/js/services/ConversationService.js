@@ -30,7 +30,17 @@ services.factory('Conversation', ['$resource', 'configurationService',
         headers: {
           'X-CSRF-Token': settings.csrf_token
         }
-      }
+      },
+      report: {
+        method: "POST",
+        url: settings.api_url + '/cs-pm/conversations/:id/report',
+        params: {
+          access_token: settings.access_token
+        },
+        headers: {
+          'X-CSRF-Token': settings.csrf_token
+        }
+      },
     });
   }
 ]);

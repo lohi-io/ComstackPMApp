@@ -5,6 +5,10 @@ app.controller('DeleteConversationCtrl', [
   '$scope', '$modalInstance', 'Conversation', '$stateParams', 'configurationService',
   function ($scope, $modalInstance, Conversation, $stateParams, config) {
 
+    $scope.modal_delete_conversation__heading = config.getString('modal__delete_conversation__heading');
+    $scope.modal_delete_conversation_text = config.getString('modal__delete_conversation__text');
+
+
     $scope.cancel = function () {
       $modalInstance.dismiss('cancel');
     };

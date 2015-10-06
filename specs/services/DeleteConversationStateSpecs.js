@@ -26,8 +26,8 @@
         }
       };
       templateUrl = '/app/html/deleteConversation.html';
-      okDestination = {state: 'okState', params:{id:1}};
-      cancelDestination = {state: 'cancelState', params:{id:2}};
+      okDestination = {state: 'okState', params: {id: 1}};
+      cancelDestination = {state: 'cancelState', params: {id: 2}};
 
 
       service = new deleteConversationState(state, modal);
@@ -41,7 +41,7 @@
     });
 
     it('Should use modal service on activate', function () {
-      service.activate(templateUrl,okDestination,cancelDestination);
+      service.activate(templateUrl, okDestination, cancelDestination);
       expect(modal.open).toHaveBeenCalledWith(
         {
           templateUrl: '/app/html/deleteConversation.html',
@@ -60,7 +60,7 @@
     it('Should transition to dashboard on successful sign in', function () {
       service.activate(templateUrl, okDestination, cancelDestination);
       successHandler(true);
-      expect(state.go).toHaveBeenCalledWith('okState', {id:1}, {
+      expect(state.go).toHaveBeenCalledWith('okState', {id: 1}, {
         reload: 'okState',
         inherit: false,
         notify: true
@@ -70,7 +70,9 @@
     it('Should transition to home on cancelled sign in', function () {
       service.activate(templateUrl, okDestination, cancelDestination);
       rejectHandler();
-      expect(state.go).toHaveBeenCalledWith('cancelState', {id:2});
+      expect(state.go).toHaveBeenCalledWith('cancelState', {id: 2});
     });
+
+
   });
 })(describe, it, expect, inject, angular, beforeEach);

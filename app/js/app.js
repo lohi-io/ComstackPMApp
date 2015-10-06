@@ -67,6 +67,30 @@ app.config([
               );
             }
           ]
+        })
+    .state('inbox.report',
+      {
+        url: '/report/:id',
+        onEnter: [
+          'reportConversationState', '$stateParams', function (reportConversationState, $stateParams){
+            reportConversationState.activate(templatesPath+'/app/html/reportConversation.html',
+              {state: 'inbox', params: $stateParams},
+              {state: 'inbox', params: $stateParams}
+            );
+          }
+        ]
+      })
+      .state('conversation.report',
+        {
+          url: '/report',
+          onEnter: [
+            'reportConversationState', '$stateParams', function (reportConversationState, $stateParams){
+              reportConversationState.activate(templatesPath+'/app/html/reportConversation.html',
+                {state: 'inbox', params: {page:1}},
+                {state: 'conversation', params: $stateParams}
+              );
+            }
+          ]
         });
   }
 ]);
