@@ -4,7 +4,7 @@
   describe('ConversationCtrl', function () {
     var scope, currentUser, messages, conversation, state, stateParams, configurationService;
     var urlUser, urlConversation, urlConversationMessages, urlAvailableUsers, urlBlockedUsers;
-    var $httpBackend;
+    var $httpBackend, requiresHttp;
 
     var contact, availableUsers;
 
@@ -45,8 +45,15 @@
       configurationService = _configurationService_;
 
       $httpBackend = _$httpBackend_;
+      requiresHttp = true;
       stateParams = {id: 123};
       scope = _$rootScope_.$new();
+
+      state = {
+        go: function() {
+          // stub method
+        }
+      };
 
       /* eslint-disable max-len */
       urlUser = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/users/current-user?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
@@ -69,9 +76,21 @@
     }));
 
     afterEach(function () {
-      $httpBackend.verifyNoOutstandingExpectation();
-      $httpBackend.verifyNoOutstandingRequest();
-      $httpBackend.resetExpectations();
+      if (requiresHttp) {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+        $httpBackend.resetExpectations();
+      }
+    });
+
+    it('Should be able to navigate to the inbox', function() {
+      requiresHttp = false;
+
+      expect(scope.goToInbox).not.toBeUndefined();
+      expect(typeof scope.goToInbox).toEqual('function');
+      spyOn(state, 'go');
+      scope.goToInbox();
+      expect(state.go).toHaveBeenCalledWith('inbox', {page: 1}, {reload: 'inbox'});
     });
 
     it('Should load in the conversation\'s messages on initialisation', function () {
