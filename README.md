@@ -17,7 +17,7 @@ Assuming these dependencies are installed:
 - Clone this repository and `cd` into it: `git clone https://github.com/lohi-io/ComstackPMApp.git && cd ComstackPMApp`
 - Install project dependencies: `npm install`
 - Copy example_index.html to index.html: `cp app/example_index.html app/index.html`
-- Start the webserver: `npm start`
+- Start the webserver and code away!: `grunt`
 
 Depending on your network conditions, bower may not be able to clone dependencies. If this happens, run `git config url."https://".insteadOf git://` and `npm install` again.
 

@@ -1,6 +1,15 @@
 module.exports = function(grunt){
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        'http-server': {
+            dev: {
+              root: '',
+              port: 8000,
+              host: '127.0.0.1',
+              cache: -1,
+              runInBackground: true
+            }
+        },
         karma: {
             unitbg: {
                 configFile: 'karma.conf.js',
@@ -51,6 +60,5 @@ module.exports = function(grunt){
       }
     });
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
-    grunt.registerTask('default', ['karma:unitbg','uglify', 'watch']);
-
+    grunt.registerTask('default', ['http-server:dev', 'uglify', 'watch']);
 };
