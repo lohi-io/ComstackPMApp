@@ -30,6 +30,16 @@ services.factory('Conversation', ['$resource', 'configurationService',
         headers: {
           'X-CSRF-Token': settings.csrf_token
         }
+      },
+      delete: {
+        method: "DELETE",
+        url: settings.api_url + '/cs-pm/conversations/:id',
+        params: {
+          access_token: settings.access_token
+        },
+        headers: {
+          'X-CSRF-Token': settings.csrf_token
+        }
       }
     });
   }

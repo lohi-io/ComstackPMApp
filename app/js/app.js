@@ -43,6 +43,30 @@ app.config([
         url: '/conversation/:id',
         controller: 'ConversationCtrl',
         templateUrl: templatesPath+'/app/html/conversation.html'
-      });
+      })
+      .state('inbox.delete',
+        {
+          url: '/delete/:id',
+          onEnter: [
+            'deleteConversationState', '$stateParams', function (deleteConversationState, $stateParams){
+              deleteConversationState.activate(templatesPath+'/app/html/deleteConversation.html',
+                                              {state: 'inbox', params: $stateParams},
+                                              {state: 'inbox', params: $stateParams}
+              );
+            }
+          ]
+        })
+      .state('conversation.delete',
+        {
+          url: '/delete',
+          onEnter: [
+            'deleteConversationState', '$stateParams', function (deleteConversationState, $stateParams){
+              deleteConversationState.activate(templatesPath+'/app/html/deleteConversation.html',
+                {state: 'inbox', params: {page:1}},
+                {state: 'conversation', params: $stateParams}
+              );
+            }
+          ]
+        });
   }
 ]);
