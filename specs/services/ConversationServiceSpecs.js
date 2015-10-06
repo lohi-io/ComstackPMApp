@@ -1,7 +1,7 @@
 /* globals describe, it, expect, inject, beforeEach */
 (function (describe, it, expect, inject, angular, beforeEach,module) {
   describe('ConversationService', function() {
-    var mockBackend, Conversation;
+    var mockBackend, Conversation, config;
 
     beforeEach(angular.mock.module("ComstackPMApp.Services"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
@@ -61,6 +61,32 @@
       expect(result).toBeUndefined();
       mockBackend.flush();
       expect(angular.equals(result, response)).toBeTruthy();
+    });
+
+    it('Should be able to create replies to existing conversations', function() {
+      var message = {
+        text: 'It works'
+      };
+
+      var newMessage = {
+        id: 1,
+        conversation_id: 123,
+        text: message.text
+      };
+      var result;
+      var url = config.appSettings.api_url + '/cs-pm/conversations/' + newMessage.conversation_id +
+        '/reply?access_token=' + config.appSettings.access_token;
+
+      mockBackend.expectPOST(url, message).respond(newMessage);
+      var promise = Conversation.reply({id: newMessage.conversation_id}, message).$promise;
+
+      promise.then(function(response) {
+        result = response;
+      });
+
+      expect(result).toBeUndefined();
+      mockBackend.flush();
+      expect(angular.equals(result, newMessage)).toBeTruthy();
     });
   });
 })(describe, it, expect, inject, angular, beforeEach, angular.mock.module);

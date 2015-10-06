@@ -15,6 +15,16 @@ services.factory('Conversation', ['$resource', 'configurationService',
         },
         isArray: false
       },
+      reply: {
+        method: 'POST',
+        url: settings.api_url + '/cs-pm/conversations/:id/reply',
+        params: {
+          access_token: settings.access_token
+        },
+        headers: {
+          'X-CSRF-Token': settings.csrf_token
+        }
+      },
       save: {
         method: "POST",
         headers: {
