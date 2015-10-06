@@ -142,6 +142,10 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     });
 
     $scope.submitReply = function() {
+      if ($scope.reply.text === '') {
+        return;
+      }
+
       Conversation.reply({id: $stateParams.id}, $scope.reply).$promise.then(function(response) {
         $scope.messages.data.push(response.data[0]);
         $scope.reply.text = '';
