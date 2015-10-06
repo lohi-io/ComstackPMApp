@@ -35,7 +35,7 @@
       };
       conversation = {
         data: {
-          id: 1,
+          id: 123,
           participants: [
             currentUser.user,
             contact.user
@@ -46,7 +46,7 @@
 
       $httpBackend = _$httpBackend_;
       requiresHttp = true;
-      stateParams = {id: 123};
+      stateParams = {id: conversation.data.id};
       scope = _$rootScope_.$new();
 
       state = {
@@ -259,6 +259,33 @@
       $httpBackend.flush();
       expect(scope.isContactAvailable).toEqual(false);
       expect(scope.isContactBlocked).toEqual(true);
+    });
+
+    it('Should be able to create a reply to the current conversation, appending it to the messages list', function() {
+      // Skip the initial AJAX requests.
+      $httpBackend.expectGET(urlBlockedUsers).respond({});
+      $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
+      $httpBackend.flush();
+
+      scope.reply.text = 'It works';
+      var urlReplyToConversation = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/conversations/' +
+        conversation.data.id + '/reply?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+      var newMessage = {
+        data: [{
+          id: 1,
+          conversation_id: conversation.data.id,
+          text: scope.reply.text
+        }]
+      };
+
+      $httpBackend.expectPOST(urlReplyToConversation, scope.reply).respond(newMessage);
+      scope.submitReply();
+      $httpBackend.flush();
+
+      var lastMessage = scope.messages.data[scope.messages.data.length - 1];
+      expect(angular.equals(lastMessage, newMessage.data[0])).toBeTruthy();
+
+      expect(scope.reply.text).toEqual('');
     });
   });
 })(describe, it, expect, inject, angular, beforeEach, afterEach, spyOn);

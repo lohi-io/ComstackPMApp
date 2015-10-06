@@ -107,6 +107,9 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     $scope.messages = {};
     $scope.paging = {};
     $scope.currentUser = {};
+    $scope.reply = {
+      text: ''
+    };
     $scope.conversationHeading = 'Conversation';
     $scope.isContactAvailable = false;
     $scope.isContactBlocked = false;
@@ -137,5 +140,12 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     }).$promise.then(function(messages) {
       $scope.messages = messages;
     });
+
+    $scope.submitReply = function() {
+      Conversation.reply({id: $stateParams.id}, $scope.reply).$promise.then(function(response) {
+        $scope.messages.data.push(response.data[0]);
+        $scope.reply.text = '';
+      });
+    };
   }
 ]);

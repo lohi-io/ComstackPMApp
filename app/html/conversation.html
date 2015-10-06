@@ -46,11 +46,13 @@
     <form>
 
       <div class="form-group">
-        <textarea id="reply-text" class="form-control" rows="3" placeholder="Reply..." ng-disabled="currentUser.preferences.read_only_mode || !isContactAvailable"></textarea>
+        <textarea id="reply-text" class="form-control" rows="3" placeholder="Reply..."
+                  ng-disabled="currentUser.preferences.read_only_mode || !isContactAvailable"
+                  ng-model="reply.text"></textarea>
       </div>
 
       <div class="clearfix">
-        <button id="reply-submit" type="submit" class="btn btn-default pull-right cs-pm-right message-trigger" ng-disabled="currentUser.preferences.read_only_mode || !isContactAvailable" ng-bind-html="form__new_conversation__submit | htmlsafe"></button>
+        <button id="reply-submit" ng-click="submitReply()" type="submit" class="btn btn-default pull-right cs-pm-right message-trigger" ng-disabled="currentUser.preferences.read_only_mode || !isContactAvailable" ng-bind-html="form__new_conversation__submit | htmlsafe"></button>
       </div>
 
     </form>

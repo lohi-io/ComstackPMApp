@@ -23,7 +23,8 @@ services.factory('Conversation', ['$resource', 'configurationService',
         },
         headers: {
           'X-CSRF-Token': settings.csrf_token
-        }
+        },
+        isArray: false
       },
       save: {
         method: "POST",
