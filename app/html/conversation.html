@@ -1,4 +1,4 @@
-<div id="message" class="page-wrapper cs-pm-page-wrapper">
+<div id="message" class="page-wrapper cs-pm-page-wrapper" style="display: block">
 
   <div class="messages-header cs-pm__header clearfix" ng-cloak>
     <h2 class="pull-left cs-pm-left"><a ng-click="goToInbox()" class="messages-trigger"><span class="icomoon icomoon-back cs-pm-icon--back"></span>{{ heading__messages }}</a></h2>
@@ -11,8 +11,9 @@
     <h2 class="pull-left cs-pm-left" ng-cloak>{{ conversationHeading }}</h2>
     <div class="conversation-actions">
       <a href="" ui-sref="conversation.delete" class="btn btn-link btn-small delete-conversation" ng-bind="link__delete"></a>
-      <a href="" class="btn btn-link btn-small report-conversation" ng-bind="link__report"></a>
-      <a ng-hide="isContactBlocked" href="#" class="btn btn-link btn-small" ng-bind="link__block"></a>
+      <a href="" ui-sref="conversation.report" class="btn btn-link btn-small report-conversation" ng-show="!currentUser.permissions.conversations.report"
+         ng-bind-html="link__report | htmlsafe"></a>
+      <a ng-hide="isContactBlocked" href="" ui-sref="conversation.block" class="btn btn-link btn-small" ng-bind="link__block"></a>
       <a ng-show="isContactBlocked" href="#" class="btn btn-link btn-small" ng-bind="link__unblock"></a>
     </div>
   </div>
@@ -31,7 +32,7 @@
       <li ng-repeat="message in messages.data" ng-class="{'message-own': message.sender.id === $parent.currentUser.user.id}" class="media">
         <div ng-hide="'Hiding this until we implement message deletion'" class="media-left checkbox-wrap"><div class="checkbox"><label><input type="checkbox" value="message.id" aria-label="Delete this message"></label></div></div>
         <div class="media-left cs-pm__avatar">
-          <img class="media-object" ng-src="{{ message.sender.avatars['100-100'] }}" alt="">
+          <img class="media-object" ng-src="{{ message.sender.avatars['100-100'] }}" alt="" style="width:50px;height:50px;">
         </div>
         <div class="cs-pm-body media-body">
           <div class="cs-pm-message-meta message-meta small"><a ng-hide="message.sender.id === $parent.currentUser.user.id" ng-href="message.sender.profile" ng-bind="message.sender.name">Terry56</a> <abbr class="timeago" ng-attr-title="{{message.sent | formatDate}}" ng-bind="message.sent | dateFromNow"></abbr></div>

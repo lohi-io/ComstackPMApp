@@ -1,5 +1,5 @@
 app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'getCurrentUser', 'Conversation', 'configurationService', '$filter', '$modal',
-  function ($scope, $window, $state, $stateParams, userService, Conversation, config, $filter, $modal) {
+  function ($scope, $window, $state, $stateParams, userService, Conversation, config, $filter) {
 
     var calculatePages = function () {
       $scope.paging.pagesCount = $window.Math.ceil($scope.paging.total / $scope.paging.range);

@@ -1,8 +1,8 @@
 /* global describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module, kendo */
 (function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module) {
 
-  describe('DeleteConversationCtrl', function () {
-    var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config, convesation, stateParams, modalInstance, urlApi, queryString, getEnpPoint, deleteEndPoint;
+  describe('ReportConversationCtrl', function () {
+    var ctrl, scope, state, $httpBackend, rootScope, Conversation, message, config, conversation, stateParams, modalInstance, urlApi, queryString, getEnpPoint, deleteEndPoint, endPoint;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
@@ -11,14 +11,13 @@
     beforeEach(inject(function (_$rootScope_, $controller, _$httpBackend_, $injector) {
       rootScope = _$rootScope_;
 
-      Conversation = function () {
-      };
-      Conversation.prototype = {
-        "$delete": function () {
-        }
-      };
+      //Conversation = function () {};
+      //Conversation.prototype = {
+      //  "report": function () {
+      //  }
+      //};
 
-      convesation = {
+      conversation = {
         "data": [{
           "type": "message",
           "id": 1,
@@ -59,8 +58,7 @@
 
       urlApi = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1';
       queryString = 'access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
-      getEnpPoint = '/cs-pm/conversations/1';
-      deleteEndPoint = '/cs-pm/conversations';
+      endPoint = '/cs-pm/conversations/1/report';
 
 
       modalInstance = {
@@ -74,12 +72,13 @@
 
       scope = _$rootScope_.$new();
       spyOn(config, 'getString');
-      ctrl = $controller('DeleteConversationCtrl', {
+      ctrl = $controller('ReportConversationCtrl', {
         '$scope': scope,
         '$state': state,
         'config': config,
         '$stateParams': stateParams,
-        '$modalInstance': modalInstance
+        '$modalInstance': modalInstance,
+       // 'Conversation': Conversation.prototype
       });
 
     }));
@@ -93,11 +92,8 @@
     function AssumeConfirmIsCalled() {
       spyOn(config, 'getSetting').and.returnValue('qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc');
       scope.confirm();
-      var url = urlApi + getEnpPoint + '?' + queryString;
-      $httpBackend.expectGET(url).respond(convesation);
-      url = urlApi + deleteEndPoint + '?' + queryString;
-
-      $httpBackend.expectDELETE(url).respond({});
+      var url = urlApi + endPoint + '?' + queryString;
+      $httpBackend.expectPOST(url).respond(conversation);
       $httpBackend.flush();
     }
 
@@ -118,6 +114,15 @@
 
     });
 
+    //it('Should call report on resource', function () {
+    //
+    //  spyOn(Conversation.prototype, 'report');
+    //  AssumeConfirmIsCalled();
+    //  expect(Conversation.report()).toHaveBeenCalled();
+    //
+    //});
+
+
     it('Should have a cancel function', function () {
       expect(scope.cancel).toBeDefined();
       expect(typeof scope.cancel).toEqual('function');
@@ -129,9 +134,8 @@
     });
 
     it('Should get the strings from configuration', function(){
-      expect(config.getString.calls.count()).toBe(2);
-      expect(config.getString).toHaveBeenCalledWith('modal__delete_conversation__heading');
-      expect(config.getString).toHaveBeenCalledWith('modal__delete_conversation__text');
+      expect(config.getString.calls.count()).toBe(1);
+      expect(config.getString).toHaveBeenCalledWith('modal__report__heading');
     });
 
 

@@ -2,13 +2,10 @@
 (function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module) {
 
   describe('MessageCtrl', function () {
-    var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config;
+    var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config, currentUser;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
-
-
-
 
     beforeEach(inject(function (_$rootScope_, $controller, _$httpBackend_,$injector) {
       rootScope = _$rootScope_;
@@ -16,10 +13,20 @@
       Conversation = function () { };
       Conversation.prototype = { "$save": function () { } };
 
+      currentUser = {
+        data: {
+          user: {
+            id: 1,
+            name: 'Alice'
+          }
+        }
+      };
+
       message = {
         recipients: [],
         text: ""
-      }
+      };
+
       availableUsers = {
         data: [],
         paging: {
@@ -39,12 +46,16 @@
 
       scope = _$rootScope_.$new();
       spyOn(config, 'getString');
+
+      var urlUser = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/users/current-user?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+      $httpBackend.expectGET(urlUser).respond(currentUser);
+
       ctrl = $controller('MessageCtrl', {
         '$scope': scope,
         '$state': state,
         'config': config
       });
-
+      $httpBackend.flush();
     }));
 
     afterEach(function () {
@@ -54,7 +65,9 @@
     });
 
 
-
+    it('Should have current user in scope', function () {
+      expect(angular.equals(scope.currentUser, currentUser.data)).toBeTruthy();
+    });
 
     it('Should have current message in scope', function () {
       jasmine.createSpy('Conversation.prototype').and.callFake(function () { return message; });
@@ -95,7 +108,7 @@
         expect(config.getString).toHaveBeenCalledWith('form__text__validation__empty');
         expect(config.getString).toHaveBeenCalledWith('form__text__validation__maxlength', {number: 10});
         expect(config.getString).toHaveBeenCalledWith('form__new_conversation__submit');
-        expect(config.getString).toHaveBeenCalledWith('form__new_conversation__header', {user_id: ''});
+        expect(config.getString).toHaveBeenCalledWith('form__new_conversation__header', {user_id: 1});
     });
 
 

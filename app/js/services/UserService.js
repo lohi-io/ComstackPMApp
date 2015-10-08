@@ -24,6 +24,16 @@ services.factory('User', ['$resource', 'configurationService',
         params: {
           access_token: settings.access_token
         }
+      },
+      block: {
+        method: "POST",
+        url: settings.api_url + '/cs-fr/blocked',
+        params: {
+          access_token: settings.access_token
+        },
+        headers: {
+          'X-CSRF-Token': settings.csrf_token
+        }
       }
     });
   }

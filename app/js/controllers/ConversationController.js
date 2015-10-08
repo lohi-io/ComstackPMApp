@@ -96,6 +96,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       });
     };
 
+
     $scope.goToInbox = function() {
       $state.go('inbox', {
         page: 1

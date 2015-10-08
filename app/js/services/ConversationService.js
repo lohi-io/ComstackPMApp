@@ -51,7 +51,7 @@ services.factory('Conversation', ['$resource', 'configurationService',
         headers: {
           'X-CSRF-Token': settings.csrf_token
         }
-      },
+      }
     });
   }
 ]);

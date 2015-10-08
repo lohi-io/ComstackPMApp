@@ -16,7 +16,7 @@ Comstack.PMApp = {
     "access_token": "",
     "csrf_token": "",
     "library_path": "http://cancerchatdev.localweb:8000",
-    "max_participants": 2,
+    "max_participants": 4,
     "message_maxlength": 10,
     "allow_separate_conversations": false,
     "share_data_storage": true,
@@ -61,7 +61,8 @@ Comstack.PMApp = {
       "modal__delete_conversation__text": "Are you sure you want to delete this conversation?",
       "modal__report__heading": "Report conversation",
       "modal__block__heading": "Block user",
-      "modal__block__text": "Are you sure you want to block this user?",
+      "modal__block__not__allowed__text": "You are not allowed tp block users",
+      "modal__block__text": "Are you sure you want to block the user @name@?",
       "error__no_connection": "We're having trouble contacting the server, are you connected to the internet?",
       "error__api_bad_response": "The API returned an error so something has gone wrong, here it is @@error@@."
     }
