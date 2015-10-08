@@ -52,12 +52,14 @@ module.exports = function(grunt){
               'app/js/controllers/MessageController.js',
               'app/js/controllers/DeleteConversationController.js',
               'app/js/controllers/ReportConversationController.js',
+              'app/js/controllers/BlockUserController.js',
               'app/js/services/01_bootstrap.js',
               'app/js/services/AuthenticationService.js',
               'app/js/services/UserService.js',
               'app/js/services/ConversationService.js',
               'app/js/services/DeleteConversationState.js',
-              'app/js/services/ReportConversationState.js'
+              'app/js/services/ReportConversationState.js',
+              'app/js/services/BlockUserState.js'
             ],
             dest:'app/js/ComstackPMApp.js'
           }

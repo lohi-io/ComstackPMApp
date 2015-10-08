@@ -39,6 +39,7 @@
         }
       };
       configurationService = _configurationService_;
+      spyOn(configurationService, 'getString');
       $httpBackend = _$httpBackend_;
       stateParams = {page: 1};
       scope = _$rootScope_.$new();
@@ -68,6 +69,7 @@
     it('Should have current user in scope', function () {
       expect(angular.equals(scope.currentUser, currentUser.data)).toBeTruthy();
     });
+
     it('Should have conversations in scope', function () {
       expect(angular.equals(scope.conversations, conversations.data)).toBeTruthy();
     });
@@ -136,7 +138,7 @@
     });
 
     it('Should determine the conversation title for a conversation with 2 participants', function() {
-      spyOn(configurationService, 'getString');
+
       var conversation = {
           participants: [{
             id: 1,
@@ -151,7 +153,7 @@
     });
 
     it('Should determine the conversation title for a conversation with 3 participants', function() {
-      spyOn(configurationService, 'getString');
+
       var conversation = {
 
           participants: [{
@@ -171,7 +173,7 @@
     });
 
     it('Should determine the conversation title for a conversation with 4 participants', function() {
-      spyOn(configurationService, 'getString');
+
       var conversation = {
           participants: [{
             id: 1,
@@ -192,7 +194,7 @@
     });
 
     it('Should determine the conversation from historical participants when participants is empty', function() {
-      spyOn(configurationService, 'getString');
+
       var conversation = {
         participants: [],
         historical_participants: [{
@@ -220,6 +222,28 @@
       spyOn(state, 'go');
       scope.delete(conversation);
       expect(state.go).toHaveBeenCalledWith('inbox.delete', {page: 1, id: 1});
+    });
+
+    it('Should have a report function that goes to report state', function(){
+      var conversation = {id: 1};
+      expect(scope.report).toBeDefined();
+      expect(typeof scope.report).toBe('function');
+      spyOn(state, 'go');
+      scope.report(conversation);
+      expect(state.go).toHaveBeenCalledWith('inbox.report', {page: 1, id: 1});
+    });
+
+    it('Should get the strings from configuration', function(){
+      expect(configurationService.getString.calls.count()).toBe(8);
+      expect(configurationService.getString).toHaveBeenCalledWith('heading__messages');
+      expect(configurationService.getString).toHaveBeenCalledWith('text__last_message');
+      expect(configurationService.getString).toHaveBeenCalledWith('text__read_only', {name: currentUser.data.user.name, user_id: currentUser.data.user.id});
+      expect(configurationService.getString).toHaveBeenCalledWith('link__delete');
+      expect(configurationService.getString).toHaveBeenCalledWith('link__report');
+      expect(configurationService.getString).toHaveBeenCalledWith('button__new_conversation');
+      expect(configurationService.getString).toHaveBeenCalledWith('text__no_conversations', {user_id: currentUser.data.user.id});
+      expect(configurationService.getString).toHaveBeenCalledWith('button__friends_list');
+
     });
 
   });
