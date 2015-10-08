@@ -1,4 +1,5 @@
-app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'getCurrentUser', 'Conversation', 'configurationService', '$filter', '$modal',
+app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'getCurrentUser', 'Conversation',
+  'configurationService', '$filter', '$modal',
   function ($scope, $window, $state, $stateParams, userService, Conversation, config, $filter) {
 
     var calculatePages = function () {
@@ -14,14 +15,18 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
     var computeStrings = function (){
       $scope.text_heading_messages = config.getString('heading__messages');
       $scope.text_last_message = config.getString('text__last_message');
-      $scope.text_read_only = config.getString('text__read_only', {name: $scope.currentUser.user.name, user_id: $scope.currentUser.user.id});
+      $scope.text_read_only = config.getString('text__read_only', {
+        name: $scope.currentUser.user.name,
+        user_id: $scope.currentUser.user.id
+      });
       $scope.text_link_delete = config.getString('link__delete');
       $scope.text_link_report = config.getString('link__report');
       $scope.button_new_conversation = config.getString('button__new_conversation');
-      $scope.text_no_conversations = config.getString('text__no_conversations',{user_id: $scope.currentUser.user.id});
+      $scope.text_no_conversations = config.getString('text__no_conversations', {
+        user_id: $scope.currentUser.user.id
+      });
       $scope.button_friends_list = config.getString('button__friends_list');
-      $scope.friends_link = config.getSetting('base_url')+'/friends/'+$scope.currentUser.user.id;
-
+      $scope.friends_link = config.getSetting('base_url') + '/friends/' + $scope.currentUser.user.id;
     };
 
     $scope.conversations = [];
@@ -68,16 +73,16 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
     };
 
     $scope.formatDate = function(date){
-      return moment(date).format("hh:mm MMMM Do, YYYY")
+      return moment(date).format('hh:mm MMMM Do, YYYY');
     };
 
 
     $scope.delete = function(conversation){
-      $state.go('inbox.delete', {page: 1, id: conversation.id})
+      $state.go('inbox.delete', {page: 1, id: conversation.id});
     };
 
     $scope.report = function(conversation){
-      $state.go('inbox.report', {page: 1, id: conversation.id})
+      $state.go('inbox.report', {page: 1, id: conversation.id});
     };
 
 
