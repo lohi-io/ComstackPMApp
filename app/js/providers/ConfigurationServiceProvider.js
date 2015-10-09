@@ -81,7 +81,7 @@ app.provider("configurationService", function () {
   };
 
   this.getSetting = function (key) {
-    return appSettings.key;
+    return appSettings[key];
   };
 
   this.set = function (data) {
@@ -111,6 +111,4 @@ app.provider("configurationService", function () {
       getString: self.getString
     }
   }
-
-
 });
