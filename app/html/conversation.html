@@ -31,7 +31,7 @@
     <ul class="media-list">
       <li ng-repeat="message in messages.data" ng-class="{'message-own': message.sender.id === $parent.currentUser.user.id}" class="media">
         <div ng-hide="'Hiding this until we implement message deletion'" class="media-left checkbox-wrap"><div class="checkbox"><label><input type="checkbox" value="message.id" aria-label="Delete this message"></label></div></div>
-        <div class="media-left cs-pm__avatar">
+        <div class="media-left cs-pm__avatar pull-left">
           <img class="media-object" ng-src="{{ message.sender.avatars['100-100'] }}" alt="" style="width:50px;height:50px;">
         </div>
         <div class="cs-pm-body media-body">
