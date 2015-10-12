@@ -112,7 +112,7 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
         otherParticipantNames = otherParticipantNames + participant.name + suffix;
       });
 
-      return config.getString('heading__conversation_with', { participants: otherParticipantNames });
+      return otherParticipantNames;
     };
   }
 ]);
