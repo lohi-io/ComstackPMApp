@@ -3,6 +3,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
   function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config) {
 
     var settings = config.get();
+
     /**
      * Determines the conversation heading used for this conversation.
      * @param conversation
@@ -96,6 +97,16 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       });
     };
 
+    $scope.submitReply = function() {
+      if ($scope.reply.text === '') {
+        return;
+      }
+
+      Conversation.reply({id: $stateParams.id}, $scope.reply).$promise.then(function(response) {
+        $scope.messages.data.push(response.data[0]);
+        $scope.reply.text = '';
+      });
+    };
 
     $scope.goToInbox = function() {
       $state.go('inbox', {
@@ -142,15 +153,5 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       $scope.messages = messages;
     });
 
-    $scope.submitReply = function() {
-      if ($scope.reply.text === '') {
-        return;
-      }
-
-      Conversation.reply({id: $stateParams.id}, $scope.reply).$promise.then(function(response) {
-        $scope.messages.data.push(response.data[0]);
-        $scope.reply.text = '';
-      });
-    };
   }
 ]);
