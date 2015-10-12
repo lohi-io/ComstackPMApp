@@ -122,7 +122,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
 
         $scope.computeStrings();
 
-        // Load the messages within the current conversation.
+        // Load the metadata for the current conversation.
         // This needs to happen after we get the current user
         // as we need to know the current user as well as the other
         // participants to calculate the heading.
