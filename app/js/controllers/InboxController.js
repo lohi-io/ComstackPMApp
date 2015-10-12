@@ -29,27 +29,6 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
       $scope.friends_link = config.getSetting('base_url') + '/friends/' + $scope.currentUser.user.id;
     };
 
-    $scope.conversations = [];
-    $scope.paging = {};
-    $scope.currentUser = {};
-
-    userService.get()
-      .then(function (data) {
-        $scope.currentUser = data.data;
-        computeStrings();
-      });
-
-    Conversation.get({page: $stateParams.page}).$promise.then(function (data) {
-        $scope.conversations = data.data;
-        $scope.paging = data.paging;
-        calculatePages();
-      });
-
-    $scope.paging.pagesCount = 0;
-    $scope.pages = [];
-
-
-
     $scope.goToPage = function (page) {
       $state.go('inbox', {
         page: page
@@ -85,7 +64,6 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
       $state.go('inbox.report', {page: 1, id: conversation.id});
     };
 
-
     $scope.computeHeading = function(conversation) {
       // The return of this function is used in template bindings so
       // we should make sure this doesn't error out if the current user hasn't been determined.
@@ -119,5 +97,24 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
 
       return config.getString('heading__conversation_with', { participants: otherParticipantNames });
     };
+
+    $scope.conversations = [];
+    $scope.paging = {};
+    $scope.currentUser = {};
+
+    userService.get()
+      .then(function (data) {
+        $scope.currentUser = data.data;
+        computeStrings();
+      });
+
+    Conversation.get({page: $stateParams.page}).$promise.then(function (data) {
+      $scope.conversations = data.data;
+      $scope.paging = data.paging;
+      calculatePages();
+    });
+
+    $scope.paging.pagesCount = 0;
+    $scope.pages = [];
   }
 ]);
