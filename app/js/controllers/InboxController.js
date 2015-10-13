@@ -1,6 +1,6 @@
 app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'getCurrentUser', 'Conversation',
-  'configurationService', '$filter', '$modal',
-  function ($scope, $window, $state, $stateParams, userService, Conversation, config, $filter) {
+  'configurationService', '$filter', 'poller',
+  function ($scope, $window, $state, $stateParams, userService, Conversation, config, $filter, poller) {
 
     var calculatePages = function () {
       $scope.paging.pagesCount = $window.Math.ceil($scope.paging.total / $scope.paging.range);
@@ -55,7 +55,6 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
       return moment(date).format('hh:mm MMMM Do, YYYY');
     };
 
-
     $scope.delete = function(conversation){
       $state.go('inbox.delete', {page: 1, id: conversation.id});
     };
@@ -101,17 +100,32 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
     $scope.conversations = [];
     $scope.paging = {};
     $scope.currentUser = {};
+    $scope.conversationsPollDelay = config.getSetting(['poll_intervals', 'conversations']) * 100;
 
-    userService.get()
-      .then(function (data) {
-        $scope.currentUser = data.data;
-        computeStrings();
-      });
+    userService.get().then(function (data) {
+      $scope.currentUser = data.data;
+      computeStrings();
+    });
 
-    Conversation.get({page: $stateParams.page}).$promise.then(function (data) {
-      $scope.conversations = data.data;
+    var ConversationsPoller = poller.get(Conversation, {
+      action: 'get',
+      argumentsArray: [{
+        page: $stateParams.page
+      }],
+      delay: $scope.conversationsPollDelay
+    });
+
+    ConversationsPoller.promise.then(null, null, function (data) {
+      // Reduce DOM thrashing
+      if (!angular.equals($scope.conversations, data.data)) {
+        $scope.conversations = data.data;
+      }
       $scope.paging = data.paging;
       calculatePages();
+
+      if ($scope.currentUser.preferences.read_only_mode) {
+        ConversationsPoller.stop();
+      }
     });
 
     $scope.paging.pagesCount = 0;

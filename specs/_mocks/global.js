@@ -10,6 +10,13 @@ Comstack.PMApp = {
     "api_url": "global url",
     "authorization_header": "Basic Q1JVSzAxOnl1RGFiOG5lIQ==",
     "access_token": "newToken",
+    "a": {
+      "very": {
+        "nested": {
+          "property": 1053
+        }
+      }
+    },
     "strings":
     {
       "text__read_only": "You are @name@ with @user_id@",

@@ -1,10 +1,8 @@
-var app = angular.module('ComstackPMApp', ['ui.router', 'ui.bootstrap', 'ComstackPMApp.Services', 'ngTagsInput', 'luegg.directives']);
-//app.run(["$rootScope", "ConfigurationService", function ($rootScope, config) {
-//
-//}]);
-app.config([
-  "$urlRouterProvider",
-  "$stateProvider", 'configurationServiceProvider', function ($urlRouterProvider, $stateProvider, configurationServiceProvider) {
+var app = angular.module('ComstackPMApp', ['ui.router', 'ui.bootstrap', 'ComstackPMApp.Services', 'ngTagsInput',
+  'luegg.directives', 'emguo.poller']);
+
+app.config(["$urlRouterProvider", "$stateProvider", 'configurationServiceProvider',
+  function ($urlRouterProvider, $stateProvider, configurationServiceProvider) {
 
 
     var settings = configurationServiceProvider.get();

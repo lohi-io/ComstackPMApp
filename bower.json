@@ -21,6 +21,7 @@
     "jsBuilder": "~1.0.1",
     "ng-tags-input": "~3.0.0",
     "moment": "~2.10.6",
-    "angular-scroll-glue": "~2.0.6"
+    "angular-scroll-glue": "~2.0.6",
+    "angularpoller": "angular-poller#~0.3.3"
   }
 }

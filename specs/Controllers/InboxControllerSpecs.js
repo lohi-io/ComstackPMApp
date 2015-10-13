@@ -16,6 +16,9 @@
           user: {
             id: 1,
             name: 'Alice'
+          },
+          preferences: {
+            "read_only_mode": false
           }
         }
       };
@@ -243,7 +246,6 @@
       expect(configurationService.getString).toHaveBeenCalledWith('button__new_conversation');
       expect(configurationService.getString).toHaveBeenCalledWith('text__no_conversations', {user_id: currentUser.data.user.id});
       expect(configurationService.getString).toHaveBeenCalledWith('button__friends_list');
-
     });
 
   });

@@ -39,5 +39,15 @@
       var result = configurationService.getSetting('base_url');
       expect(result).toEqual(baseUrl);
     });
+
+    it('Should fetch nested app settings', function() {
+      var result = configurationService.getSetting(['a', 'very', 'nested', 'property']);
+      expect(result).toEqual(1053);
+    });
+
+    it('Should return an empty string if no key given', function() {
+      var result = configurationService.getSetting();
+      expect(result).toEqual('');
+    });
   });
 })(describe, it, expect, inject, angular, beforeEach);
