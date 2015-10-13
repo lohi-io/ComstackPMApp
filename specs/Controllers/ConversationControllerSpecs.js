@@ -3,15 +3,15 @@
 
   describe('ConversationCtrl', function () {
     var scope, currentUser, messages, conversation, state, stateParams, configurationService;
-    var urlUser, urlConversation, urlConversationMessages, urlAvailableUsers, urlBlockedUsers;
-    var $httpBackend, requiresHttp;
+    var urlUser, urlConversation, urlMessages, urlAvailableUsers, urlBlockedUsers;
+    var $httpBackend, requiresHttp, timeout;
 
     var contact, availableUsers;
 
     beforeEach(angular.mock.module('ComstackPMApp'));
     beforeEach(angular.mock.module('ComstackPMApp.ServicesMock'));
 
-    beforeEach(inject(function (_$rootScope_, $controller, _configurationService_, _$httpBackend_) {
+    beforeEach(inject(function (_$rootScope_, $controller, _configurationService_, _$httpBackend_, _$timeout_) {
       currentUser = {
         user: {
           id: 1,
@@ -45,6 +45,7 @@
       configurationService = _configurationService_;
 
       $httpBackend = _$httpBackend_;
+      timeout = _$timeout_;
       requiresHttp = true;
       stateParams = {id: conversation.data.id};
       scope = _$rootScope_.$new();
@@ -56,16 +57,17 @@
       };
 
       /* eslint-disable max-len */
-      urlUser = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/users/current-user?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+      var baseUrl = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1';
+      var accessToken = 'qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+      urlUser = baseUrl+'/cs-pm/users/current-user?access_token='+accessToken;
       $httpBackend.expectGET(urlUser).respond({
         data: currentUser
       });
-      urlConversationMessages = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/conversations/123/messages?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
-      $httpBackend.expectGET(urlConversationMessages).respond(messages);
-      urlConversation = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/conversations/123?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
-      $httpBackend.expectGET(urlConversation).respond(conversation);
-      urlAvailableUsers  = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/users/available-users?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc&filter%5Bid%5D=2';
-      urlBlockedUsers = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-fr/blocked?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc&filter%5Buser%5D=2';
+
+      urlConversation = baseUrl+'/cs-pm/conversations/123?access_token='+accessToken;
+      urlAvailableUsers  = baseUrl+'/cs-pm/users/available-users?access_token='+accessToken+'&filter%5Bid%5D=2';
+      urlBlockedUsers = baseUrl+'/cs-fr/blocked?access_token='+accessToken+'&filter%5Buser%5D=2';
+      urlMessages = baseUrl+'/cs-pm/conversations/123/messages?access_token='+accessToken;
       /* eslint-enable max-len */
       $controller('ConversationCtrl', {
         $scope: scope,
@@ -92,29 +94,28 @@
       scope.goToInbox();
       expect(state.go).toHaveBeenCalledWith('inbox', {page: 1}, {reload: 'inbox'});
     });
-
-    it('Should load in the conversation\'s messages on initialisation', function () {
-      $httpBackend.expectGET(urlBlockedUsers).respond({});
-      $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
-      // Let the initial XHRs finish.
-      $httpBackend.flush();
-
-      expect(angular.equals(scope.messages, messages)).toBeTruthy();
-    });
+    //
+    //it('Should load in the conversation\'s messages on initialisation', function () {
+    //  $httpBackend.expectGET(urlBlockedUsers).respond({});
+    //  $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
+    //  // Let the initial XHRs finish.
+    //  $httpBackend.flush();
+    //
+    //  expect(angular.equals(scope.messages, messages)).toBeTruthy();
+    //});
 
     it('Should load in the current user on initialisation', function () {
-      $httpBackend.expectGET(urlBlockedUsers).respond({});
-      $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
+      AssumeHttpRequestResponded();
+
       // Let the initial XHRs finish.
       $httpBackend.flush();
       expect(angular.equals(scope.currentUser, currentUser)).toBeTruthy();
     });
 
     it('Should determine the conversation title for a conversation with 2 participants', function() {
-      $httpBackend.expectGET(urlBlockedUsers).respond({});
-      $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
+      AssumeHttpRequestResponded();
       // Let the initial XHRs finish.
-      $httpBackend.flush();
+
       spyOn(configurationService, 'getString');
       conversation = {
         data: {
@@ -124,18 +125,14 @@
           ]
         }
       };
-      scope.computeHeading(conversation.data);
+      $httpBackend.flush();
+      //scope.computeHeading(conversation.data);
       expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {
         participants: contact.user.name
       });
     });
 
     it('Should determine the conversation title for a conversation with 3 participants', function() {
-      $httpBackend.expectGET(urlBlockedUsers).respond({});
-      $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
-      // Let the initial XHRs finish.
-      $httpBackend.flush();
-      spyOn(configurationService, 'getString');
       conversation = {
         data: {
           participants: [
@@ -147,18 +144,20 @@
           ]
         }
       };
-      scope.computeHeading(conversation.data);
+
+      $httpBackend.expectGET(urlConversation).respond(conversation);
+      $httpBackend.expectGET(urlBlockedUsers).respond({});
+      $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
+      // Let the initial XHRs finish.
+      spyOn(configurationService, 'getString');
+
+      $httpBackend.flush();
       expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {
         participants: contact.user.name + ' and ' + conversation.data.participants[2].name
       });
     });
 
     it('Should determine the conversation title for a conversation with 4 participants', function() {
-      $httpBackend.expectGET(urlBlockedUsers).respond({});
-      $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
-      // Let the initial XHRs finish.
-      $httpBackend.flush();
-      spyOn(configurationService, 'getString');
       conversation = {
         data: {
           participants: [
@@ -173,7 +172,13 @@
           ]
         }
       };
-      scope.computeHeading(conversation.data);
+      $httpBackend.expectGET(urlConversation).respond(conversation);
+      $httpBackend.expectGET(urlBlockedUsers).respond({});
+      $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
+      // Let the initial XHRs finish.
+
+      spyOn(configurationService, 'getString');
+      $httpBackend.flush();
       expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {
         participants: contact.user.name + ', ' + conversation.data.participants[2].name + ' and ' +
           conversation.data.participants[3].name
@@ -181,10 +186,8 @@
     });
 
     it('Should detect when the contact is available, assuming they are not blocked', function() {
-      scope.computeAvailability(conversation);
 
-      $httpBackend.expectGET(urlBlockedUsers).respond({});
-      $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
+      AssumeHttpRequestResponded();
       // Expect controller defaults which assume user is not available for contact.
       expect(scope.isContactAvailable).toEqual(false);
       expect(scope.isContactBlocked).toEqual(false);
@@ -212,10 +215,11 @@
         }
       };
 
+      $httpBackend.expectGET(urlConversation).respond(conversationWithUnavailableContact);
       $httpBackend.expectGET(urlBlockedUsers).respond({});
       $httpBackend.expectGET(urlAvailableUsers).respond(noAvailableUsers);
 
-      scope.computeAvailability(conversationWithUnavailableContact);
+
 
       // Expect controller defaults which assume user is not available for contact.
       expect(scope.isContactAvailable).toEqual(false);
@@ -248,9 +252,8 @@
           blockedUser
         ]
       };
+      $httpBackend.expectGET(urlConversation).respond(conversation);
       $httpBackend.expectGET(urlBlockedUsers).respond(blockedRelationship);
-
-      scope.computeAvailability(conversationWithBlockedUser);
 
       // Expect controller defaults which assume user is not available for contact.
       expect(scope.isContactAvailable).toEqual(false);
@@ -262,9 +265,13 @@
     });
 
     it('Should be able to create a reply to the current conversation, appending it to the messages list', function() {
+
+      AssumeHttpRequestResponded();
+      scope.scrollAdapter = {append: function(){}};
+      spyOn(scope.scrollAdapter, 'append');
+
       // Skip the initial AJAX requests.
-      $httpBackend.expectGET(urlBlockedUsers).respond({});
-      $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
+
       $httpBackend.flush();
 
       scope.reply.text = 'It works';
@@ -282,10 +289,53 @@
       scope.submitReply();
       $httpBackend.flush();
 
-      var lastMessage = scope.messages.data[scope.messages.data.length - 1];
-      expect(angular.equals(lastMessage, newMessage.data[0])).toBeTruthy();
+      expect(scope.scrollAdapter.append).toHaveBeenCalledWith([newMessage.data[0]]);
+
+      //var lastMessage = scope.messages.data[scope.messages.data.length - 1];
+      //expect(angular.equals(lastMessage, newMessage.data[0])).toBeTruthy();
 
       expect(scope.reply.text).toEqual('');
     });
+
+    it('Should provide a data source for messages', function(){
+      AssumeHttpRequestResponded();
+      $httpBackend.flush();
+      expect(scope.messagesDatasource).toBeDefined();
+      expect(typeof scope.messagesDatasource.get).toEqual('function');
+    });
+
+    it('Should load the last message page on index 1', function(){
+      AssumeHttpRequestResponded();
+      $httpBackend.flush();
+      urlMessages += "&after=&before=";
+      $httpBackend.expectGET(urlMessages).respond(messages);
+      var success = function(){};
+      scope.scrollCalls = 0;
+
+      scope.messagesDatasource.get(1,10, success);
+      timeout.flush();
+      $httpBackend.flush();
+    });
+
+    it('Should load the before page message page on index -9', function(){
+      AssumeHttpRequestResponded();
+      $httpBackend.flush();
+      urlMessages += "&after=&before=100";
+      $httpBackend.expectGET(urlMessages).respond(messages);
+      var success = function(){};
+      scope.scrollCalls = 1;
+      scope.paging = {cursors: {after: 100}};
+
+      scope.messagesDatasource.get(-9,10, success);
+      timeout.flush();
+      $httpBackend.flush();
+    });
+
+
+    function AssumeHttpRequestResponded(){
+      $httpBackend.expectGET(urlConversation).respond(conversation);
+      $httpBackend.expectGET(urlBlockedUsers).respond({});
+      $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
+    }
   });
 })(describe, it, expect, inject, angular, beforeEach, afterEach, spyOn);

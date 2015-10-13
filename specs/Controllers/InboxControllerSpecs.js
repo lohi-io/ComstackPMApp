@@ -148,8 +148,8 @@
             name: 'Boycey'
           }]
       };
-      scope.computeHeading(conversation);
-      expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {participants: 'Boycey'});
+      ;
+      expect(scope.computeHeading(conversation)).toEqual('Boycey');
     });
 
     it('Should determine the conversation title for a conversation with 3 participants', function() {
@@ -168,8 +168,7 @@
           }]
 
       };
-      scope.computeHeading(conversation);
-      expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {participants: 'Boycey and Craig'});
+      expect(scope.computeHeading(conversation)).toEqual('Boycey and Craig');
     });
 
     it('Should determine the conversation title for a conversation with 4 participants', function() {
@@ -189,8 +188,7 @@
             name: 'David'
           }]
       };
-      scope.computeHeading(conversation);
-      expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {participants: 'Boycey, Craig and David'});
+      expect(scope.computeHeading(conversation)).toEqual('Boycey, Craig and David');
     });
 
     it('Should determine the conversation from historical participants when participants is empty', function() {
@@ -211,8 +209,7 @@
           name: 'David'
         }]
       };
-      scope.computeHeading(conversation);
-      expect(configurationService.getString).toHaveBeenCalledWith('heading__conversation_with', {participants: 'Boycey, Craig and David'});
+      expect(scope.computeHeading(conversation)).toEqual('Boycey, Craig and David');
     });
 
     it('Should have a delete function that goes to delete state', function(){
