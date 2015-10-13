@@ -56,7 +56,7 @@
 
     <div class="text-center">
       <div class="pagination-wrapper text-center">
-        <ul class="pagination" ng-show="pages.length">
+        <ul class="pagination" ng-show="pages.length > 1">
           <li ng-hide="paging.current_page === 1" class="prev first"><a title="Go to previous page" ng-click="previous()"></a></li>
           <li ng-repeat="page in pages"
               ng-class="{'active': paging.current_page === page.number, 'first': page.number === 1}">
