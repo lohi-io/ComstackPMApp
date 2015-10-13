@@ -14,7 +14,7 @@ Comstack.PMApp = {
     "environment": "local",
     "authorization_header": "Basic Q1JVSzAxOnl1RGFiOG5lIQ==",
     "access_token": "",
-    "csrf_token": "",
+    "csrf_token": "DB7MkAmjCBowvfn5nKH1juJ6qz8YqB0ckII0_0UZiV8",
     "library_path": "http://cancerchatdev.localweb:8000",
     "max_participants": 4,
     "message_maxlength": 10,

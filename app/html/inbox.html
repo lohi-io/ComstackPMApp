@@ -47,7 +47,7 @@
                  ng-bind-html="text_link_delete | htmlsafe"></a>
               <span
                 ng-show="currentUser.permissions.conversations.leave && currentUser.permissions.conversations.report"> | </span>
-              <a href="" ng-click="report(conversation)" class="report-conversation" ng-show="!currentUser.permissions.conversations.report"
+              <a href="" ng-click="report(conversation)" class="report-conversation" ng-show="currentUser.permissions.conversations.report"
                  ng-bind-html="text_link_report | htmlsafe"></a>
             </small>
           </div>

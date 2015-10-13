@@ -20,6 +20,8 @@ module.exports = function (config) {
       'bower_components/angular-bootstrap/ui-bootstrap.js',
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
       'bower_components/ng-tags-input/ng-tags-input.js',
+      'bower_components/angular-ui-scroll/dist/ui-scroll.js',
+      'bower_components/angular-ui-scroll/dist/ui-scroll-jqlite.js',
 
       'app/js/app.js',
       'app/js/providers/*.js',

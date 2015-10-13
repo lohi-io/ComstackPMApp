@@ -9,9 +9,11 @@ services.factory('Conversation', ['$resource', 'configurationService',
     }, {
       getMessages: {
         method: 'GET',
-        url: settings.api_url + '/cs-pm/conversations/:id/messages',
+        url: settings.api_url + '/cs-pm/conversations/:id/messages/',
         params: {
-          access_token: settings.access_token
+          access_token: settings.access_token,
+          before:'',
+          after:''
         },
         isArray: false
       },
@@ -55,3 +57,4 @@ services.factory('Conversation', ['$resource', 'configurationService',
     });
   }
 ]);
+
