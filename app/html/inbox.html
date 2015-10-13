@@ -5,11 +5,10 @@
     <div class="messages-header cs-pm__header clearfix">
       <h2 class="pull-left cs-pm-left" style="" ng-bind-html="text_heading_messages | htmlsafe"></h2>
 
-      <div class="pull-right cs-pm-right"
-           ng-hide="currentUser.preferences.read_only_mode">
+      <div class="pull-right cs-pm-right">
         <a href="{{friends_link}}" class="btn btn-link btn-link-outline">{{button_friends_list}}</a>
         <a class="btn btn-default cs-pm__new-message"
-           ui-sref="message"><span class="icomoon icomoon-speech-bubble cs-pm-icon--new-message"></span>{{button_new_conversation}}</a></div>
+           ui-sref="message" ng-hide="currentUser.preferences.read_only_mode"><span class="icomoon icomoon-speech-bubble cs-pm-icon--new-message"></span> {{button_new_conversation}}</a></div>
     </div>
     <div class="alert alert-warning" ng-show="currentUser.preferences.read_only_mode"
          ng-bind-html="text_read_only | htmlsafe"></div>
@@ -57,15 +56,13 @@
 
     <div class="text-center">
       <div class="pagination-wrapper text-center">
-        <ul class="pagination" ng-show="pages.length">
-          <li ng-hide="paging.current_page === 1"><a title="Go to previous page" class="next" ng-click="previous()">
-            &lt;</a></li>
+        <ul class="pagination" ng-show="pages.length > 1">
+          <li ng-hide="paging.current_page === 1" class="prev first"><a title="Go to previous page" ng-click="previous()"></a></li>
           <li ng-repeat="page in pages"
               ng-class="{'active': paging.current_page === page.number, 'first': page.number === 1}">
             <a ng-click="goToPage(page.number)" ng-attr-title="Go to page {{page.number}}" ng-bind="page.number"></a>
           </li>
-          <li ng-hide="paging.current_page === pages.length"><a title="Go to next page" class="prev" ng-click="next()">
-            &gt;</a></li>
+          <li ng-hide="paging.current_page === pages.length" class="next last"><a title="Go to next page" ng-click="next()"></a></li>
         </ul>
       </div>
     </div>

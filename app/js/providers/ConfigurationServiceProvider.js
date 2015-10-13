@@ -80,8 +80,29 @@ app.provider("configurationService", function () {
     return appSettings;
   };
 
+  /**
+   * Gets an app setting.
+   *
+   * In the case where a nested setting is required, an array of properties in order of nesting may be supplied.
+   * @param {string|string[]} key
+   * @returns {string|int}
+   */
   this.getSetting = function (key) {
-    return appSettings.key;
+    var setting = appSettings;
+
+    if (angular.isString(key)) {
+      key = [key];
+    }
+
+    if (!angular.isArray(key)) {
+      return '';
+    }
+
+    angular.forEach(key, function(value) {
+      setting = setting[value];
+    });
+
+    return setting;
   };
 
   this.set = function (data) {
@@ -111,6 +132,4 @@ app.provider("configurationService", function () {
       getString: self.getString
     }
   }
-
-
 });
