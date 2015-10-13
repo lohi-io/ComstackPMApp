@@ -23,6 +23,8 @@ module.exports = function (config) {
       'bower_components/ng-tags-input/ng-tags-input.js',
       'bower_components/angular-ui-scroll/dist/ui-scroll.js',
       'bower_components/angular-ui-scroll/dist/ui-scroll-jqlite.js',
+      'bower_components/angularpoller/angular-poller.js',
+
 
       'app/js/app.js',
       'app/js/providers/*.js',
