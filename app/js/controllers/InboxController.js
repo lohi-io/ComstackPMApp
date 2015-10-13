@@ -7,7 +7,8 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
 
       for (var i = 0; i < $scope.paging.pagesCount; i++) {
         $scope.pages[i] = {
-          number: i + 1
+          number: i + 1,
+          url: '#/inbox/' + (i+1)
         };
       }
     };
