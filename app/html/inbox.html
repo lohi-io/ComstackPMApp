@@ -75,9 +75,9 @@
       <h2 class="pull-left cs-pm-left" style=""><a href="" class="messages-trigger"
                                                    ng-bind-html="text_heading_messages | htmlsafe"></a></h2>
 
-      <div class="pull-right cs-pm-right" ng-hide="currentUser.preferences.read_only_mode">
+      <div class="pull-right cs-pm-right">
         <a href="{{friends_link}}" class="btn btn-link btn-link-outline">{{button_friends_list}}</a>
-        <a class="btn btn-default cs-pm__new-message">
+        <a class="btn btn-default cs-pm__new-message" ng-hide="currentUser.preferences.read_only_mode">
           <span class="icomoon icomoon-speech-bubble cs-pm-icon--new-message" ng-bind-html="button_new_conversation | htmlsafe"></span>
         </a>
       </div>
