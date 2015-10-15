@@ -117,7 +117,6 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
     });
 
     ConversationsPoller.promise.then(null, null, function (data) {
-      console.log(new Date());
       // Reduce DOM thrashing
       if (!angular.equals($scope.conversations, data.data)) {
         $scope.conversations = data.data;
