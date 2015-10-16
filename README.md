@@ -21,6 +21,10 @@ Assuming these dependencies are installed:
 
 Depending on your network conditions, bower may not be able to clone dependencies. If this happens, run `git config url."https://".insteadOf git://` and `npm install` again.
 
+#### Dependencies
+
+ComstackPMApp assumes nothing of its working environment. Hence, it will work without jQuery, however, if you are using jQuery you will need to be on at least 1.9 and jQuery should be loaded before Angular.js.
+
 ### Configuration
 Well, you'll need an API setup and configured properly somewhere. When instantiating this App you can pass in a series of settings which are as follows. If you're on a Drupal site you can use the [Comstack PM UI module](https://github.com/lohi-io/comstack_pm_ui) which will do all this for you.
 

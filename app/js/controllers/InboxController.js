@@ -7,7 +7,8 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
 
       for (var i = 0; i < $scope.paging.pagesCount; i++) {
         $scope.pages[i] = {
-          number: i + 1
+          number: i + 1,
+          url: '#/inbox/' + (i+1)
         };
       }
     };
@@ -100,7 +101,7 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
     $scope.conversations = [];
     $scope.paging = {};
     $scope.currentUser = {};
-    $scope.conversationsPollDelay = config.getSetting(['poll_intervals', 'conversations']) * 1000000;
+    $scope.conversationsPollDelay = config.getSetting(['poll_intervals', 'conversations']) * 1000;
 
     userService.get().then(function (data) {
       $scope.currentUser = data.data;
