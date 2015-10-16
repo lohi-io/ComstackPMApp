@@ -13,7 +13,8 @@ services.factory('Conversation', ['$resource', 'configurationService',
         params: {
           access_token: settings.access_token,
           before:'',
-          after:''
+          after:'',
+          range: 10
         },
         isArray: false
       },
@@ -53,8 +54,40 @@ services.factory('Conversation', ['$resource', 'configurationService',
         headers: {
           'X-CSRF-Token': settings.csrf_token
         }
-      }
+      },
+      markAsRead: {
+        method: 'PUT',
+        url: settings.api_url + '/cs-pm/conversations/:id/mark-as-read',
+        params: {
+          access_token: settings.access_token
+        },
+        headers: {
+          'X-CSRF-Token': settings.csrf_token
+        },
+        isArray: false
+      },
     });
   }
 ]);
+
+services.factory('pollMessages', ['Conversation', '$q', function(Conversation, $q) {
+  var service = {};
+  service.get = function(id, before, after, range) {
+    var delay = $q.defer();
+    Conversation.getMessages({
+        id:id,
+        before: before,
+        after: after,
+        range: range
+      }, function (conversation) {
+        delay.resolve(conversation);
+      }, function() {
+        delay.reject('Unable to fetch messages for conversation');
+      }
+    );
+    return delay.promise;
+  };
+  return service;
+}]);
+
 

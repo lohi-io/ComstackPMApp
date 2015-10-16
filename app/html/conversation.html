@@ -46,10 +46,6 @@
 
 
     <ul class="media-list">
-      <!--<li ui-scroll="message in messagesDatasource" buffer-size="10" padding="0.3">-->
-        <!--<span>{{message.id}}</span>  <span>{{message.text}}</span>-->
-      <!--</li>-->
-      <!--<li ng-repeat="message in messages | orderBy:'id'"-->
       <li ui-scroll="message in messagesDatasource" buffer-size="10" padding="0.3" adapter="scrollAdapter"
           ng-class="{'message-own': message.sender.id === $parent.currentUser.user.id}"
           class="media">
@@ -75,23 +71,43 @@
   </div>
 
   <div class="cs-pm-reply-wrapper reply-wrapper">
-    <form>
+    <div data-ng-form="newMessageForm" novalidate class="cs-pm-new-wrapper new-wrapper" role="form">
+      <div class="form-group" ng-class="{'has-error': newMessageForm.replyText.$invalid && newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.maxlength || newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))}">
 
-      <div class="form-group">
-        <textarea id="reply-text" class="form-control" rows="3" placeholder="Reply..."
-                  ng-change="unglue()"
-                  ng-disabled="currentUser.preferences.read_only_mode || !isContactAvailable"
-                  ng-model="reply.text"></textarea>
+         <textarea emoji
+                   class="form-control"
+                   id="replyText"
+                   name="replyText"
+                   class="form-control"
+                   ng-change="unglue()"
+                   ng-maxlength="textMaxLength"
+                   ng-disabled="currentUser.preferences.read_only_mode || !isContactAvailable"
+                   rows="3"
+                   placeholder="{{form_reply_placeholder}}"
+                   ng-model="reply.text"
+                   required></textarea>
+
+      <span class="help-block"
+            ng-show="newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))"
+            ng-bind-html="form_text_validation_empty | htmlsafe"></span>
+      <span class="help-block"
+            ng-show="newMessageForm.replyText.$dirty && newMessageForm.replyText.$error.maxlength"
+            ng-bind-html="form_text_validation_maxlength | htmlsafe"></span>
+      <span class="help-block"
+            ng-show="newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.emojiWarning && !allow_emoji)"
+            ng-bind-html="form_text_warning_emoji | htmlsafe"></span>
+
+
+
       </div>
 
       <div class="clearfix">
         <button id="reply-submit" ng-click="submitReply()" type="submit"
                 class="btn btn-default pull-right cs-pm-right message-trigger"
-                ng-disabled="currentUser.preferences.read_only_mode || !isContactAvailable"
-                ng-bind-html="form__new_conversation__submit | htmlsafe"></button>
+                ng-disabled="(newMessageForm.replyText.$invalid && newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.maxlength || newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))) || currentUser.preferences.read_only_mode || !isContactAvailable"
+                ng-bind-html="form_reply_submit | htmlsafe"></button>
       </div>
-
-    </form>
+    </div>
   </div>
 
 </div>

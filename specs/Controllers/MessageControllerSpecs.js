@@ -41,11 +41,15 @@
         "go": function () {
         }
       };
+
+
       $httpBackend = _$httpBackend_;
       config =  $injector.get('configurationService');
 
       scope = _$rootScope_.$new();
       spyOn(config, 'getString');
+
+
 
       var urlUser = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/users/current-user?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
       $httpBackend.expectGET(urlUser).respond(currentUser);
@@ -99,7 +103,7 @@
 
 
     it('Should get the strings from configuration', function(){
-        expect(config.getString.calls.count()).toBe(9);
+        expect(config.getString.calls.count()).toBe(10);
         expect(config.getString).toHaveBeenCalledWith('form__to__label');
         expect(config.getString).toHaveBeenCalledWith('form__to__placeholder__singular');
         expect(config.getString).toHaveBeenCalledWith('form__to__validation__empty');

@@ -10,7 +10,7 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers', 'configu
         $scope.currentUser = data.data;
         $scope.new_conversation_header = config.getString('form__new_conversation__header', {user_id: $scope.currentUser.user.id});
       });
-
+    $scope.allow_emoji = settings.allow_emoji;
     $scope.maxTags = settings.max_participants - 1;
     var numberLabel = '';
     $scope.textMaxLength = settings.message_maxlength;
@@ -30,7 +30,7 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers', 'configu
     $scope.form_text_validation_empty = config.getString('form__text__validation__empty');
     $scope.form_text_validation_maxlength = config.getString('form__text__validation__maxlength', {number: $scope.textMaxLength});
     $scope.form_new_conversation_submit = config.getString('form__new_conversation__submit');
-
+    $scope.form_text_warning_emoji = config.getString('form__text__warning__emoji');
 
     $scope.message = new Conversation({
       recipients: [],

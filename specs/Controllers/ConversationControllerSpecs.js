@@ -4,14 +4,14 @@
   describe('ConversationCtrl', function () {
     var scope, currentUser, messages, conversation, state, stateParams, configurationService;
     var urlUser, urlConversation, urlMessages, urlAvailableUsers, urlBlockedUsers;
-    var $httpBackend, requiresHttp, timeout;
+    var $httpBackend, requiresHttp, timeout, urlPoller, urlMarkAsRead, $q, deferred, poller;
 
     var contact, availableUsers;
 
     beforeEach(angular.mock.module('ComstackPMApp'));
     beforeEach(angular.mock.module('ComstackPMApp.ServicesMock'));
 
-    beforeEach(inject(function (_$rootScope_, $controller, _configurationService_, _$httpBackend_, _$timeout_) {
+    beforeEach(inject(function (_$rootScope_, $controller, _configurationService_, _$httpBackend_, _$timeout_, _$q_) {
       currentUser = {
         user: {
           id: 1,
@@ -45,6 +45,7 @@
       configurationService = _configurationService_;
 
       $httpBackend = _$httpBackend_;
+      $q = _$q_;
       timeout = _$timeout_;
       requiresHttp = true;
       stateParams = {id: conversation.data.id};
@@ -56,6 +57,27 @@
         }
       };
 
+      deferred = $q.defer();
+      var messagePoller =
+      {
+        delay: 15000,
+        deferred: deferred,
+        promise: deferred.promise,
+        smart: true
+      }
+
+      var poller = {
+        get: function() {
+          return messagePoller;
+        }
+      };
+
+      spyOn(poller,'get').and.callThrough();
+
+      deferred.resolve();
+      scope.$root.$digest();
+
+
       /* eslint-disable max-len */
       var baseUrl = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1';
       var accessToken = 'qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
@@ -64,16 +86,22 @@
         data: currentUser
       });
 
+
+      urlPoller = baseUrl+'/cs-pm/conversations/123/messages?access_token='+accessToken+'&after=&before=&poll=true&range=50';
+     // $httpBackend.expectGET(urlPoller).respond({});
+      urlMarkAsRead = baseUrl+'/cs-pm/conversations/123/mark-as-read?access_token='+accessToken;
       urlConversation = baseUrl+'/cs-pm/conversations/123?access_token='+accessToken;
       urlAvailableUsers  = baseUrl+'/cs-pm/users/available-users?access_token='+accessToken+'&filter%5Bid%5D=2';
       urlBlockedUsers = baseUrl+'/cs-fr/blocked?access_token='+accessToken+'&filter%5Buser%5D=2';
       urlMessages = baseUrl+'/cs-pm/conversations/123/messages?access_token='+accessToken;
+
       /* eslint-enable max-len */
       $controller('ConversationCtrl', {
         $scope: scope,
         $state: state,
         $stateParams: stateParams,
-        configurationService: configurationService
+        configurationService: configurationService,
+        poller: poller
       });
     }));
 
@@ -85,6 +113,11 @@
       }
     });
 
+    if('Should call the get of the poller', function(){
+        expect(poller.get).toHaveBeenCalled();
+    });
+
+
     it('Should be able to navigate to the inbox', function() {
       requiresHttp = false;
 
@@ -94,21 +127,14 @@
       scope.goToInbox();
       expect(state.go).toHaveBeenCalledWith('inbox', {page: 1}, {reload: 'inbox'});
     });
-    //
-    //it('Should load in the conversation\'s messages on initialisation', function () {
-    //  $httpBackend.expectGET(urlBlockedUsers).respond({});
-    //  $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
-    //  // Let the initial XHRs finish.
-    //  $httpBackend.flush();
-    //
-    //  expect(angular.equals(scope.messages, messages)).toBeTruthy();
-    //});
+
 
     it('Should load in the current user on initialisation', function () {
       AssumeHttpRequestResponded();
+      $httpBackend.flush();
 
       // Let the initial XHRs finish.
-      $httpBackend.flush();
+
       expect(angular.equals(scope.currentUser, currentUser)).toBeTruthy();
     });
 
@@ -147,6 +173,7 @@
 
       $httpBackend.expectGET(urlConversation).respond(conversation);
       $httpBackend.expectGET(urlBlockedUsers).respond({});
+      $httpBackend.expectPUT(urlMarkAsRead,{}).respond({});
       $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
       // Let the initial XHRs finish.
       spyOn(configurationService, 'getString');
@@ -174,6 +201,7 @@
       };
       $httpBackend.expectGET(urlConversation).respond(conversation);
       $httpBackend.expectGET(urlBlockedUsers).respond({});
+      $httpBackend.expectPUT(urlMarkAsRead,{}).respond({});
       $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
       // Let the initial XHRs finish.
 
@@ -217,6 +245,7 @@
 
       $httpBackend.expectGET(urlConversation).respond(conversationWithUnavailableContact);
       $httpBackend.expectGET(urlBlockedUsers).respond({});
+      $httpBackend.expectPUT(urlMarkAsRead,{}).respond({});
       $httpBackend.expectGET(urlAvailableUsers).respond(noAvailableUsers);
 
 
@@ -253,8 +282,9 @@
         ]
       };
       $httpBackend.expectGET(urlConversation).respond(conversation);
-      $httpBackend.expectGET(urlBlockedUsers).respond(blockedRelationship);
 
+      $httpBackend.expectGET(urlBlockedUsers).respond(blockedRelationship);
+      $httpBackend.expectPUT(urlMarkAsRead,{}).respond({});
       // Expect controller defaults which assume user is not available for contact.
       expect(scope.isContactAvailable).toEqual(false);
       expect(scope.isContactBlocked).toEqual(false);
@@ -307,20 +337,21 @@
     it('Should load the last message page on index 1', function(){
       AssumeHttpRequestResponded();
       $httpBackend.flush();
-      urlMessages += "&after=&before=";
+      urlMessages += "&after=&before=&range=10";
       $httpBackend.expectGET(urlMessages).respond(messages);
       var success = function(){};
       scope.scrollCalls = 0;
 
       scope.messagesDatasource.get(1,10, success);
       timeout.flush();
+      $httpBackend.expectPUT(urlMarkAsRead,{}).respond({});
       $httpBackend.flush();
     });
 
     it('Should load the before page message page on index -9', function(){
       AssumeHttpRequestResponded();
       $httpBackend.flush();
-      urlMessages += "&after=&before=100";
+      urlMessages += "&after=100&before=&range=10";
       $httpBackend.expectGET(urlMessages).respond(messages);
       var success = function(){};
       scope.scrollCalls = 1;
@@ -335,6 +366,7 @@
     function AssumeHttpRequestResponded(){
       $httpBackend.expectGET(urlConversation).respond(conversation);
       $httpBackend.expectGET(urlBlockedUsers).respond({});
+      $httpBackend.expectPUT(urlMarkAsRead,{}).respond({});
       $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
     }
   });

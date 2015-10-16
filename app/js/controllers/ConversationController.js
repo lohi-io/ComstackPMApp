@@ -1,24 +1,30 @@
 app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams', '$filter', '$sce', 'getCurrentUser',
-  'User', 'Conversation', 'configurationService', '$timeout',
-  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout) {
+  'User', 'Conversation', 'configurationService', '$timeout', 'poller',
+  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout, poller) {
 
     var settings = config.get();
+
+    var markAsRead = function(){
+      Conversation.markAsRead({id: $stateParams.id}, {}).$promise.then(function (response) {
+
+      });
+    };
+
+
     var afterLoad = function (messages, glue, index) {
       var results = [];
       $scope.glued = glue;
-      if(messages.data.length > 0 ){
+      if (messages.data.length > 0) {
+        messages.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = messages.data[0].id : $scope.lastMessageId;
+        config.setSettingValue('lastMessageId', $scope.lastMessageId);
         $scope.paging = messages.paging;
-      }
-      results.push.apply(results, messages.data);
-      results = $filter('orderBy')(results, 'id');
-      if(results.length < 10){
-        $scope.moreMessages = false;
-      }else{
-        $scope.moreMessages = true;
-      }
-
-      for (var i = 0; i < results.length; i++) {
-        results[i].index = index;
+        results.push.apply(results, messages.data);
+        results = $filter('orderBy')(results, 'id');
+        if (results.length < 10) {
+          $scope.moreMessages = false;
+        } else {
+          $scope.moreMessages = true;
+        }
       }
       return results;
     };
@@ -56,14 +62,20 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         name: $scope.currentUser.user.name,
         user_id: $scope.currentUser.user.id
       });
-      $scope.form__new_conversation__submit = config.getString('form__new_conversation__submit', {});
-      $scope.link__delete = config.getString('link__delete', {});
-      $scope.link__report = config.getString('link__report', {});
-      $scope.link__block = config.getString('link__block', {});
-      $scope.heading__messages = config.getString('heading__messages', {});
-      $scope.button__new_conversation = config.getString('button__new_conversation', {});
-      $scope.button__load_older_messages = config.getString('button__load_older_messages', {});
-      $scope.text__select_messages_to_delete = config.getString('text__select_messages_to_delete', {});
+      $scope.textMaxLength = settings.message_maxlength;
+      $scope.allow_emoji = settings.allow_emoji;
+      $scope.form_reply_submit = config.getString('form__reply__submit');
+      $scope.link__delete = config.getString('link__delete');
+      $scope.link__report = config.getString('link__report');
+      $scope.link__block = config.getString('link__block');
+      $scope.heading__messages = config.getString('heading__messages');
+      $scope.button__new_conversation = config.getString('button__new_conversation');
+      $scope.button__load_older_messages = config.getString('button__load_older_messages');
+      $scope.text__select_messages_to_delete = config.getString('text__select_messages_to_delete');
+      $scope.form_reply_placeholder = config.getString('form__reply__placeholder');
+      $scope.form_text_validation_maxlength = config.getString('form__text__validation__maxlength', {number: $scope.textMaxLength});
+      $scope.form_text_validation_empty = config.getString('form__text__validation__empty');
+      $scope.form_text_warning_emoji = config.getString('form__text__warning__emoji');
     };
 
     /**
@@ -111,6 +123,12 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       });
     };
 
+
+    var greaterThan = function (attribute, value) {
+      return function (item) {
+        return item[attribute] > value;
+      }
+    };
     /**
      * Determines the conversation heading used for this conversation.
      * @param conversation
@@ -131,6 +149,9 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     $scope.isContactBlocked = false;
     $scope.scrollAdapter = {};
     $scope.moreMessages = false;
+    $scope.messagesPollDelay = config.getSetting(['poll_intervals', 'messages']) * 1000;
+    $scope.lastMessageId = 0;
+    $scope.scrollPosition = 'bottom';
 
 
     $scope.messagesDatasource = {
@@ -150,8 +171,9 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
                 before: '',
                 after: ''
               }).$promise.then(function (messages) {
-                  success(afterLoad(messages, true, index));
-                });
+                success(afterLoad(messages, true, index));
+                markAsRead();
+              });
             });
           }
 
@@ -159,11 +181,12 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
             $scope.scrollCalls++;
             Conversation.getMessages({
               id: $stateParams.id,
-              before: $scope.paging.cursors.after,
-              after: ''
+              after: $scope.paging.cursors.after,
+              before: ''
             }).$promise.then(function (messages) {
-                success(afterLoad(messages, false, index));
-              });
+              success(afterLoad(messages, false, index));
+              $scope.scrollPosition = 'between';
+            });
           }
 
           if (index == count + 1) {
@@ -186,12 +209,12 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
             }
 
             //this needs to be changed after the api is fixed
-            beforeFix = after;
-            afterFix = before;
+            beforeFix = before;
+            afterFix = after;
             if (index > $scope.lastIndex) {//down
-              beforeFix = '';
-            } else {
               afterFix = '';
+            } else {
+              beforeFix = '';
             }
 
 
@@ -202,8 +225,18 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
                 before: beforeFix,
                 after: afterFix
               }).$promise.then(function (messages) {
-                  success(afterLoad(messages, false, index));
-                });
+                 if(messages.data.length < 10 ){
+                   markAsRead();
+                   if (index >= $scope.lastIndex) {//down
+                     $scope.scrollPosition = 'bottom';
+                   }else{
+                     $scope.scrollPosition = 'top';
+                   }
+                 }else{
+                   $scope.scrollPosition = 'between';
+                 }
+                 success(afterLoad(messages, false, index));
+              });
             });
           } else {
             success([]);
@@ -220,13 +253,13 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       if ($scope.paging.next !== null) {
         Conversation.getMessages({
           id: $stateParams.id,
-          before: $scope.paging.cursors.after,
+          before: $scope.paging.cursors.before,
           after: ''
         }).$promise.then(function (messages) {
-            $scope.glued = false;
-            $scope.messages.push.apply($scope.messages, messages.data);
-            $scope.paging = messages.paging;
-          });
+          $scope.glued = false;
+          $scope.messages.push.apply($scope.messages, messages.data);
+          $scope.paging = messages.paging;
+        });
       }
     };
 
@@ -269,8 +302,53 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         }).$promise.then(function (conversation) {
           computeHeading(conversation.data);
           computeAvailability(conversation.data);
+          markAsRead();
+
+
         });
       });
+
+    var messagesPoller = poller.get(Conversation, {
+      action: 'getMessages',
+      argumentsArray: [{
+        id: $stateParams.id,
+        range: 50,
+        poll: true
+      }],
+      delay: $scope.messagesPollDelay,
+      smart: true
+    });
+
+    messagesPoller.promise.then(null, null, function (data) {
+      // Reduce DOM thrashing
+      var results = [];
+      console.log('messages poll try');
+
+      if($scope.scrollCalls >=3 &&  data.data.length > 0){
+        results.push.apply(results, data.data);
+        results = $filter('filter')(results, greaterThan('id', $scope.lastMessageId), true);
+        results = $filter('orderBy')(results, 'id');
+        if(results.length > 0){
+          $scope.scrollAdapter.append(results);
+          if($scope.scrollPosition == 'bottom'){
+            $scope.glued = true;
+          }
+          console.log($scope.scrollPosition);
+          $timeout(function () {
+            $scope.glued = false;
+          });
+        }
+        data.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = data.data[0].id : $scope.lastMessageId;
+        config.setSettingValue('lastMessageId', $scope.lastMessageId);
+        console.log('messages poll done');
+        console.log(results);
+     };
+
+      if (angular.isUndefined($scope.currentUser.user) && $scope.currentUser.preferences.read_only_mode) {
+        messagesPoller.stop();
+      }
+    });
+
 
   }
 ]);
