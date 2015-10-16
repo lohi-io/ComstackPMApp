@@ -42,6 +42,7 @@ module.exports = function(grunt){
             src: [
               'app/js/app.js',
               'app/js/providers/ConfigurationServiceProvider.js',
+              'app/js/directives/emoji.js',
               'app/js/filters/HtmlSafeFilter.js',
               'app/js/filters/TruncateFilter.js',
               'app/js/filters/DateFromNowFilter.js',
@@ -59,7 +60,8 @@ module.exports = function(grunt){
               'app/js/services/ConversationService.js',
               'app/js/services/DeleteConversationState.js',
               'app/js/services/ReportConversationState.js',
-              'app/js/services/BlockUserState.js'
+              'app/js/services/BlockUserState.js',
+              'app/js/services/InterceptorService.js'
             ],
             dest:'app/js/ComstackPMApp.js'
           }
