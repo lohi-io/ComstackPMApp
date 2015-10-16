@@ -1,11 +1,12 @@
 
 var app = angular.module('ComstackPMApp', ['ui.router', 'ui.bootstrap', 'ComstackPMApp.Services', 'ngTagsInput',
-  'luegg.directives', 'emguo.poller', 'ui.scroll','ui.scroll.jqlite']);
+  'luegg.directives', 'emguo.poller', 'ui.scroll','ui.scroll.jqlite', 'ComstackPMApp.Directives']);
 
 app.config([
   "$urlRouterProvider",
-  "$stateProvider", 'configurationServiceProvider', function ($urlRouterProvider, $stateProvider, configurationServiceProvider) {
+  "$stateProvider", 'configurationServiceProvider', '$httpProvider', function ($urlRouterProvider, $stateProvider, configurationServiceProvider, $httpProvider) {
 
+   $httpProvider.interceptors.push('requestInterceptor');
 
     var settings = configurationServiceProvider.get();
     var templatesPath = settings.library_path;

@@ -31,10 +31,13 @@ app.controller('ReportConversationCtrl', [
     };
     $scope.confirm = function () {
 
+
+
       var report = {
-        "reasons": [],
-        "other_reason": $scope.data.otherDetails,
-        "posts": []
+        'conversation_id': $stateParams.id,
+        'reasons': [],
+        'other_reason': $scope.data.otherDetails,
+        'posts': []
       };
 
       $scope.data.isSpam ? report.reasons.push(reasonsValues.isSpam):'';

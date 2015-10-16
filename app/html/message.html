@@ -48,8 +48,9 @@
     </div>
 
 
-    <div class="form-group" ng-class="{'has-error': newMessageForm.message.$invalid && newMessageForm.message.$dirty}">
+    <div class="form-group" ng-class="{'has-error': newMessageForm.message.$invalid && newMessageForm.message.$dirty && (newMessageForm.message.$error.maxlength || newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji))}">
       <textarea class="form-control"
+                emoji
                 id="message"
                 name="message"
                 ng-maxlength="textMaxLength"
@@ -58,11 +59,14 @@
                 ng-model="message.text"
                 required></textarea>
       <span class="help-block"
-            ng-show="newMessageForm.message.$dirty && newMessageForm.message.$error.required"
+            ng-show="newMessageForm.message.$dirty && (newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji))"
             ng-bind-html="form_text_validation_empty | htmlsafe"></span>
       <span class="help-block"
             ng-show="newMessageForm.message.$dirty && newMessageForm.message.$error.maxlength"
             ng-bind-html="form_text_validation_maxlength | htmlsafe"></span>
+      <span class="help-block"
+            ng-show="newMessageForm.message.$dirty && (newMessageForm.message.$error.emojiWarning && !allow_emoji)"
+            ng-bind-html="form_text_warning_emoji | htmlsafe"></span>
 
     </div>
   <!--</form>-->

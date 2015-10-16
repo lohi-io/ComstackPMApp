@@ -100,7 +100,7 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
     $scope.conversations = [];
     $scope.paging = {};
     $scope.currentUser = {};
-    $scope.conversationsPollDelay = config.getSetting(['poll_intervals', 'conversations']) * 100;
+    $scope.conversationsPollDelay = config.getSetting(['poll_intervals', 'conversations']) * 1000000;
 
     userService.get().then(function (data) {
       $scope.currentUser = data.data;
