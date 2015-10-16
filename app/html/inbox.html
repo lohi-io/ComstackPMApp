@@ -44,11 +44,11 @@
           </div>
           <div class="controls">
             <small>
-              <a ng-click="delete(conversation)" class="delete-conversation" ng-show="currentUser.permissions.conversations.leave"
+              <a ui-sref="inbox.delete" ui-sref-opts="{page: paging.current_page, id: conversation.id}" class="delete-conversation" ng-show="currentUser.permissions.conversations.leave"
                  ng-bind-html="text_link_delete | htmlsafe"></a>
               <span
                 ng-show="currentUser.permissions.conversations.leave && currentUser.permissions.conversations.report"> | </span>
-              <a href="" ng-click="report(conversation)" class="report-conversation" ng-show="currentUser.permissions.conversations.report"
+              <a ui-sref="inbox.report" ui-sref-opts="{page: paging.current_page, id: conversation.id}" href="" ng-click="report(conversation)" class="report-conversation" ng-show="currentUser.permissions.conversations.report"
                  ng-bind-html="text_link_report | htmlsafe"></a>
             </small>
           </div>
