@@ -7,7 +7,6 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       mobile: '(max-width: 480px)'
     };
     var isMobile = function() {
-      console.log(screenSize.is('mobile'));
       return screenSize.is('mobile');
     };
 
