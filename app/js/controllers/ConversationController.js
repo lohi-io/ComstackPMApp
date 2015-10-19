@@ -1,14 +1,8 @@
 app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams', '$filter', '$sce', 'getCurrentUser',
-  'User', 'Conversation', 'configurationService', '$timeout', 'poller', 'screenSize',
-  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout, poller, screenSize) {
-    var settings = config.get();
+  'User', 'Conversation', 'configurationService', '$timeout', 'poller',
+  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout, poller) {
 
-    screenSize.rules = {
-      mobile: '(max-width: 480px)'
-    };
-    var isMobile = function() {
-      return screenSize.is('mobile');
-    };
+    var settings = config.get();
 
     var markAsRead = function(){
       Conversation.markAsRead({id: $stateParams.id}, {}).$promise.then(function (response) {
@@ -167,6 +161,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         var afterFix = "";
         var beforeFix = "";
 
+
         if ($scope.scrollCalls < 3) {
           if (index == 1) {
             $scope.scrollCalls++;
@@ -176,14 +171,13 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
                 before: '',
                 after: ''
               }).$promise.then(function (messages) {
-                var glued = !isMobile();
-                success(afterLoad(messages, glued, index));
+                success(afterLoad(messages, true, index));
                 markAsRead();
               });
             });
           }
 
-          if (index == 1 - count && !isMobile()) {
+          if (index == 1 - count) {
             $scope.scrollCalls++;
             Conversation.getMessages({
               id: $stateParams.id,
@@ -195,7 +189,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
             });
           }
 
-          if (index == count + 1 && !isMobile()) {
+          if (index == count + 1) {
             $scope.scrollCalls++;
             $timeout(function () {
               success([]);
@@ -259,11 +253,11 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       if ($scope.paging.next !== null) {
         Conversation.getMessages({
           id: $stateParams.id,
-          after: $scope.paging.cursors.after,
-          before: ''
+          before: $scope.paging.cursors.before,
+          after: ''
         }).$promise.then(function (messages) {
           $scope.glued = false;
-          $scope.scrollAdapter.prepend(messages.data.slice().reverse());
+          $scope.messages.push.apply($scope.messages, messages.data);
           $scope.paging = messages.paging;
         });
       }
@@ -328,6 +322,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     messagesPoller.promise.then(null, null, function (data) {
       // Reduce DOM thrashing
       var results = [];
+      console.log('messages poll try');
 
       if($scope.scrollCalls >=3 &&  data.data.length > 0){
         results.push.apply(results, data.data);
@@ -353,5 +348,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         messagesPoller.stop();
       }
     });
+
+
   }
 ]);

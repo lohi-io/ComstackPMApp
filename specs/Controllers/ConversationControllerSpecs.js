@@ -5,7 +5,6 @@
     var scope, currentUser, messages, conversation, state, stateParams, configurationService;
     var urlUser, urlConversation, urlMessages, urlAvailableUsers, urlBlockedUsers;
     var $httpBackend, requiresHttp, timeout, urlPoller, urlMarkAsRead, $q, deferred, poller;
-    var $window;
 
     var contact, availableUsers;
 
@@ -43,7 +42,6 @@
           ]
         }
       };
-
       configurationService = _configurationService_;
 
       $httpBackend = _$httpBackend_;
@@ -76,14 +74,6 @@
 
       spyOn(poller,'get').and.callThrough();
 
-      var screenSize = {
-        is: function(rule) {
-          if (rule === 'mobile') {
-            return false;
-          }
-        }
-      };
-
       deferred.resolve();
       scope.$root.$digest();
 
@@ -111,8 +101,7 @@
         $state: state,
         $stateParams: stateParams,
         configurationService: configurationService,
-        poller: poller,
-        screenSize: screenSize
+        poller: poller
       });
     }));
 

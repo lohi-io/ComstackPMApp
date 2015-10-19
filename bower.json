@@ -11,8 +11,7 @@
     "angular-loader": "~1.4.0",
     "angular-mocks": "~1.4.0",
     "html5-boilerplate": "~5.2.0",
-    "angular-scroll-glue": "~2.0.6",
-    "angular-media-queries": "~0.4.1"
+    "angular-scroll-glue": "~2.0.6"
   },
   "devDependencies": {
     "angular-bootstrap": "~0.13.4",
