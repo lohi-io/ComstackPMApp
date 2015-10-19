@@ -1,6 +1,6 @@
 
 var app = angular.module('ComstackPMApp', ['ui.router', 'ui.bootstrap', 'ComstackPMApp.Services', 'ngTagsInput',
-  'luegg.directives', 'emguo.poller', 'ui.scroll','ui.scroll.jqlite', 'ComstackPMApp.Directives']);
+  'luegg.directives', 'emguo.poller', 'ui.scroll','ui.scroll.jqlite', 'matchMedia', 'ComstackPMApp.Directives']);
 
 app.config([
   "$urlRouterProvider",
