@@ -70,15 +70,14 @@
         ng-show="newMessageForm.message.$dirty && (newMessageForm.message.$error.emojiWarning && !allow_emoji)"
         ng-bind-html="form_text_warning_emoji | htmlsafe">
       </span>
+      <button type="submit"
+        ng-disabled="newMessageForm.$invalid"
+        class="btn btn-default pull-right cs-pm-right message-trigger"
+        ng-click="save()" ng-bind="form_new_conversation_submit">
+      </button>
     </div>
   </div>
   <div class="clearfix">
-    <button type="submit"
-      ng-disabled="newMessageForm.$invalid"
-      class="btn btn-default pull-right cs-pm-right message-trigger"
-      ng-click="save()" ng-bind="form_new_conversation_submit">
-    </button>
-
     <script type="text/ng-template" id="user-template">
       <div>
         <div style="float: left">
