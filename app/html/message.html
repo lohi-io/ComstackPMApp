@@ -73,7 +73,7 @@
       </div>
   <div class="clearfix">
     <button type="submit"
-            ng-disabled="newMessageForm.$invalid"
+            ng-disabled="(newMessageForm.recipients.$invalid || (newMessageForm.message.$invalid && (newMessageForm.message.$error.maxlength || newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji)))) || currentUser.preferences.read_only_mode"
             class="btn btn-default pull-right cs-pm-right message-trigger"
             ng-click="save()" ng-bind="form_new_conversation_submit"></button>
 

@@ -57,7 +57,7 @@
       expect(promise.then).toHaveBeenCalledWith(jasmine.any(Function), jasmine.any(Function));
     });
 
-    it('Should transition to dashboard on successful sign in', function () {
+    it('Should go to ok state destination', function () {
       service.activate(templateUrl, okDestination, cancelDestination);
       successHandler(true);
       expect(state.go).toHaveBeenCalledWith('okState', {id: 1}, {
@@ -67,7 +67,7 @@
       });
     });
 
-    it('Should transition to home on cancelled sign in', function () {
+    it('Should transition to cancel destination', function () {
       service.activate(templateUrl, okDestination, cancelDestination);
       rejectHandler();
       expect(state.go).toHaveBeenCalledWith('cancelState', {id: 2});
