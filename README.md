@@ -41,9 +41,10 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
 | share_data_storage | `Boolean` | Whether or not to use local storage to reduce server requests when the app is open on multiple tabs &/ windows. |
 | library_path | `String` | The path/location of the library. |
 | poll_intervals | `Object` | An object containing the number of seconds to wait before polling the server for new data. |
-| - conversations | `Integer` | |
-| - messages | `Integer` | |
-| - available_users | `Integer` | |
+| - conversations | `Integer` | How often to check for new conversations, defaults to 20 seconds. |
+| - messages | `Integer` | How often to check for new messages when within a conversation, defaults to 10 seconds. |
+| - user_is_available | `Integer` | How often to check when in a conversation that the other user(s) still available, defaults to 10 seconds. |
+| - read_only | `Integer` | How often to check to see if the current user has opted out of Private Messaging, defaults to 60 seconds. |
 | allow_emoji | `Boolean` | Defaults to `false`, this setting means that the app will treat strings which only contain Emoji (or other non utf8 characters) to be empty, failing validation. |
 | strings | `Object` | A series of strings in key/value format used within the interface, this is to facilitate easily changing text or translating things. If "@user_id@" is present in a string it will be replaced with the current users id. |
 
