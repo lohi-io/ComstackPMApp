@@ -10,6 +10,8 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       });
     };
 
+    var messagesPoller;
+    var availabilityPoller;
 
     var afterLoad = function (messages, glue, index) {
       var results = [];
@@ -101,9 +103,18 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       var contacts = $filter('filter')(conversation.participants, {id: '!' + $scope.currentUser.user.id});
       var contactId = contacts[0].id;
 
-      User.getBlockedUsers({
-        'filter[user]': contactId
-      }).$promise.then(function (blockedUsers) {
+      // Check if current user has blocked contact every `availabilityDelay` milliseconds.
+      availabilityPoller = poller.get(User, {
+        action: 'getBlockedUsers',
+        argumentsArray: [{
+          'filter[user]': contactId
+        }],
+        delay: $scope.availabilityDelay,
+        smart: true
+      });
+
+      // After checking is contact is blocked, determine if they are available.
+      availabilityPoller.promise.then(null, null, function(blockedUsers) {
         $scope.isContactBlocked = blockedUsers.hasOwnProperty('data') &&
           $filter('filter')(blockedUsers.data, {user: {id: contactId}}).length === 1;
 
@@ -115,14 +126,33 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
 
         User.getAvailableUsers({
           'filter[id]': contactId
-        }).$promise.then(function (response) {
+        }).$promise.then(function (availableUsers) {
           // Check the response data only contains the contact's id.
-          $scope.isContactAvailable = response.hasOwnProperty('data') &&
-            $filter('filter')(response.data, {id: contactId}).length === 1;
+          $scope.isContactAvailable = availableUsers.hasOwnProperty('data') &&
+            $filter('filter')(availableUsers.data, {id: contactId}).length === 1;
         });
       });
+      //User.getBlockedUsers({
+      //  'filter[user]': contactId
+      //}).$promise.then(function (blockedUsers) {
+      //  $scope.isContactBlocked = blockedUsers.hasOwnProperty('data') &&
+      //    $filter('filter')(blockedUsers.data, {user: {id: contactId}}).length === 1;
+      //
+      //  // If contact is blocked, we won't be able to check if they are available, so assume they are not.
+      //  if ($scope.isContactBlocked) {
+      //    $scope.isContactAvailable = false;
+      //    return;
+      //  }
+      //
+      //  User.getAvailableUsers({
+      //    'filter[id]': contactId
+      //  }).$promise.then(function (response) {
+      //    // Check the response data only contains the contact's id.
+      //    $scope.isContactAvailable = response.hasOwnProperty('data') &&
+      //      $filter('filter')(response.data, {id: contactId}).length === 1;
+      //  });
+      //});
     };
-
 
     var greaterThan = function (attribute, value) {
       return function (item) {
@@ -150,6 +180,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     $scope.scrollAdapter = {};
     $scope.moreMessages = false;
     $scope.messagesPollDelay = config.getSetting(['poll_intervals', 'messages']) * 1000;
+    $scope.availabilityDelay = config.getSetting(['poll_intervals', 'user_is_available']) * 1000;
     $scope.lastMessageId = 0;
     $scope.scrollPosition = 'bottom';
 
@@ -297,15 +328,15 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
           id: $stateParams.id,
           access_token: settings.access_token
         }).$promise.then(function (conversation) {
+          markAsRead();
           computeHeading(conversation.data);
           computeAvailability(conversation.data);
-          markAsRead();
 
 
         });
       });
 
-    var messagesPoller = poller.get(Conversation, {
+    messagesPoller = poller.get(Conversation, {
       action: 'getMessages',
       argumentsArray: [{
         id: $stateParams.id,
@@ -345,7 +376,6 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         messagesPoller.stop();
       }
     });
-
 
   }
 ]);
