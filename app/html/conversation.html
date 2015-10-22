@@ -23,7 +23,6 @@
     </div>
   </div>
 
-
   <!--<ul class="media-list">-->
     <!--<li ng-repeat="message in messages">-->
       <!--<span>{{message.id}}</span>  <span>{{message.text}}</span>-->
@@ -41,9 +40,6 @@
       <a class="btn btn-primary btn-load-more" id="load-more" ng-cloak ng-click="loadMore()" ng-show="moreMessages">{{
         button__load_older_messages }}</a>
     </div>
-
-
-
 
     <ul class="media-list">
       <li ui-scroll="message in messagesDatasource" buffer-size="10" padding="0.3" adapter="scrollAdapter"
@@ -63,7 +59,7 @@
             ng-bind="message.sender.name"></a> <abbr class="timeago"
                                                             ng-attr-title="{{message.sent | formatDate}}"
                                                             ng-bind="message.sent | dateFromNow"></abbr></div>
-          <div class="cs-pm-message message arrow_box"><p ng-bind-html="message.text | htmlsafe"></p></div>
+          <div class="cs-pm-message message" ng-class="{'arrow-box': message.sender.id !== $parent.currentUser.user.id}"><p ng-bind-html="message.text | htmlsafe"></p></div>
         </div>
       </li>
     </ul>
@@ -96,9 +92,6 @@
       <span class="help-block"
             ng-show="newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.emojiWarning && !allow_emoji)"
             ng-bind-html="form_text_warning_emoji | htmlsafe"></span>
-
-
-
       </div>
 
       <div class="clearfix">
