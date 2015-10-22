@@ -56,14 +56,6 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
       return moment(date).format('hh:mm MMMM Do, YYYY');
     };
 
-    $scope.delete = function(conversation){
-      $state.go('inbox.delete', {page: 1, id: conversation.id});
-    };
-
-    $scope.report = function(conversation){
-      $state.go('inbox.report', {page: 1, id: conversation.id});
-    };
-
     $scope.computeHeading = function(conversation) {
       // The return of this function is used in template bindings so
       // we should make sure this doesn't error out if the current user hasn't been determined.

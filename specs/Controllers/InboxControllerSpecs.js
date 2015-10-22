@@ -215,24 +215,6 @@
       expect(scope.computeHeading(conversation)).toEqual('Boycey, Craig and David');
     });
 
-    it('Should have a delete function that goes to delete state', function(){
-      var conversation = {id: 1};
-      expect(scope.delete).toBeDefined();
-      expect(typeof scope.delete).toBe('function');
-      spyOn(state, 'go');
-      scope.delete(conversation);
-      expect(state.go).toHaveBeenCalledWith('inbox.delete', {page: 1, id: 1});
-    });
-
-    it('Should have a report function that goes to report state', function(){
-      var conversation = {id: 1};
-      expect(scope.report).toBeDefined();
-      expect(typeof scope.report).toBe('function');
-      spyOn(state, 'go');
-      scope.report(conversation);
-      expect(state.go).toHaveBeenCalledWith('inbox.report', {page: 1, id: 1});
-    });
-
     it('Should get the strings from configuration', function(){
       expect(configurationService.getString.calls.count()).toBe(8);
       expect(configurationService.getString).toHaveBeenCalledWith('heading__messages');

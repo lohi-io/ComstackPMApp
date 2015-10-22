@@ -272,14 +272,11 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     };
 
     $scope.submitReply = function () {
-      if ($scope.reply.text === '') {
-        return;
-      }
       Conversation.reply({id: $stateParams.id}, $scope.reply).$promise.then(function (response) {
-        //$scope.messages.push(response.data[0]);
         $scope.glued = true;
         $scope.scrollAdapter.append([response.data[0]]);
         $scope.reply.text = '';
+        $scope.newMessageForm.$setPristine();
         $timeout(function () {
           $scope.glued = false;
         });

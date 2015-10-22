@@ -41,9 +41,11 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
 | share_data_storage | `Boolean` | Whether or not to use local storage to reduce server requests when the app is open on multiple tabs &/ windows. |
 | library_path | `String` | The path/location of the library. |
 | poll_intervals | `Object` | An object containing the number of seconds to wait before polling the server for new data. |
-| - conversations | `Integer` | |
-| - messages | `Integer` | |
-| - available_users | `Integer` | |
+| - conversations | `Integer` | How often to check for new conversations, defaults to 20 seconds. |
+| - messages | `Integer` | How often to check for new messages when within a conversation, defaults to 10 seconds. |
+| - user_is_available | `Integer` | How often to check when in a conversation that the other user(s) still available, defaults to 10 seconds. |
+| - read_only | `Integer` | How often to check to see if the current user has opted out of Private Messaging, defaults to 60 seconds. |
+| allow_emoji | `Boolean` | Defaults to `false`, this setting means that the app will treat strings which only contain Emoji (or other non utf8 characters) to be empty, failing validation. |
 | strings | `Object` | A series of strings in key/value format used within the interface, this is to facilitate easily changing text or translating things. If "@user_id@" is present in a string it will be replaced with the current users id. |
 
 ```javascript
@@ -60,7 +62,8 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
     "conversations": 30,
     "messages": 15,
     "available_users": 300
-  }
+  },
+  "allow_emoji": false,
   "strings": {
     "heading__messages": "Messages",
     "heading__conversation_with": "Conversation with @participants@",
@@ -80,6 +83,7 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
     "form__text__maxlength": 100000,
     "form__text__validation__empty": "You'll need to enter some text here...",
     "form__text__validation__maxlength": "You can only have @@number@@ characters per message",
+    "form__text__warning__emoji": "Sorry, no Emoji please",
     "form__new_conversation__submit": "Send",
     "form__reply__placeholder": "Enter your reply...",
     "form__reply__submit": "Reply",
@@ -95,11 +99,13 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
     "button__friends_list": "Friends list",
     "button__ok": "OK",
     "button__cancel": "Cancel",
+    "modal__error__heading": "Something's gone wrong",
     "modal__delete_conversation__heading": "Delete conversation",
     "modal__delete_conversation__text": "Are you sure you want to delete this conversation?",
     "modal__report__heading": "Report conversation",
     "modal__block__heading": "Block user",
     "modal__block__text": "Are you sure you want to block this user?",
+    "modal__block__text__multiple": "Who would you like to block?",
     "error__no_connection": "We're having trouble contacting the server, are you connected to the internet?",
     "error__api_bad_response": "The API returned an error so something has gone wrong, here it is @@error@@."
   }

@@ -296,12 +296,18 @@
     });
 
     it('Should be able to create a reply to the current conversation, appending it to the messages list', function() {
-
       AssumeHttpRequestResponded();
       scope.scrollAdapter = {append: function(){}};
       spyOn(scope.scrollAdapter, 'append');
 
+
+      scope.newMessageForm = {
+        $setPristine: function() {
+          // stub method
+        }
+      };
       // Skip the initial AJAX requests.
+      spyOn(scope.newMessageForm, '$setPristine');
 
       $httpBackend.flush();
 
@@ -321,7 +327,7 @@
       $httpBackend.flush();
 
       expect(scope.scrollAdapter.append).toHaveBeenCalledWith([newMessage.data[0]]);
-
+      expect(scope.newMessageForm.$setPristine).toHaveBeenCalled();
       //var lastMessage = scope.messages.data[scope.messages.data.length - 1];
       //expect(angular.equals(lastMessage, newMessage.data[0])).toBeTruthy();
 
