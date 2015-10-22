@@ -55,7 +55,7 @@
         </div>
         <div class="cs-pm-body media-body">
           <div class="cs-pm-message-meta message-meta small"><a
-            ng-hide="message.sender.id === $parent.currentUser.user.id" ng-href="message.sender.profile"
+            ng-hide="message.sender.id === $parent.currentUser.user.id" ng-href="{{ message.sender.profile }}"
             ng-bind="message.sender.name"></a> <abbr class="timeago"
                                                             ng-attr-title="{{message.sent | formatDate}}"
                                                             ng-bind="message.sent | dateFromNow"></abbr></div>
