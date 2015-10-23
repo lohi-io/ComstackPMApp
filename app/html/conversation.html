@@ -67,7 +67,7 @@
   </div>
 
   <div class="cs-pm-reply-wrapper reply-wrapper">
-    <div data-ng-form="newMessageForm" novalidate class="cs-pm-new-wrapper new-wrapper" role="form">
+    <div data-ng-form="newMessageForm" novalidate role="form">
       <div class="form-group" ng-class="{'has-error': newMessageForm.replyText.$invalid && newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.maxlength || newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))}">
 
          <textarea emoji
