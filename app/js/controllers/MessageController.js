@@ -7,7 +7,7 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers', 'configu
     $scope.isContactsAvailable = true;
 
     getAvailableUsers.get().then(function(availableUsers) {
-      $scope.isContactsAvailable = availableUsers.data > 0;
+      $scope.isContactsAvailable = availableUsers.data.length > 0;
     });
 
     $scope.cancelString = config.getString('button__cancel');

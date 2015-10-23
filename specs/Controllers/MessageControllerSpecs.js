@@ -3,7 +3,7 @@
 
   describe('MessageCtrl', function () {
     var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config, currentUser,
-      urlAvailableUsers, requiresHttp;
+      urlAvailableUsers, requiresHttp, createController;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
@@ -63,11 +63,16 @@
       var urlUser = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/users/current-user?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
       $httpBackend.expectGET(urlUser).respond(currentUser);
 
-      ctrl = $controller('MessageCtrl', {
-        '$scope': scope,
-        '$state': state,
-        'config': config
-      });
+      createController = function() {
+        return $controller('MessageCtrl', {
+          '$scope': scope,
+          '$state': state,
+          'config': config
+        });
+      };
+
+      ctrl = createController();
+
       $httpBackend.flush();
     }));
 
@@ -110,6 +115,31 @@
       expect(message.$save).toHaveBeenCalled();
     });
 
+    it('Should determine if any users are contactable on initialisation', function() {
+      expect(scope.isContactsAvailable).toEqual(false);
+
+      $httpBackend.verifyNoOutstandingExpectation();
+      $httpBackend.verifyNoOutstandingRequest();
+      $httpBackend.resetExpectations();
+
+      availableUsers = {
+        data: [{
+          name: 'Alice'
+        }],
+        paging: {
+          previous: {},
+          next: {},
+          range: 10,
+          total: 12,
+          current_page: 2
+        }
+      };
+
+      $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
+
+      ctrl = createController();
+      expect(scope.isContactsAvailable).toEqual(true);
+    });
 
     it('Should get the strings from configuration', function(){
       expect(config.getString.calls.count()).toBe(13);
