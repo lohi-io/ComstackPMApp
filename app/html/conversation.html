@@ -53,7 +53,7 @@
             ng-bind="message.sender.name"></a> <abbr class="timeago"
                                                             ng-attr-title="{{message.sent | formatDate}}"
                                                             ng-bind="message.sent | dateFromNow"></abbr></div>
-          <div class="cs-pm-message message" ng-class="{'arrow-box': message.sender.id !== $parent.currentUser.user.id}"><p ng-bind-html="message.text | htmlsafe"></p></div>
+          <div class="cs-pm-message message" ng-class="{'arrow-box': message.sender.id != $parent.currentUser.user.id}"><p ng-bind-html="message.text | htmlsafe"></p></div>
         </div>
       </li>
     </ul>
