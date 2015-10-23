@@ -124,8 +124,8 @@
       expect(config.getString).toHaveBeenCalledWith('form__new_conversation__submit');
       expect(config.getString).toHaveBeenCalledWith('form__new_conversation__header', {user_id: 1});
       expect(config.getString).toHaveBeenCalledWith('button__cancel');
-      expect(config.getString).toHaveBeenCalledWith('button__find_friends');
-      expect(config.getString).toHaveBeenCalledWith('text__no_friends');
+      expect(config.getString).toHaveBeenCalledWith('link__no_available_users');
+      expect(config.getString).toHaveBeenCalledWith('text__no_conversations_no_friends');
     });
 
 

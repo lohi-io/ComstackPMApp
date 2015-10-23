@@ -11,8 +11,8 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers', 'configu
     });
 
     $scope.cancelString = config.getString('button__cancel');
-    $scope.text_friends_link = config.getString('button__find_friends');
-    $scope.text_no_friends = config.getString('text__no_friends');
+    $scope.text_friends_link = config.getString('link__no_available_users');
+    $scope.text_no_friends = config.getString('text__no_conversations_no_friends');
 
     userService.get().then(function (data) {
       $scope.currentUser = data.data;
