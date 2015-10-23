@@ -17,7 +17,6 @@ services.factory('requestInterceptor', ['$q', 'configurationService', 'errorStat
     };
 
     var responseError = function (rejection) {
-
       var settings = configurationService.get();
       if(rejection.status === 401) {
         $location.path(settings.base_url).replace();
@@ -27,7 +26,9 @@ services.factory('requestInterceptor', ['$q', 'configurationService', 'errorStat
       if(rejection.status == 0) {
         rejection.status_text = "CORS error";
       }
-      errorState.activate(settings.library_path + '/app/html/error.html', rejection);
+
+      console.log(rejection);
+      //errorState.activate(settings.library_path + '/app/html/error.html', rejection);
       return $q.reject(rejection);
 
 

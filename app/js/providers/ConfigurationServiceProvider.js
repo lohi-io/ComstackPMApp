@@ -19,7 +19,8 @@ app.provider("configurationService", function () {
     "poll_intervals": {
       "conversations": 30,
       "messages": 15,
-      "available_users": 300
+      "available_users": 300,
+      "user_is_available": 10
     },
     "strings": {
       "heading__messages": "Messages",
