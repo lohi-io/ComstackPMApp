@@ -46,7 +46,7 @@ app.controller('ReportConversationCtrl', [
       $scope.data.isUnknown ? report.reasons.push(reasonsValues.isUnknown):'';
       $scope.data.isOther ? report.reasons.push(reasonsValues.isOther):'';
 
-      Conversation.report({id: $stateParams.id}, $scope.report, function () {
+      Conversation.report({id: $stateParams.id}, report, function () {
         $modalInstance.close(true);
       },
         function (error) {
