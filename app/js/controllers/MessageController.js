@@ -4,12 +4,24 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers', 'configu
     var settings = config.get();
     $scope.currentUser = {};
 
+    $scope.isContactsAvailable = true;
 
-    userService.get()
-      .then(function (data) {
-        $scope.currentUser = data.data;
-        $scope.new_conversation_header = config.getString('form__new_conversation__header', {user_id: $scope.currentUser.user.id});
+    getAvailableUsers.get().then(function(availableUsers) {
+      $scope.isContactsAvailable = availableUsers.data > 0;
+    });
+
+    $scope.cancelString = config.getString('button__cancel');
+    $scope.text_friends_link = config.getString('button__find_friends');
+    $scope.text_no_friends = config.getString('text__no_friends');
+
+    userService.get().then(function (data) {
+      $scope.currentUser = data.data;
+      $scope.new_conversation_header = config.getString('form__new_conversation__header', {
+        user_id: $scope.currentUser.user.id
       });
+      $scope.friends_link = config.getSetting('base_url') + '/friends/' + $scope.currentUser.user.id;
+    });
+
     $scope.allow_emoji = settings.allow_emoji;
     $scope.maxTags = settings.max_participants - 1;
     var numberLabel = '';
