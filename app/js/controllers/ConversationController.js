@@ -132,26 +132,6 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
             $filter('filter')(availableUsers.data, {id: contactId}).length === 1;
         });
       });
-      //User.getBlockedUsers({
-      //  'filter[user]': contactId
-      //}).$promise.then(function (blockedUsers) {
-      //  $scope.isContactBlocked = blockedUsers.hasOwnProperty('data') &&
-      //    $filter('filter')(blockedUsers.data, {user: {id: contactId}}).length === 1;
-      //
-      //  // If contact is blocked, we won't be able to check if they are available, so assume they are not.
-      //  if ($scope.isContactBlocked) {
-      //    $scope.isContactAvailable = false;
-      //    return;
-      //  }
-      //
-      //  User.getAvailableUsers({
-      //    'filter[id]': contactId
-      //  }).$promise.then(function (response) {
-      //    // Check the response data only contains the contact's id.
-      //    $scope.isContactAvailable = response.hasOwnProperty('data') &&
-      //      $filter('filter')(response.data, {id: contactId}).length === 1;
-      //  });
-      //});
     };
 
     var greaterThan = function (attribute, value) {
