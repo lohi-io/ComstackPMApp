@@ -24,7 +24,7 @@ module.exports = function (config) {
       'bower_components/angular-ui-scroll/dist/ui-scroll.js',
       'bower_components/angular-ui-scroll/dist/ui-scroll-jqlite.js',
       'bower_components/angularpoller/angular-poller.js',
-
+      'bower_components/isMobile/isMobile.min.js',
 
       'app/js/app.js',
       'app/js/directives/*.js',

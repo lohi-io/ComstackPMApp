@@ -28,6 +28,12 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
           $scope.moreMessages = true;
         }
       }
+
+      if (isMobile.any) {
+        $timeout(function() {
+          $scope.glued = false;
+        });
+      }
       return results;
     };
 
@@ -164,7 +170,6 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     $scope.lastMessageId = 0;
     $scope.scrollPosition = 'bottom';
 
-
     $scope.messagesDatasource = {
       get: function (index, count, success) {
         var after = "";
@@ -173,7 +178,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         var beforeFix = "";
 
 
-        if ($scope.scrollCalls < 3) {
+        if ($scope.scrollCalls < (isMobile.any ? 1 : 3)) {
           if (index == 1) {
             $scope.scrollCalls++;
             $timeout(function () {
@@ -182,13 +187,16 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
                 before: '',
                 after: ''
               }).$promise.then(function (messages) {
-                success(afterLoad(messages, true, index));
+                success(afterLoad(messages, !isMobile.any, index));
                 markAsRead();
+                if (isMobile.any) {
+                  $scope.scrollPosition = 'between';
+                }
               });
             });
           }
 
-          if (index == 1 - count) {
+          if (index == 1 - count && !isMobile.any) {
             $scope.scrollCalls++;
             Conversation.getMessages({
               id: $stateParams.id,
@@ -200,16 +208,14 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
             });
           }
 
-          if (index == count + 1) {
+          if (index == count + 1 && !isMobile.any) {
             $scope.scrollCalls++;
             $timeout(function () {
               success([]);
             });
           }
-        }
-
-        else {
-          if (($scope.paging.next !== null || $scope.paging.previous !== null)) {
+        } else {
+          if (($scope.paging.next !== null || $scope.paging.previous !== null) && !isMobile.any) {
             $scope.scrollCalls++;
             if (!angular.isUndefined($scope.paging.next)) {
               after = $scope.paging.cursors.after;
@@ -311,8 +317,6 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
           markAsRead();
           computeHeading(conversation.data);
           computeAvailability(conversation.data);
-
-
         });
       });
 
@@ -328,15 +332,14 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     });
 
     messagesPoller.promise.then(null, null, function (data) {
-      // Reduce DOM thrashing
       var results = [];
       console.log('messages poll try');
 
-      if($scope.scrollCalls >=3 &&  data.data.length > 0){
+      if ((isMobile.any || $scope.scrollCalls >= 3) && data.data.length > 0) {
         results.push.apply(results, data.data);
         results = $filter('filter')(results, greaterThan('id', $scope.lastMessageId), true);
         results = $filter('orderBy')(results, 'id');
-        if(results.length > 0){
+        if (results.length > 0) {
           $scope.scrollAdapter.append(results);
           if($scope.scrollPosition == 'bottom'){
             $scope.glued = true;
@@ -346,16 +349,18 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
             $scope.glued = false;
           });
         }
-        data.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = data.data[0].id : $scope.lastMessageId;
+        if (data.data[0].id > $scope.lastMessageId) {
+          $scope.lastMessageId = data.data[0].id;
+        }
+
         config.setSettingValue('lastMessageId', $scope.lastMessageId);
         console.log('messages poll done');
         console.log(results);
-     };
+      }
 
       if (angular.isUndefined($scope.currentUser.user) && $scope.currentUser.preferences.read_only_mode) {
         messagesPoller.stop();
       }
     });
-
   }
 ]);
