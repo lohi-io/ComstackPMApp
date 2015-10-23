@@ -7,10 +7,10 @@
       class="glyphicon glyphicon-remove cs-pm-icon--remove"></span> Cancel</a></div>
   </div>
 
-  <!--<form class="cs-pm-new-wrapper new-wrapper" name="newMessageForm">-->
-    <div data-ng-form="newMessageForm" novalidate class="cs-pm-new-wrapper new-wrapper" role="form">
+
+  <div data-ng-form="newMessageForm" novalidate class="cs-pm-new-wrapper new-wrapper" role="form">
     <div class="form-group">
-      <p  ng-bind-html="new_conversation_header | htmlsafe"></a></p>
+      <p ng-bind-html="new_conversation_header | htmlsafe"></a></p>
     </div>
 
     <div class="form-group" ng-class="{'has-error': newMessageForm.recipients.$invalid && newMessageForm.recipients.$dirty}">
@@ -37,46 +37,44 @@
         </tags-input>
       </div>
       <span class="help-block"
-            ng-show="newMessageForm.recipients.$dirty && newMessageForm.recipients.$error.required"
-            ng-bind-html="form_to_validation_empty | htmlsafe">
+        ng-show="newMessageForm.recipients.$dirty && newMessageForm.recipients.$error.required"
+        ng-bind-html="form_to_validation_empty | htmlsafe">
       </span>
       <span class="help-block"
-            ng-show="newMessageForm.recipients.$dirty && !newMessageForm.recipients.$error.required && newMessageForm.recipients.$invalid && users.length > maxTags"
-            ng-bind-html="form_to_validation_limit_exceeded | htmlsafe">
+        ng-show="newMessageForm.recipients.$dirty && !newMessageForm.recipients.$error.required && newMessageForm.recipients.$invalid && users.length > maxTags"
+        ng-bind-html="form_to_validation_limit_exceeded | htmlsafe">
       </span>
-
     </div>
 
 
     <div class="form-group" ng-class="{'has-error': newMessageForm.message.$invalid && newMessageForm.message.$dirty && (newMessageForm.message.$error.maxlength || newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji))}">
       <textarea class="form-control"
-                emoji
-                id="message"
-                name="message"
-                ng-maxlength="textMaxLength"
-                rows="3"
-                placeholder="{{form_text_placeholder}}"
-                ng-model="message.text"
-                required></textarea>
+        emoji
+        id="message"
+        name="message"
+        ng-maxlength="textMaxLength"
+        rows="3"
+        placeholder="{{form_text_placeholder}}"
+        ng-model="message.text"
+        required></textarea>
       <span class="help-block"
-            ng-show="newMessageForm.message.$dirty && (newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji))"
-            ng-bind-html="form_text_validation_empty | htmlsafe"></span>
+        ng-show="newMessageForm.message.$dirty && (newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji))"
+        ng-bind-html="form_text_validation_empty | htmlsafe"></span>
       <span class="help-block"
-            ng-show="newMessageForm.message.$dirty && newMessageForm.message.$error.maxlength"
-            ng-bind-html="form_text_validation_maxlength | htmlsafe"></span>
+        ng-show="newMessageForm.message.$dirty && newMessageForm.message.$error.maxlength"
+        ng-bind-html="form_text_validation_maxlength | htmlsafe"></span>
       <span class="help-block"
-            ng-show="newMessageForm.message.$dirty && (newMessageForm.message.$error.emojiWarning && !allow_emoji)"
-            ng-bind-html="form_text_warning_emoji | htmlsafe"></span>
-
+        ng-show="newMessageForm.message.$dirty && (newMessageForm.message.$error.emojiWarning && !allow_emoji)"
+        ng-bind-html="form_text_warning_emoji | htmlsafe"></span>
     </div>
-  <!--</form>-->
-      </div>
-  <div class="clearfix">
-    <button type="submit"
-            ng-disabled="(newMessageForm.recipients.$invalid || (newMessageForm.message.$invalid && (newMessageForm.message.$error.maxlength || newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji)))) || currentUser.preferences.read_only_mode"
-            class="btn btn-default pull-right cs-pm-right message-trigger"
-            ng-click="save()" ng-bind="form_new_conversation_submit"></button>
-
+    <div class="clearfix">
+      <button type="submit"
+              ng-disabled="(newMessageForm.recipients.$invalid || (newMessageForm.message.$invalid && (newMessageForm.message.$error.maxlength || newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji)))) || currentUser.preferences.read_only_mode"
+              class="btn btn-default pull-right cs-pm-right message-trigger"
+              ng-click="save()" ng-bind="form_new_conversation_submit">
+      </button>
+    </div>
+  </div>
   <script type="text/ng-template" id="user-template">
     <div>
       <div style="float: left">
@@ -90,5 +88,4 @@
       </div>
     </div>
   </script>
-
 </div>
