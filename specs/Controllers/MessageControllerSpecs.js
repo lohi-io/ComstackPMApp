@@ -2,13 +2,15 @@
 (function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module) {
 
   describe('MessageCtrl', function () {
-    var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config, currentUser;
+    var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config, currentUser,
+      urlAvailableUsers, requiresHttp;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
 
     beforeEach(inject(function (_$rootScope_, $controller, _$httpBackend_,$injector) {
       rootScope = _$rootScope_;
+      requiresHttp = false;
 
       Conversation = function () { };
       Conversation.prototype = { "$save": function () { } };
@@ -51,6 +53,13 @@
 
 
 
+      var urlApi = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1';
+      var endPoint = '/cs-pm/users/available-users';
+      var queryString = 'access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+      urlAvailableUsers = urlApi + endPoint + '?' + queryString;
+
+      $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
+
       var urlUser = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/users/current-user?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
       $httpBackend.expectGET(urlUser).respond(currentUser);
 
@@ -63,8 +72,11 @@
     }));
 
     afterEach(function () {
-      $httpBackend.verifyNoOutstandingExpectation();
-      $httpBackend.verifyNoOutstandingRequest();
+      if (requiresHttp) {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+      }
+
       $httpBackend.resetExpectations();
     });
 
@@ -83,10 +95,7 @@
       expect(typeof scope.getAvailableUsers).toEqual('function');
 
       scope.getAvailableUsers('test');
-      var urlApi = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1';
-      var enpPoint = '/cs-pm/users/available-users';
-      var queryString = 'access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc&autocomplete%5Bstring%5D=test';
-      var urlAvailableUsers = urlApi+enpPoint+'?'+queryString;
+      urlAvailableUsers += '&autocomplete%5Bstring%5D=test';
       $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
       $httpBackend.flush();
     });
@@ -103,16 +112,20 @@
 
 
     it('Should get the strings from configuration', function(){
-        expect(config.getString.calls.count()).toBe(10);
-        expect(config.getString).toHaveBeenCalledWith('form__to__label');
-        expect(config.getString).toHaveBeenCalledWith('form__to__placeholder__singular');
-        expect(config.getString).toHaveBeenCalledWith('form__to__validation__empty');
-        expect(config.getString).toHaveBeenCalledWith('form__to__validation__limit_exceeded', {number_label: '1 person'});
-        expect(config.getString).toHaveBeenCalledWith('form__text__placeholder');
-        expect(config.getString).toHaveBeenCalledWith('form__text__validation__empty');
-        expect(config.getString).toHaveBeenCalledWith('form__text__validation__maxlength', {number: 10});
-        expect(config.getString).toHaveBeenCalledWith('form__new_conversation__submit');
-        expect(config.getString).toHaveBeenCalledWith('form__new_conversation__header', {user_id: 1});
+      expect(config.getString.calls.count()).toBe(13);
+      expect(config.getString).toHaveBeenCalledWith('form__to__label');
+      expect(config.getString).toHaveBeenCalledWith('form__to__placeholder__singular');
+      expect(config.getString).toHaveBeenCalledWith('form__to__validation__empty');
+      expect(config.getString).toHaveBeenCalledWith('form__to__validation__limit_exceeded', {number_label: '1 person'});
+      expect(config.getString).toHaveBeenCalledWith('form__text__placeholder');
+      expect(config.getString).toHaveBeenCalledWith('form__text__validation__empty');
+      expect(config.getString).toHaveBeenCalledWith('form__text__validation__maxlength', {number: 10});
+      expect(config.getString).toHaveBeenCalledWith('form__text__warning__emoji');
+      expect(config.getString).toHaveBeenCalledWith('form__new_conversation__submit');
+      expect(config.getString).toHaveBeenCalledWith('form__new_conversation__header', {user_id: 1});
+      expect(config.getString).toHaveBeenCalledWith('button__cancel');
+      expect(config.getString).toHaveBeenCalledWith('link__no_available_users');
+      expect(config.getString).toHaveBeenCalledWith('text__no_conversations_no_friends');
     });
 
 

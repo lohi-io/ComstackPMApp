@@ -8,7 +8,7 @@
   </div>
 
 
-  <div data-ng-form="newMessageForm" novalidate class="cs-pm-new-wrapper new-wrapper" role="form">
+  <div ng-show="isContactsAvailable" data-ng-form="newMessageForm" novalidate class="cs-pm-new-wrapper new-wrapper" role="form">
     <div class="form-group">
       <p ng-bind-html="new_conversation_header | htmlsafe"></a></p>
     </div>
@@ -74,18 +74,25 @@
               ng-click="save()" ng-bind="form_new_conversation_submit">
       </button>
     </div>
+    <script type="text/ng-template" id="user-template">
+      <div>
+        <div style="float: left">
+          <img class="media-object" ng-show="data.avatars['200-200'] !=''"
+               ng-src="{{data.avatars['200-200']}}"
+               alt=""
+               style="width:50px;height:50px;">
+        </div>
+        <div style="float:left; margin-left: 5px">
+          <div><span ng-bind-html="$highlight(data.name)"></span></div>
+        </div>
+      </div>
+    </script>
   </div>
-  <script type="text/ng-template" id="user-template">
-    <div>
-      <div style="float: left">
-        <img class="media-object" ng-show="data.avatars['200-200'] !=''"
-             ng-src="{{data.avatars['200-200']}}"
-             alt=""
-             style="width:50px;height:50px;">
-      </div>
-      <div style="float:left; margin-left: 5px">
-        <div><span ng-bind-html="$highlight(data.name)"></span></div>
-      </div>
+  <div ng-hide="isContactsAvailable" class="cs-pm-boxing messaging-boxing">
+    <div class="form-group text-center" ng-cloak>
+      <h1 class="text-muted" style="font-size: 60px;">!</h1>
+      <p>{{ text_no_friends }}</p>
+      <p><a ng-href="{{ friends_link }}" class="btn btn-primary">{{ text_friends_link }}</a></p>
     </div>
-  </script>
+  </div>
 </div>
