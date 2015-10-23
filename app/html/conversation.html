@@ -15,19 +15,13 @@
       <a href="" ui-sref="conversation.delete" class="btn btn-link btn-small delete-conversation"
          ng-bind="link__delete"></a>
       <a href="" ui-sref="conversation.report" class="btn btn-link btn-small report-conversation"
-         ng-show="!currentUser.permissions.conversations.report"
+         ng-show="currentUser.permissions.conversations.report"
          ng-bind-html="link__report | htmlsafe"></a>
       <a ng-hide="isContactBlocked" href="" ui-sref="conversation.block" class="btn btn-link btn-small"
          ng-bind="link__block"></a>
       <a ng-show="isContactBlocked" href="#" class="btn btn-link btn-small" ng-bind="link__unblock"></a>
     </div>
   </div>
-
-  <!--<ul class="media-list">-->
-    <!--<li ng-repeat="message in messages">-->
-      <!--<span>{{message.id}}</span>  <span>{{message.text}}</span>-->
-    <!--</li>-->
-  <!--</ul>-->
 
   <div id="conversation-wrapper" class="conversation-wrapper" style="max-height: 600px; overflow: auto"
        scroll-glue="!!glued" ui-scroll-viewport    >
