@@ -33,8 +33,8 @@
             </h4>
             <span ng-switch="conversation.unread_count">
               <strong ng-switch-default
-                      ng-bind-html="conversation.last_message.text | truncate:70 | htmlsafe "></strong>
-              <p ng-switch-when="0" ng-bind-html="conversation.last_message.text | truncate:70 | htmlsafe "></p>
+                      ng-bind-html="conversation.last_message.text | squish | truncate:70 | htmlsafe "></strong>
+              <p ng-switch-when="0" ng-bind-html="conversation.last_message.text | squish | truncate:70 | htmlsafe "></p>
             </span>
           </a>
 
