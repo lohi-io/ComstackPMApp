@@ -7,16 +7,16 @@
       class="glyphicon glyphicon-remove cs-pm-icon--remove"></span> Cancel</a></div>
   </div>
 
-  <!--<form class="cs-pm-new-wrapper new-wrapper" name="newMessageForm">-->
-    <div data-ng-form="newMessageForm" novalidate class="cs-pm-new-wrapper new-wrapper" role="form">
+  <div data-ng-form="newMessageForm" novalidate class="cs-pm-new-wrapper new-wrapper" role="form">
     <div class="form-group">
-      <p  ng-bind-html="new_conversation_header | htmlsafe"></a></p>
+      <p ng-bind-html="new_conversation_header | htmlsafe"></p>
     </div>
 
     <div class="form-group" ng-class="{'has-error': newMessageForm.recipients.$invalid && newMessageForm.recipients.$dirty}">
       <div class="input-group" >
-        <div class="input-group-addon" ng-bind="form_to_label"></div>
-          <tags-input
+        <div class="input-group-addon" ng-bind="form_to_label">
+        </div>
+        <tags-input
           class="form-control custom-tags"
           name="recipients"
           id="recipients"
@@ -32,7 +32,7 @@
           <auto-complete
             source="getAvailableUsers($query)"
             display-property="name"
-            template="user-template"
+            template="user-template">
           </auto-complete>
         </tags-input>
       </div>
@@ -44,7 +44,6 @@
             ng-show="newMessageForm.recipients.$dirty && !newMessageForm.recipients.$error.required && newMessageForm.recipients.$invalid && users.length > maxTags"
             ng-bind-html="form_to_validation_limit_exceeded | htmlsafe">
       </span>
-
     </div>
 
 
@@ -57,41 +56,40 @@
                 rows="3"
                 placeholder="{{form_text_placeholder}}"
                 ng-model="message.text"
-                required></textarea>
+                required>
+      </textarea>
       <span class="help-block"
             ng-show="newMessageForm.message.$dirty && (newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji))"
-            ng-bind-html="form_text_validation_empty | htmlsafe"></span>
+            ng-bind-html="form_text_validation_empty | htmlsafe">
+      </span>
       <span class="help-block"
             ng-show="newMessageForm.message.$dirty && newMessageForm.message.$error.maxlength"
-            ng-bind-html="form_text_validation_maxlength | htmlsafe"></span>
+            ng-bind-html="form_text_validation_maxlength | htmlsafe">
+      </span>
       <span class="help-block"
             ng-show="newMessageForm.message.$dirty && (newMessageForm.message.$error.emojiWarning && !allow_emoji)"
-            ng-bind-html="form_text_warning_emoji | htmlsafe"></span>
-
+            ng-bind-html="form_text_warning_emoji | htmlsafe">
+      </span>
     </div>
-  <!--</form>-->
-      </div>
-  <div class="clearfix">
-    <button type="submit"
-            ng-disabled="(newMessageForm.recipients.$invalid || (newMessageForm.message.$invalid && (newMessageForm.message.$error.maxlength || newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji)))) || currentUser.preferences.read_only_mode"
-            class="btn btn-default pull-right cs-pm-right message-trigger"
-            ng-click="save()" ng-bind="form_new_conversation_submit"></button>
-
-  <script type="text/ng-template" id="user-template">
-    <div>
-      <div style="float: left">
-        <img class="media-object" ng-show="data.avatars['200-200'] !=''"
-             ng-src="{{data.avatars['200-200']}}"
-             alt=""
-             style="width:50px;height:50px;">
-      </div>
-      <div style="float:left; margin-left: 5px">
-        <div><span ng-bind-html="$highlight(data.name)"></span></div>
-      </div>
+    <div class="clearfix">
+      <button type="submit"
+              ng-disabled="(newMessageForm.recipients.$invalid || (newMessageForm.message.$invalid && (newMessageForm.message.$error.maxlength || newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji)))) || currentUser.preferences.read_only_mode"
+              class="btn btn-default pull-right cs-pm-right message-trigger"
+              ng-click="save()" ng-bind="form_new_conversation_submit">
+      </button>
+      <script type="text/ng-template" id="user-template">
+        <div>
+          <div style="float: left">
+            <img class="media-object" ng-show="data.avatars['200-200'] != ''"
+                 ng-src="{{ data.avatars['200-200'] }}"
+                 alt=""
+                 style="width:50px; height:50px; ">
+          </div>
+          <div style="float:left; margin-left: 5px">
+            <div><span ng-bind-html="$highlight(data.name)"></span></div>
+          </div>
+        </div>
+      </script>
     </div>
-  </script>
-
+  </div>
 </div>
-
-
-
