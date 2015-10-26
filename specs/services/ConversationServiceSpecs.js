@@ -151,9 +151,9 @@
       };
       var result;
 
-      var url = config.appSettings.api_url + '/cs-pm/conversations/report?access_token=' + config.appSettings.access_token;
+      var url = config.appSettings.api_url + '/cs-pm-report?access_token=' + config.appSettings.access_token;
       mockBackend.expectPOST(url).respond(response);
-      var promise = Conversation.report({id: 123}).$promise;
+      var promise = Conversation.report().$promise;
 
       promise.then(function(rec) {
         result = rec;
