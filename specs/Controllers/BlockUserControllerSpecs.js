@@ -101,7 +101,9 @@
     function AssumeConfirmIsCalled() {
       requiresHttp = false;
       var url = urlApi + '/cs-fr/blocked' + '?' + queryString;
-      $httpBackend.expectPOST(url,{"user":scope.users[0].id}).respond({});
+      $httpBackend.expectPOST(url, {
+        user: scope.users[0].id
+      }).respond({});
       scope.confirm();
       $httpBackend.flush();
     }
@@ -142,7 +144,6 @@
     it('Should close the modal using modal instance', function () {
       requiresHttp = true;
       $httpBackend.flush();
-      scope.users[0].isBlocked = true;
       AssumeConfirmIsCalled();
       expect(modalInstance.close).toHaveBeenCalled();
 
