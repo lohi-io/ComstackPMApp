@@ -196,7 +196,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
               before: ''
             }).$promise.then(function (messages) {
               success(afterLoad(messages, false, index));
-              $scope.scrollPosition = 'between';
+              $scope.scrollPosition = 'bottom';
             });
           }
 
@@ -244,7 +244,14 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
                      $scope.scrollPosition = 'top';
                    }
                  }else{
-                   $scope.scrollPosition = 'between';
+                   if(messages.data[0].id ==  settings.lastMessageId){
+                     $scope.scrollPosition = 'bottom';
+                   }
+                   else
+                   {
+                     $scope.scrollPosition = 'between';
+                   };
+
                  }
                  success(afterLoad(messages, false, index));
               });
@@ -285,6 +292,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     $scope.submitReply = function () {
       Conversation.reply({id: $stateParams.id}, $scope.reply).$promise.then(function (response) {
         $scope.glued = true;
+        config.setSettingValue('lastMessageId', response.data[0].id);
         $scope.scrollAdapter.append([response.data[0]]);
         $scope.reply.text = '';
         $scope.newMessageForm.$setPristine();
@@ -338,6 +346,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         results = $filter('orderBy')(results, 'id');
         if(results.length > 0){
           $scope.scrollAdapter.append(results);
+
           if($scope.scrollPosition == 'bottom'){
             $scope.glued = true;
           }
