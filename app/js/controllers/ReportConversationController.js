@@ -16,7 +16,7 @@ app.controller('ReportConversationCtrl', [
 
     $scope.modal_report_heading = config.getString('modal__report__heading');
 
-    $scope.other_reason_maxlength = config.getSetting('form__text__maxlength');
+    $scope.other_reason_maxlength = config.getSetting('text__maxlength');
 
     $scope.data = {
       isSpam: false,
