@@ -58,7 +58,7 @@
 
       urlApi = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1';
       queryString = 'access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
-      endPoint = '/cs-pm/conversations/1/report';
+      endPoint = '/cs-pm-report';
 
 
       modalInstance = {

@@ -64,6 +64,7 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
     "messages": 15,
     "available_users": 300
   },
+  "text_maxlength": 100000,
   "allow_emoji": false,
   "strings": {
     "heading__messages": "Messages",
@@ -82,7 +83,6 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
     # @@number_label@@ should be something like "1 person" or "2 people" accounting for singular/plural max recipients (max participants - 1).
     "form__to__validation__limit_exceeded": "You cannot contact more than @@number_label@@ at once",
     "form__text__placeholder [validation???]": "Write a message...",
-    "form__text__maxlength": 100000,
     "form__text__validation__empty": "You'll need to enter some text here...",
     "form__text__validation__maxlength": "You can only have @@number@@ characters per message",
     "form__text__warning__emoji": "Sorry, no Emoji please",

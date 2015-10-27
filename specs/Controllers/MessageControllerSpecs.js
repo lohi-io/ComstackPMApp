@@ -142,6 +142,7 @@
     });
 
     it('Should get the strings from configuration', function(){
+      var maxLength = config.getSetting('text__maxlength');
       expect(config.getString.calls.count()).toBe(13);
       expect(config.getString).toHaveBeenCalledWith('form__to__label');
       expect(config.getString).toHaveBeenCalledWith('form__to__placeholder__singular');
@@ -149,7 +150,7 @@
       expect(config.getString).toHaveBeenCalledWith('form__to__validation__limit_exceeded', {number_label: '1 person'});
       expect(config.getString).toHaveBeenCalledWith('form__text__placeholder');
       expect(config.getString).toHaveBeenCalledWith('form__text__validation__empty');
-      expect(config.getString).toHaveBeenCalledWith('form__text__validation__maxlength', {number: 10});
+      expect(config.getString).toHaveBeenCalledWith('form__text__validation__maxlength', {number: maxLength});
       expect(config.getString).toHaveBeenCalledWith('form__text__warning__emoji');
       expect(config.getString).toHaveBeenCalledWith('form__new_conversation__submit');
       expect(config.getString).toHaveBeenCalledWith('form__new_conversation__header', {user_id: 1});

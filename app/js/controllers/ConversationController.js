@@ -64,7 +64,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         name: $scope.currentUser.user.name,
         user_id: $scope.currentUser.user.id
       });
-      $scope.textMaxLength = settings.message_maxlength;
+      $scope.textMaxLength = settings.text__maxlength;
       $scope.allow_emoji = settings.allow_emoji;
       $scope.form_reply_submit = config.getString('form__reply__submit');
       $scope.link__delete = config.getString('link__delete');

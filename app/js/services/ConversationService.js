@@ -47,7 +47,7 @@ services.factory('Conversation', ['$resource', 'configurationService',
       },
       report: {
         method: "POST",
-        url: settings.api_url + '/cs-pm/conversations/:id/report',
+        url: settings.api_url + '/cs-pm-report',
         params: {
           access_token: settings.access_token
         },
@@ -65,7 +65,7 @@ services.factory('Conversation', ['$resource', 'configurationService',
           'X-CSRF-Token': settings.csrf_token
         },
         isArray: false
-      },
+      }
     });
   }
 ]);

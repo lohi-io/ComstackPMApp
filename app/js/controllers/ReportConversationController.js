@@ -16,6 +16,8 @@ app.controller('ReportConversationCtrl', [
 
     $scope.modal_report_heading = config.getString('modal__report__heading');
 
+    $scope.other_reason_maxlength = config.getSetting('text__maxlength');
+
     $scope.data = {
       isSpam: false,
       isAbuse: false,
@@ -46,7 +48,7 @@ app.controller('ReportConversationCtrl', [
       $scope.data.isUnknown ? report.reasons.push(reasonsValues.isUnknown):'';
       $scope.data.isOther ? report.reasons.push(reasonsValues.isOther):'';
 
-      Conversation.report({id: $stateParams.id}, report, function () {
+      Conversation.report({}, report, function () {
         $modalInstance.close(true);
       },
         function (error) {

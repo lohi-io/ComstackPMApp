@@ -12,7 +12,7 @@ serviceMockModule.factory("configurationService", function () {
       "messages": 10
     },
     "max_participants": 2,
-    "message_maxlength": 10,
+    "text__maxlength": 10,
     "strings": {
       "heading__messages": "Messages",
       "heading__conversation_with": "Conversation with @name",
@@ -39,7 +39,7 @@ serviceMockModule.factory("configurationService", function () {
         api_url: "https://cancerchat01dev.prod.acquia-sites.com/api/v1",
         access_token: "qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc",
         "max_participants": 2,
-        "message_maxlength": 10,
+        "text__maxlength": 10,
         "strings": {
           "heading__messages": "Messages",
           "heading__conversation_with": "Conversation with @name",

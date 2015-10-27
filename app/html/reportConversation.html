@@ -23,7 +23,7 @@
               ng-show="data.isOther"
               id="otherDetails"
               name="otherDetails"
-              ng-maxlength="10"
+              ng-maxlength="{{ other_reason_maxlength }}"
               rows="3"
               placeholder="Write details"
               ng-model="data.otherDetails"

@@ -16,11 +16,6 @@ app.controller('BlockUserCtrl', [
         })
       }
       $scope.users = $filter('filter')($scope.users, {id: '!' + $scope.currentUser.user.id});
-
-      $scope.users.forEach(function(user){
-        user.isSelected = false;
-      });
-
     };
 
 
@@ -58,22 +53,19 @@ app.controller('BlockUserCtrl', [
     };
 
     $scope.confirm = function () {
-      $scope.users.forEach(function(user){
-        if(user.isSelected){
+      angular.forEach($scope.users, function(user, key) {
+        if (user.isSelected) {
           User.block({user: user.id}, function () {
             user.isBlocked = true;
-          },
-            function (error) {
-              //error handling;
-              console.log(error);
-            });
+          }, function (error) {
+            console.log(error);
+          }).$promise.then(function() {
+            if (key === $scope.users.length - 1) {
+              $modalInstance.close(true);
+            }
+          });
         }
       });
-      var blockedUsers = $filter('filter')($scope.users, {isBlocked: true});
-      var selectedUsers = $filter('filter')($scope.users, {isSelected: true});
-      if(blockedUsers.length == selectedUsers.length){
-        $modalInstance.close(true);
-      }
     };
   }
 ]);
