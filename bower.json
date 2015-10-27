@@ -24,5 +24,8 @@
     "jsBuilder": "~1.0.1",
     "moment": "~2.10.6",
     "ng-tags-input": "~3.0.0"
+  },
+  "resolutions": {
+    "angular": "1.4.7"
   }
 }
