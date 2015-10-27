@@ -25,7 +25,7 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers', 'configu
     $scope.allow_emoji = settings.allow_emoji;
     $scope.maxTags = settings.max_participants - 1;
     var numberLabel = '';
-    $scope.textMaxLength = settings.message_maxlength;
+    $scope.textMaxLength = settings.text__maxlength;
     $scope.form_to_label = config.getString('form__to__label');
 
     if( $scope.maxTags == 1){
