@@ -87,7 +87,7 @@ app.config([
           onEnter: [
             'reportConversationState', '$stateParams', function (reportConversationState, $stateParams) {
               reportConversationState.activate(templatesPath + '/app/html/reportConversation.html',
-                {state: 'inbox', params: {page: 1}},
+                {state: 'conversation', params: $stateParams},
                 {state: 'conversation', params: $stateParams}
               );
             }
