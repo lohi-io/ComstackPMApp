@@ -62,7 +62,7 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
   "poll_intervals": {
     "conversations": 30,
     "messages": 15,
-    "available_users": 300
+    "user_is_available": 10
   },
   "text_maxlength": 100000,
   "allow_emoji": false,
