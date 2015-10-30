@@ -22,7 +22,7 @@
           id="recipients"
           allow-leftover-text="false"
           ng-model="users"
-          placeholder="{{form_to_placeholder}}"
+          placeholder="{{users.length >= maxTags ? '': form_to_placeholder}}"
           display-property="name"
           key-property="id"
           add-from-autocomplete-only="true"
