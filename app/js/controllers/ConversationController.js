@@ -180,7 +180,8 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
           results = afterLoad(messages, true);
         }else{results = afterLoad(messages, false);
         };
-        Array.prototype.push.apply($scope.messages, results);
+        $scope.messages.push.apply($scope.messages, results);
+        $scope.messages = $filter('orderBy')( $scope.messages, 'id');
         console.log($scope.messages);
         markAsRead();
       });
