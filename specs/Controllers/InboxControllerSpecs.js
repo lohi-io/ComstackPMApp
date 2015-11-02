@@ -216,14 +216,16 @@
     });
 
     it('Should get the strings from configuration', function(){
+      var base_url = configurationService.getSetting('base_url');
+
       expect(configurationService.getString.calls.count()).toBe(8);
       expect(configurationService.getString).toHaveBeenCalledWith('heading__messages');
       expect(configurationService.getString).toHaveBeenCalledWith('text__last_message');
-      expect(configurationService.getString).toHaveBeenCalledWith('text__read_only', {name: currentUser.data.user.name, user_id: currentUser.data.user.id});
+      expect(configurationService.getString).toHaveBeenCalledWith('text__read_only', {base_url: base_url, name: currentUser.data.user.name, user_id: currentUser.data.user.id});
       expect(configurationService.getString).toHaveBeenCalledWith('link__delete');
       expect(configurationService.getString).toHaveBeenCalledWith('link__report');
       expect(configurationService.getString).toHaveBeenCalledWith('button__new_conversation');
-      expect(configurationService.getString).toHaveBeenCalledWith('text__no_conversations', {user_id: currentUser.data.user.id});
+      expect(configurationService.getString).toHaveBeenCalledWith('text__no_conversations', {base_url: base_url, user_id: currentUser.data.user.id});
       expect(configurationService.getString).toHaveBeenCalledWith('button__friends_list');
     });
 
