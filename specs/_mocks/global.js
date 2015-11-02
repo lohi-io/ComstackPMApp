@@ -8,6 +8,7 @@ var Comstack = (window.Comstack = window.Comstack || {});
 Comstack.PMApp = {
   Settings: {
     "api_url": "global url",
+    "base_url" : "https://testpm.com",
     "authorization_header": "Basic Q1JVSzAxOnl1RGFiOG5lIQ==",
     "access_token": "newToken",
     "a": {

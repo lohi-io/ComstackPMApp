@@ -34,6 +34,16 @@ services.factory('User', ['$resource', 'configurationService',
         headers: {
           'X-CSRF-Token': settings.csrf_token
         }
+      },
+      unblock: {
+        method: "DELETE",
+        url: settings.api_url + '/cs-fr/blocked/:id',
+        params: {
+          access_token: settings.access_token
+        },
+        headers: {
+          'X-CSRF-Token': settings.csrf_token
+        }
       }
     });
   }

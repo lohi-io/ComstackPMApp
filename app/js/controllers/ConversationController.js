@@ -72,6 +72,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       $scope.link__delete = config.getString('link__delete');
       $scope.link__report = config.getString('link__report');
       $scope.link__block = config.getString('link__block');
+      $scope.link__unblock = config.getString('link__unblock');
       $scope.heading__messages = config.getString('heading__messages');
       $scope.button__new_conversation = config.getString('button__new_conversation');
       $scope.button__load_older_messages = config.getString('button__load_older_messages');
@@ -119,7 +120,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
 
       // After checking is contact is blocked, determine if they are available.
       availabilityPoller.promise.then(null, null, function(blockedUsers) {
-        $scope.isContactBlocked = blockedUsers.hasOwnProperty('data') &&
+        $scope.isContactBlocked = blockedUsers.data.length > 0 &&
           $filter('filter')(blockedUsers.data, {user: {id: contactId}}).length === 1;
 
         // If contact is blocked, we won't be able to check if they are available, so assume they are not.
@@ -135,6 +136,8 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
           $scope.isContactAvailable = availableUsers.hasOwnProperty('data') &&
             $filter('filter')(availableUsers.data, {id: contactId}).length === 1;
         });
+
+       // $scope.$apply();
       });
     };
 
@@ -159,6 +162,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     $scope.reply = {
       text: ''
     };
+    $scope.loadMessagesCalles = 0;
     $scope.conversationHeading = 'Conversation';
     $scope.isContactAvailable = false;
     $scope.isContactBlocked = false;
@@ -170,6 +174,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     $scope.scrollPosition = 'bottom';
 
     $scope.loadMessages = function(before, after){
+      $scope.loadMessagesCalles++;
       Conversation.getMessages({
         id: $stateParams.id,
         before: before,
@@ -366,15 +371,22 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         results = $filter('filter')(results, greaterThan('id', $scope.lastMessageId), true);
         results = $filter('orderBy')(results, 'id');
         if(results.length > 0){
-          $scope.scrollAdapter.append(results);
+          if(!$scope.isMobile){
 
-          if($scope.scrollPosition == 'bottom'){
-            $scope.glued = true;
+            $scope.scrollAdapter.append(results);
+
+            if($scope.scrollPosition == 'bottom'){
+              $scope.glued = true;
+            }
+            console.log($scope.scrollPosition);
+            $timeout(function () {
+              $scope.glued = false;
+            });
+          }else{
+            $scope.messages.push.apply($scope.messages, results);
+            $scope.messages = $filter('orderBy')( $scope.messages, 'id');
+            markAsRead();
           }
-          console.log($scope.scrollPosition);
-          $timeout(function () {
-            $scope.glued = false;
-          });
         }
         data.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = data.data[0].id : $scope.lastMessageId;
         config.setSettingValue('lastMessageId', $scope.lastMessageId);
@@ -382,7 +394,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         console.log(results);
      };
 
-      if (angular.isUndefined($scope.currentUser.user) && $scope.currentUser.preferences.read_only_mode) {
+      if (angular.isUndefined($scope.currentUser.user)) {
         messagesPoller.stop();
       }
 

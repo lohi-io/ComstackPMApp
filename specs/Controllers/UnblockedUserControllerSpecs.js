@@ -1,8 +1,8 @@
 /* global describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module, kendo */
 (function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module) {
 
-  describe('BlockUserCtrl', function () {
-    var ctrl, scope, state, $httpBackend, rootScope, config, stateParams, modalInstance, urlApi, queryString, conversation, currentUser, contact, accessToken, requiresHttp;
+  describe('UnblockUserCtrl', function () {
+    var ctrl, scope, state, $httpBackend, rootScope, config, stateParams, modalInstance, urlApi, queryString, conversation, currentUser, contact, accessToken, requiresHttp, blockedUsers;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
@@ -46,6 +46,18 @@
         }
       };
 
+      blockedUsers = {
+        data: [
+          {
+            id: 1,
+            user: {
+              id: 2,
+              name: 'Bob'
+            }
+          }
+        ]
+      };
+
 
       state = {
         "go": function () {
@@ -78,9 +90,11 @@
       $httpBackend.expectGET(urlUser).respond(currentUser);
       var urlConversation = urlApi+'/cs-pm/conversations/1?'+queryString;
       $httpBackend.expectGET(urlConversation).respond(conversation);
+      var urlBlockedUsers =  urlApi+'/cs-fr/blocked?'+queryString+'&filter%5Buser%5D='+contact.data.user.id;
+      $httpBackend.expectGET(urlBlockedUsers).respond(blockedUsers);
 
 
-      ctrl = $controller('BlockUserCtrl', {
+      ctrl = $controller('UnblockUserCtrl', {
         '$scope': scope,
         '$state': state,
         'config': config,
@@ -92,18 +106,16 @@
 
     afterEach(function () {
       if(requiresHttp){
-      $httpBackend.verifyNoOutstandingExpectation();
-      $httpBackend.verifyNoOutstandingRequest();
-      $httpBackend.resetExpectations();
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+        $httpBackend.resetExpectations();
       }
     });
 
     function AssumeConfirmIsCalled() {
       requiresHttp = false;
-      var url = urlApi + '/cs-fr/blocked' + '?' + queryString;
-      $httpBackend.expectPOST(url, {
-        user: scope.users[0].id
-      }).respond({});
+      var url = urlApi + '/cs-fr/blocked/1' + '?' + queryString;
+      $httpBackend.expectDELETE(url).respond({});
       scope.confirm();
       $httpBackend.flush();
     }
@@ -117,8 +129,8 @@
     it('Should have the list of users that can be blocked in scope', function(){
       requiresHttp = true;
       $httpBackend.flush();
-      expect(scope.users.length).toEqual(1);
-      expect(scope.users).toEqual([{id: 2, name: 'Bob', isSelected: true}]);
+      expect(scope.blockedUsers.length).toEqual(1);
+      expect(scope.blockedUsers).toEqual([{id: 2, name: 'Bob', isSelected: true}]);
     });
 
     it('Should have a confirm function', function () {
@@ -128,13 +140,13 @@
       expect(typeof scope.confirm).toEqual('function');
     });
 
-    it('Should have the users to be blocked', function () {
+    it('Should have the users to be unblocked', function () {
       requiresHttp = true;
       $httpBackend.flush();
-      expect(scope.users.length).toEqual(1);
+      expect(scope.blockedUsers.length).toEqual(1);
     });
 
-    it('Should use service block the user', function () {
+    it('Should use service unblock the user', function () {
       requiresHttp = true;
       $httpBackend.flush();
       AssumeConfirmIsCalled();
@@ -163,18 +175,15 @@
       expect(modalInstance.dismiss).toHaveBeenCalled();
     });
 
-    it('Should get the strings from configuration when current user can block', function(){
+    it('Should get the strings from configuration', function(){
       requiresHttp = true;
       $httpBackend.flush();
-
       expect(config.getString.calls.count()).toBe(4);
-      expect(config.getString).toHaveBeenCalledWith('modal__block__heading');
+      expect(config.getString).toHaveBeenCalledWith('modal__unblock__heading');
       expect(config.getString).toHaveBeenCalledWith('button__ok');
       expect(config.getString).toHaveBeenCalledWith('button__cancel');
-      expect(config.getString).toHaveBeenCalledWith('modal__block__text',{ name: 'Bob' });
+      expect(config.getString).toHaveBeenCalledWith('modal__unblock__text',{ name: 'Bob' });
     });
-
-
 
 
   });

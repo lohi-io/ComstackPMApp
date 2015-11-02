@@ -7,7 +7,7 @@
 
     beforeEach(inject(function ($injector) {
       configurationService = $injector.get('configurationService');
-      baseUrl = 'https://cancerchat01dev.prod.acquia-sites.com';
+      baseUrl = 'https://testpm.com';
     }));
 
 

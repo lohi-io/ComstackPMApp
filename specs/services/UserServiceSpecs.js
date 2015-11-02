@@ -97,5 +97,62 @@
       mockBackend.flush();
       expect(angular.equals(result, blockedUsers)).toBeTruthy();
     });
+
+    it('Should block users', function() {
+      var blockedUsers = {
+        data: [
+          {
+            id: 1,
+            user: {
+              id: 1,
+              name: 'username'
+            }
+          }
+        ]
+      };
+
+      var result;
+
+      var url = config.appSettings.api_url + '/cs-fr/blocked';
+      var queryString = '?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+
+      mockBackend.expectPOST(url + queryString, {user: 1}).respond(blockedUsers);
+
+      User.block({user: 1}).$promise.then(function(response) {
+        result = response;
+      });
+      expect(result).toBeUndefined();
+      mockBackend.flush();
+      expect(angular.equals(result, blockedUsers)).toBeTruthy();
+    });
+
+    it('Should unblock users', function() {
+      var blockedUsers = {
+        data: [
+          {
+            id: 1,
+            user: {
+              id: 1,
+              name: 'username'
+            }
+          }
+        ]
+      };
+
+      var result;
+
+      var url = config.appSettings.api_url + '/cs-fr/blocked/1';
+      var queryString = '?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+
+      mockBackend.expectDELETE(url + queryString).respond(blockedUsers);
+
+      User.unblock({"id": 1}).$promise.then(function(response) {
+        result = response;
+      });
+      expect(result).toBeUndefined();
+      mockBackend.flush();
+      expect(angular.equals(result, blockedUsers)).toBeTruthy();
+    });
+
   });
 })(describe, it, expect, inject, angular, beforeEach);
