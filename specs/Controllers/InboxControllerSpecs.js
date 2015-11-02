@@ -141,60 +141,78 @@
     });
 
     it('Should determine the conversation title for a conversation with 2 participants', function() {
-
       var conversation = {
-          participants: [{
-            id: 1,
-            name: 'Alli'
-          }, {
-            id: 2,
-            name: 'Boycey'
-          }]
+        participants: [{
+          id: 1,
+          name: 'Alli'
+        }, {
+          id: 2,
+          name: 'Boycey'
+        }]
       };
-      ;
       expect(scope.computeHeading(conversation)).toEqual('Boycey');
     });
 
     it('Should determine the conversation title for a conversation with 3 participants', function() {
-
       var conversation = {
-
-          participants: [{
-            id: 1,
-            name: 'Alli'
-          }, {
-            id: 2,
-            name: 'Boycey'
-          }, {
-            id: 3,
-            name: 'Craig'
-          }]
-
+        participants: [{
+          id: 1,
+          name: 'Alli'
+        }, {
+          id: 2,
+          name: 'Boycey'
+        }, {
+          id: 3,
+          name: 'Craig'
+        }]
       };
       expect(scope.computeHeading(conversation)).toEqual('Boycey and Craig');
     });
 
     it('Should determine the conversation title for a conversation with 4 participants', function() {
-
       var conversation = {
-          participants: [{
-            id: 1,
-            name: 'Alli'
-          }, {
-            id: 2,
-            name: 'Boycey'
-          }, {
-            id: 3,
-            name: 'Craig'
-          }, {
-            id: 4,
-            name: 'David'
-          }]
+        participants: [{
+          id: 1,
+          name: 'Alli'
+        }, {
+          id: 2,
+          name: 'Boycey'
+        }, {
+          id: 3,
+          name: 'Craig'
+        }, {
+          id: 4,
+          name: 'David'
+        }]
       };
       expect(scope.computeHeading(conversation)).toEqual('Boycey, Craig and David');
     });
 
-    it('Should determine the conversation from historical participants when participants is empty', function() {
+    it('Should determine the conversation title from historical participants' +
+       'when participants only contains the current user', function() {
+      var conversation = {
+        participants: [{
+          id: 1,
+          name: 'Alli'
+        }],
+        historical_participants: [{
+          id: 1,
+          name: 'Alli'
+        }, {
+          id: 2,
+          name: 'Boycey'
+        }, {
+          id: 3,
+          name: 'Craig'
+        }, {
+          id: 4,
+          name: 'David'
+        }]
+      };
+      expect(scope.computeHeading(conversation)).toEqual('Boycey, Craig and David');
+    });
+
+    it('Should determine the conversation title from historical participants when participants is empty', function() {
 
       var conversation = {
         participants: [],

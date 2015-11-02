@@ -58,6 +58,17 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
       return moment(date).format('hh:mm MMMM Do, YYYY');
     };
 
+    /**
+     * Computes the heading of a given conversation.
+     *
+     * A conversation heading consists of a list of participants excluding the current user.
+     * If a conversation's list of participants is empty aside from the current user,
+     * historical participants will be used.
+     * @param conversation
+     * @returns {string}
+     *  Conversation heading as defined above. Example formatting: "B, C and D", where the current user is A
+     *  and the conversation participants are A, B, C and D.
+     */
     $scope.computeHeading = function(conversation) {
       // The return of this function is used in template bindings so
       // we should make sure this doesn't error out if the current user hasn't been determined.
@@ -65,15 +76,19 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
         return '';
       }
 
-      // use historical participants if participants array is empty
-      var otherParticipants = conversation.participants;
-      var otherParticipantNames = '';
+      // Find the participants of the conversation, excluding the current user.
+      // If there are no other participants, check historical participants instead.
+      var otherParticipants = $filter('filter')(conversation.participants, {
+        id: '!' + $scope.currentUser.user.id
+      });
+
       if (otherParticipants.length === 0) {
-        otherParticipants = conversation.historical_participants;
+        otherParticipants = $filter('filter')(conversation.historical_participants, {
+          id: '!' + $scope.currentUser.user.id
+        });
       }
 
-      // exclude current user from heading title
-      otherParticipants = $filter('filter')(otherParticipants, { id: '!' + $scope.currentUser.user.id });
+      var otherParticipantNames = '';
 
       angular.forEach(otherParticipants, function(participant, key) {
         var suffix = '';
