@@ -16,10 +16,10 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers', 'configu
 
     userService.get().then(function (data) {
       $scope.currentUser = data.data;
-      $scope.new_conversation_header = config.getString('form__new_conversation__header', {
+      $scope.new_conversation_header = config.getString('form__new_conversation__header', {base_url: settings.base_url,
         user_id: $scope.currentUser.user.id
       });
-      $scope.friends_link = config.getSetting('base_url') + '/friends/' + $scope.currentUser.user.id;
+      $scope.friends_link = settings.base_url + '/friends/' + $scope.currentUser.user.id;
     });
 
     $scope.allow_emoji = settings.allow_emoji;

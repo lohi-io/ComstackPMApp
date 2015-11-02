@@ -113,6 +113,18 @@ app.config([
               );
             }
           ]
+        })
+      .state('conversation.unblock',
+        {
+          url: '/unblock',
+          onEnter: [
+            'unblockUserState', '$stateParams', function (unblockUserState, $stateParams) {
+              unblockUserState.activate(templatesPath + '/app/html/unblockUser.html',
+                {state: 'conversation', params: $stateParams},
+                {state: 'conversation', params: $stateParams}
+              );
+            }
+          ]
         });
   }
 ]);

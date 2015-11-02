@@ -19,7 +19,7 @@
          ng-bind-html="link__report | htmlsafe"></a>
       <a ng-hide="isContactBlocked" href="" ui-sref="conversation.block" class="btn btn-link btn-small"
          ng-bind="link__block"></a>
-      <a ng-show="isContactBlocked" href="#" class="btn btn-link btn-small" ng-bind="link__unblock"></a>
+      <a ng-show="isContactBlocked" ui-sref="conversation.unblock" class="btn btn-link btn-small" ng-bind="link__unblock"></a>
     </div>
   </div>
 

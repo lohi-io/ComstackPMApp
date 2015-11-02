@@ -35,7 +35,7 @@ app.controller('BlockUserCtrl', [
         }).$promise.then(function (conversation) {
            computeUsers(conversation.data);
           if(!$scope.currentUser.permissions.users.block){
-            $scope.modal_block_text = config.getString('modal__block__not__allowed__text');
+            $scope.modal_block_text = config.getString('modal__block__text__not_allowed');
           }else{
             if($scope.users.length == 1){
               $scope.modal_block_text = config.getString('modal__block__text', {name: $scope.users[0].name});

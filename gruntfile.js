@@ -56,6 +56,7 @@ module.exports = function(grunt){
               'app/js/controllers/DeleteConversationController.js',
               'app/js/controllers/ReportConversationController.js',
               'app/js/controllers/BlockUserController.js',
+              'app/js/controllers/UnblockUserController.js',
               'app/js/controllers/ErrorController.js',
               'app/js/services/01_bootstrap.js',
               'app/js/services/AuthenticationService.js',
@@ -65,6 +66,7 @@ module.exports = function(grunt){
               'app/js/services/ReportConversationState.js',
               'app/js/services/ErrorState.js',
               'app/js/services/BlockUserState.js',
+              'app/js/services/UnblockUserState.js',
               'app/js/services/InterceptorService.js'
 
             ],

@@ -1,0 +1,14 @@
+<div class="modal-header">
+  <button ng-click="cancel()" type="button" class="bootbox-close-button close" aria-hidden="true">×</button>
+  <h4 class="modal-title" ng-bind-html="modal_unblock_heading | htmlsafe"></h4>
+</div>
+<div class="modal-body">
+  <div class="bootbox-body" ng-bind-html="modal_unblock_text | htmlsafe"></div>
+  <div class="checkbox" ng-repeat="user in blockedUsers" ng-show="blockedUsers.length > 1">
+    <label><input type="checkbox" ng-model="user.isSelected">{{user.name}}</label>
+  </div>
+</div>
+<div class="modal-footer">
+  <button ng-click="cancel()" type="button" class="btn btn-default" ng-bind="button_cancel"></button>
+  <button ng-click="confirm()" type="button" class="btn btn-primary" ng-bind="button_ok" ng-show="currentUser.permissions.users.block"></button>
+</div>

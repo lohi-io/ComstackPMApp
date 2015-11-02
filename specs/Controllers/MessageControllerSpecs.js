@@ -3,7 +3,7 @@
 
   describe('MessageCtrl', function () {
     var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config, currentUser,
-      urlAvailableUsers, requiresHttp, createController;
+      urlAvailableUsers, requiresHttp, createController, accessToken, base_url;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
@@ -50,17 +50,18 @@
 
       scope = _$rootScope_.$new();
       spyOn(config, 'getString');
-
+      accessToken = config.getSetting('access_token');
+      base_url = config.getSetting('base_url');
 
 
       var urlApi = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1';
       var endPoint = '/cs-pm/users/available-users';
-      var queryString = 'access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+      var queryString = 'access_token='+accessToken;
       urlAvailableUsers = urlApi + endPoint + '?' + queryString;
 
       $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
 
-      var urlUser = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/users/current-user?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+      var urlUser = urlApi+'/cs-pm/users/current-user?'+queryString;
       $httpBackend.expectGET(urlUser).respond(currentUser);
 
       createController = function() {
@@ -153,7 +154,7 @@
       expect(config.getString).toHaveBeenCalledWith('form__text__validation__maxlength', {number: maxLength});
       expect(config.getString).toHaveBeenCalledWith('form__text__warning__emoji');
       expect(config.getString).toHaveBeenCalledWith('form__new_conversation__submit');
-      expect(config.getString).toHaveBeenCalledWith('form__new_conversation__header', {user_id: 1});
+      expect(config.getString).toHaveBeenCalledWith('form__new_conversation__header', {base_url: base_url, user_id: 1});
       expect(config.getString).toHaveBeenCalledWith('button__cancel');
       expect(config.getString).toHaveBeenCalledWith('link__no_available_users');
       expect(config.getString).toHaveBeenCalledWith('text__no_conversations_no_friends');

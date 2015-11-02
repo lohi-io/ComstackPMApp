@@ -6,6 +6,7 @@ var serviceMockModule = angular.module('ComstackPMApp.ServicesMock',[]);
 serviceMockModule.factory("configurationService", function () {
   var appSettings = {
     api_url: "https://cancerchat01dev.prod.acquia-sites.com/api/v1",
+    base_url: "https://testpm.com",
     access_token: "qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc",
     "poll_intervals": {
       "user_is_available": 10,
@@ -37,6 +38,7 @@ serviceMockModule.factory("configurationService", function () {
     get: function () {
       return {
         api_url: "https://cancerchat01dev.prod.acquia-sites.com/api/v1",
+        base_url: "https://testpm.com",
         access_token: "qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc",
         "max_participants": 2,
         "text__maxlength": 10,
