@@ -108,6 +108,11 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
     "modal__block__heading": "Block user",
     "modal__block__text": "Are you sure you want to block this user?",
     "modal__block__text__multiple": "Who would you like to block?",
+    "modal__block__text__not_allowed": "You cannot block this user.",
+    "modal__unblock__heading": "Unblock user",
+    "modal__unblock__text": "Are you sure you want to unblock the user @name@",
+    "modal__unblock__text__multiple": "Users I want to unblock:",
+    "modal__unblock__text__not_allowed": "You cannot unblock this user.",
     "error__no_connection": "We're having trouble contacting the server, are you connected to the internet?",
     "error__api_bad_response": "The API returned an error so something has gone wrong, here it is @@error@@."
   }

@@ -1,12 +1,21 @@
-
-var app = angular.module('ComstackPMApp', ['ui.router', 'ui.bootstrap', 'ComstackPMApp.Services', 'ngTagsInput',
-  'luegg.directives', 'emguo.poller', 'ui.scroll','ui.scroll.jqlite', 'ComstackPMApp.Directives']);
+var app = angular.module('ComstackPMApp', ['ui.router',
+                                           'ui.bootstrap',
+                                           'ComstackPMApp.Services',
+                                           'ngTagsInput',
+                                           'luegg.directives',
+                                           'emguo.poller',
+                                           'ui.scroll',
+                                           'ui.scroll.jqlite',
+                                           'ComstackPMApp.Directives']);
 
 app.config([
   "$urlRouterProvider",
-  "$stateProvider", 'configurationServiceProvider', '$httpProvider', function ($urlRouterProvider, $stateProvider, configurationServiceProvider, $httpProvider) {
+  "$stateProvider", 'configurationServiceProvider', '$httpProvider', 'tagsInputConfigProvider', function ($urlRouterProvider, $stateProvider, configurationServiceProvider, $httpProvider, tagsInputConfigProvider) {
 
-   $httpProvider.interceptors.push('requestInterceptor');
+    tagsInputConfigProvider.setDefaults('tagsInput', {placeholder: ''});
+    tagsInputConfigProvider.setActiveInterpolation('tagsInput', {placeholder: true});
+
+    $httpProvider.interceptors.push('requestInterceptor');
 
     var settings = configurationServiceProvider.get();
     var templatesPath = settings.library_path;
