@@ -73,12 +73,12 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
     "heading__conversation_with": "Conversation with @participants@",
     "text__last_message": "Last message",
     "text__no_available_users": "",
-    "text__read_only": 'You\'re currently opted out of private messaging, <a href="https://.com/user/@user_id@/account-settings">click here</a> to go the the account settings form.',
+    "text__read_only": 'You\'re currently opted out of private messaging, <a href="@base_url@/user/@user_id@/account-settings">click here</a> to go the the account settings form.',
     "text__select_messages_to_delete": "Select the messages you'd like to delete",
     "text__select_messages_to_report": "Select the messages you'd like to report",
-    "text__no_conversations": '<p>You\'ve not been part of any conversations yet!</p><p>Make sure that you\'ve <a href="https://.com/friends/@user_id@">added your friends</a> then start a new conversation.</p>',
+    "text__no_conversations": '<p>You\'ve not been part of any conversations yet!</p><p>Make sure that you\'ve <a href="@base_url@/friends/@user_id@">added your friends</a> then start a new conversation.</p>',
     "text__no_conversations_no_friends": "You need to add contacts before you start a conversation.",
-    "form__new_conversation__header": 'You must be friends with a person before you can send them messages. <a href="https://.com/user/@user_id@/account-settings">Find and add friends</a>',
+    "form__new_conversation__header": 'You must be friends with a person before you can send them messages. <a href="@base_url@/user/@user_id@/account-settings">Find and add friends</a>',
     "form__to__label": "To",
     "form__to__placeholder__singular": "Enter recipients username...",
     "form__to__placeholder__plural": "Enter recipients username...",
@@ -116,7 +116,12 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
     "modal__unblock__text__multiple": "Users I want to unblock:",
     "modal__unblock__text__not_allowed": "You cannot unblock this user.",
     "error__no_connection": "We're having trouble contacting the server, are you connected to the internet?",
-    "error__api_bad_response": "The API returned an error so something has gone wrong, here it is @@error@@."
+    "error__api_bad_response": "The API returned an error so something has gone wrong, here it is @@error@@.",
+    "error__no_connection": "We're having trouble contacting the server, are you connected to the internet?",
+    "error__api_bad_response": "The API returned an error so something has gone wrong.",
+    "error__show_text": "Show the error",
+    "error__hide_text": "Hide the error",
+    "error__details": "@status@: @error@."
   }
 }
 ```
