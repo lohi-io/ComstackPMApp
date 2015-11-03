@@ -2,7 +2,7 @@
 (function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module) {
 
   describe('ReportConversationCtrl', function () {
-    var ctrl, scope, state, $httpBackend, rootScope, Conversation, message, config, conversation, stateParams, modalInstance, urlApi, queryString, getEnpPoint, deleteEndPoint, endPoint;
+    var ctrl, scope, state, $httpBackend, rootScope, Conversation, message, config, conversation, stateParams, modalInstance, urlApi, queryString, getEnpPoint, deleteEndPoint, endPoint, accessToken;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
@@ -10,12 +10,6 @@
 
     beforeEach(inject(function (_$rootScope_, $controller, _$httpBackend_, $injector) {
       rootScope = _$rootScope_;
-
-      //Conversation = function () {};
-      //Conversation.prototype = {
-      //  "report": function () {
-      //  }
-      //};
 
       conversation = {
         "data": [{
@@ -56,8 +50,9 @@
       config = $injector.get('configurationService');
       stateParams = {id: 1};
 
-      urlApi = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1';
-      queryString = 'access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+      urlApi = config.getSetting('api_url');
+      accessToken = config.getSetting('access_token');
+      queryString = 'access_token='+accessToken;
       endPoint = '/cs-pm-report';
 
 

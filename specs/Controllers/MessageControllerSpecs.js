@@ -3,7 +3,7 @@
 
   describe('MessageCtrl', function () {
     var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config, currentUser,
-      urlAvailableUsers, requiresHttp, createController, accessToken, base_url;
+      urlAvailableUsers, requiresHttp, createController, accessToken, base_url, urlApi;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
@@ -53,8 +53,8 @@
       accessToken = config.getSetting('access_token');
       base_url = config.getSetting('base_url');
 
+      urlApi = config.getSetting('api_url');
 
-      var urlApi = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1';
       var endPoint = '/cs-pm/users/available-users';
       var queryString = 'access_token='+accessToken;
       urlAvailableUsers = urlApi + endPoint + '?' + queryString;

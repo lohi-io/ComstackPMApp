@@ -2,7 +2,7 @@
 (function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module) {
 
   describe('DeleteConversationCtrl', function () {
-    var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config, convesation, stateParams, modalInstance, urlApi, queryString, getEnpPoint, deleteEndPoint;
+    var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config, convesation, stateParams, modalInstance, urlApi, queryString, getEnpPoint, deleteEndPoint, accessToken;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
@@ -57,8 +57,10 @@
       config = $injector.get('configurationService');
       stateParams = {id: 1};
 
-      urlApi = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1';
-      queryString = 'access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+      accessToken = config.getSetting('access_token');
+      urlApi = config.getSetting('api_url');
+
+      queryString = 'access_token='+accessToken;
       getEnpPoint = '/cs-pm/conversations/1';
       deleteEndPoint = '/cs-pm/conversations';
 
@@ -91,7 +93,7 @@
     });
 
     function AssumeConfirmIsCalled() {
-      spyOn(config, 'getSetting').and.returnValue('qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc');
+      //spyOn(config, 'getSetting').and.returnValue('qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc');
       scope.confirm();
       var url = urlApi + getEnpPoint + '?' + queryString;
       $httpBackend.expectGET(url).respond(convesation);

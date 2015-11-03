@@ -3,7 +3,7 @@
 
   describe('InboxCtrl', function () {
     var ctrl, scope, currentUser, conversations, state, stateParams, fakeUserService;
-    var userService, rootScope, $httpBackend, configurationService;
+    var userService, rootScope, $httpBackend, configurationService, accessToken, urlApi, queryString;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
@@ -48,9 +48,13 @@
       scope = _$rootScope_.$new();
       userService = fakeUserService;
 
-      var urlUser = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/users/current-user?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+      accessToken = configurationService.getSetting('access_token');
+      urlApi = configurationService.getSetting('api_url');
+      queryString = 'access_token='+accessToken;
+
+      var urlUser = urlApi+'/cs-pm/users/current-user?'+queryString;
       $httpBackend.expectGET(urlUser).respond(currentUser);
-      var urlConversation = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/conversations?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc&page=1';
+      var urlConversation = urlApi+'/cs-pm/conversations?'+queryString+'&page=1';
       $httpBackend.expectGET(urlConversation).respond(conversations);
 
 

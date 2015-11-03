@@ -5,6 +5,7 @@
     var scope, currentUser, messages, conversation, state, stateParams, configurationService;
     var urlUser, urlConversation, urlMessages, urlAvailableUsers, urlBlockedUsers;
     var $httpBackend, requiresHttp, timeout, urlPoller, urlMarkAsRead, $q, deferred, poller, messagePoller, blockedUsers;
+    var urlApi, queryString, accessToken;
 
     var contact, availableUsers, $window;
 
@@ -91,16 +92,20 @@
 
 
       /* eslint-disable max-len */
-      var baseUrl = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1';
-      var accessToken = 'qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
-      urlUser = baseUrl+'/cs-pm/users/current-user?access_token='+accessToken;
 
-      urlConversation = baseUrl+'/cs-pm/conversations/123?access_token='+accessToken;
-      urlPoller = baseUrl+'/cs-pm/conversations/123/messages?access_token='+accessToken+'&after=&poll=true&range=50';
-      urlMarkAsRead = baseUrl+'/cs-pm/conversations/123/mark-as-read?access_token='+accessToken;
-      urlAvailableUsers  = baseUrl+'/cs-pm/users/available-users?access_token='+accessToken+'&filter%5Bid%5D=2';
-      urlBlockedUsers = baseUrl+'/cs-fr/blocked?access_token='+accessToken+'&filter%5Buser%5D=2';
-      urlMessages = baseUrl+'/cs-pm/conversations/123/messages?access_token='+accessToken;
+      accessToken = configurationService.getSetting('access_token');
+      urlApi = configurationService.getSetting('api_url');
+
+      stateParams = {id: 123};
+
+      urlUser = urlApi+'/cs-pm/users/current-user?access_token='+accessToken;
+
+      urlConversation = urlApi+'/cs-pm/conversations/123?access_token='+accessToken;
+      urlPoller = urlApi+'/cs-pm/conversations/123/messages?access_token='+accessToken+'&after=&poll=true&range=50';
+      urlMarkAsRead = urlApi+'/cs-pm/conversations/123/mark-as-read?access_token='+accessToken;
+      urlAvailableUsers  = urlApi+'/cs-pm/users/available-users?access_token='+accessToken+'&filter%5Bid%5D=2';
+      urlBlockedUsers = urlApi+'/cs-fr/blocked?access_token='+accessToken+'&filter%5Buser%5D=2';
+      urlMessages = urlApi+'/cs-pm/conversations/123/messages?access_token='+accessToken;
 
       $httpBackend.expectGET(urlUser).respond({
         data: currentUser
@@ -347,8 +352,8 @@
     //  $httpBackend.flush();
     //
     //  scope.reply.text = 'It works';
-    //  var urlReplyToConversation = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1/cs-pm/conversations/' +
-    //    conversation.data.id + '/reply?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+    //  var urlReplyToConversation = apiUrl+'/cs-pm/conversations/' +
+    //    conversation.data.id + '/reply?access_token=';
     //  var newMessage = {
     //    data: [{
     //      id: 1,

@@ -55,10 +55,12 @@
       requiresHttp = true;
       config = $injector.get('configurationService');
 
-      stateParams = {id: 1};
-      accessToken = 'qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc'
-      urlApi = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1';
+
+      accessToken = config.getSetting('access_token');
+      urlApi = config.getSetting('api_url');
       queryString = 'access_token='+accessToken;
+
+      stateParams = {id: 1};
 
       modalInstance = {
         // Create a mock object using spies
@@ -73,6 +75,9 @@
 
       spyOn(config, 'getString');
       spyOn(config, 'getSetting').and.returnValue(accessToken);
+
+
+
 
       var urlUser = urlApi+'/cs-pm/users/current-user?'+queryString;
       $httpBackend.expectGET(urlUser).respond(currentUser);

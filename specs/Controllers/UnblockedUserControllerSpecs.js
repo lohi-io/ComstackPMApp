@@ -68,8 +68,8 @@
       config = $injector.get('configurationService');
 
       stateParams = {id: 1};
-      accessToken = 'qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc'
-      urlApi = 'https://cancerchat01dev.prod.acquia-sites.com/api/v1';
+      urlApi = config.getSetting('api_url');
+      accessToken = config.getSetting('access_token');
       queryString = 'access_token='+accessToken;
 
       modalInstance = {
