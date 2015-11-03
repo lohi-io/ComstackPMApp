@@ -23,7 +23,6 @@ module.exports = function () {
   }
 
   this.signIn = function (username, password) {
-    //browser.get('https://CRUK01:yuDab8ne!@cancerchat01dev.prod.acquia-sites.com');
     browser.get('/app');
     browser.driver.wait(EC.presenceOf(element(by.id('username'))),10000);
     login(username, password);

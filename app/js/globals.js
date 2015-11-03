@@ -35,6 +35,7 @@ Comstack.PMApp = {
       "text__select_messages_to_delete": "Select the messages you'd like to delete",
       "text__select_messages_to_report": "Select the messages you'd like to report",
       "text__no_conversations": '<p>You\'ve not been part of any conversations yet!</p><p>Make sure that you\'ve <a href="@base_url@/friends/@user_id@">added your friends</a> then start a new conversation.</p>',
+      "text__no_conversations_no_friends": "You need to add contacts before you start a conversation.",
       "form__new_conversation__header": 'You must be friends with a person before you can send them messages. <a href="@base_url@/user/@user_id@/account-settings">Find and add friends</a>',
       "form__to__label": "To",
       "form__to__placeholder__singular": "Enter recipients username...",

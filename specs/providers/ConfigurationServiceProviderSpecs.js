@@ -1,6 +1,6 @@
 (function (describe, it, expect, inject, angular, beforeEach) {
   describe('ConfigurationServiceProvider', function () {
-    var mockBackend, configurationService, baseUrl;
+    var configurationService, baseUrl;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
 
@@ -21,8 +21,8 @@
 
       var appSettings = configurationService.get();
 
-      expect(appSettings.api_url).toEqual('global url');
-      expect(appSettings.authorization_header).toEqual('Basic Q1JVSzAxOnl1RGFiOG5lIQ==');
+      expect(appSettings.api_url).toEqual('https://testpm.com/api');
+      expect(appSettings.authorization_header).toEqual('Basic sdfasdfasdfasd==');
       expect(appSettings.access_token).toEqual('newToken');
       expect(appSettings.base_url).toEqual(baseUrl);
       expect(appSettings.strings.heading__messages).toEqual('Messages');

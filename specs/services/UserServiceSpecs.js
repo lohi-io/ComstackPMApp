@@ -2,17 +2,24 @@
 (function (describe, it, expect, inject, angular, beforeEach) {
   describe('UserService', function() {
     var mockBackend, loaderCurrentUser, config, loaderAvailableUsers, User;
+    var result, accessToken, urlApi, queryString;
 
     beforeEach(angular.mock.module('ComstackPMApp.Services'));
     beforeEach(angular.mock.module('ComstackPMApp.ServicesMock'));
 
     beforeEach(inject(function($injector) {
 
+
       mockBackend = $injector.get('$httpBackend');
       loaderCurrentUser = $injector.get('getCurrentUser');
       loaderAvailableUsers = $injector.get('getAvailableUsers');
       config =  $injector.get('configurationService');
       User = $injector.get('User');
+
+      accessToken = config.getSetting('access_token');
+      urlApi = config.getSetting('api_url');
+      queryString = '?access_token='+accessToken;
+
     }));
 
 
@@ -29,8 +36,9 @@
         }
       };
 
-      var result;
-      var url = config.appSettings.api_url+'/cs-pm/users/current-user?access_token='+config.appSettings.access_token;
+
+
+      var url = urlApi+'/cs-pm/users/current-user?access_token='+accessToken;
       mockBackend.expectGET(url).respond(response);
       var promise = loaderCurrentUser.get();
       promise.then(function(rec) {
@@ -55,9 +63,9 @@
       };
 
       var result;
-      var enpPoint = config.appSettings.api_url+'/cs-pm/users/available-users';
-      var queryString = '?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc&autocomplete%5Bstring%5D=test';
-      mockBackend.expectGET(enpPoint+queryString).respond(response);
+      var enpPoint = urlApi+'/cs-pm/users/available-users';
+
+      mockBackend.expectGET(enpPoint+queryString +'&autocomplete%5Bstring%5D=test').respond(response);
 
       var promise = loaderAvailableUsers.get('test');
       promise.then(function(rec) {
@@ -85,8 +93,7 @@
 
       var result;
 
-      var url = config.appSettings.api_url + '/cs-fr/blocked';
-      var queryString = '?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+      var url = urlApi + '/cs-fr/blocked';
 
       mockBackend.expectGET(url + queryString).respond(blockedUsers);
 
@@ -113,8 +120,8 @@
 
       var result;
 
-      var url = config.appSettings.api_url + '/cs-fr/blocked';
-      var queryString = '?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+      var url = urlApi + '/cs-fr/blocked';
+
 
       mockBackend.expectPOST(url + queryString, {user: 1}).respond(blockedUsers);
 
@@ -141,8 +148,7 @@
 
       var result;
 
-      var url = config.appSettings.api_url + '/cs-fr/blocked/1';
-      var queryString = '?access_token=qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc';
+      var url = urlApi + '/cs-fr/blocked/1';
 
       mockBackend.expectDELETE(url + queryString).respond(blockedUsers);
 
