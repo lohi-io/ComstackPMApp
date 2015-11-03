@@ -376,6 +376,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
             $scope.scrollAdapter.append(results);
 
             if($scope.scrollPosition == 'bottom'){
+              markAsRead();
               $scope.glued = true;
             }
             console.log($scope.scrollPosition);

@@ -21,7 +21,7 @@ app.controller('HomeCtrl', ['$scope', 'Authentication', '$timeout', '$state', '$
           $scope.message = "Login done";
           $state.go('inbox', {page: 1});
         }, function (error) {
-          console.error(error);
+          console.log(error);
         })
       }else{
         $state.go('inbox', {page: 1});

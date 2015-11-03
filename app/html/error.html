@@ -3,8 +3,18 @@
   <h4 class="modal-title" ng-bind-html="modal_error_heading | htmlsafe"></h4>
 </div>
 <div class="modal-body">
-  <div class="bootbox-body" ng-bind-html="error.status_text | htmlsafe"></div>
+  <div class="bootbox-body" ng-bind-html="errorMessage | htmlsafe"></div>
+  </br>
+
+  <div ng-click="showInner = !showInner"
+    ng-bind-html="!showInner ? error_show_text : error_hide_text  | htmlsafe" style="cursor: pointer;">
+    <span class="glyphicon glyphicon-chevron-down"></span>
+  </div>
+  <div class="panel panel-danger" ng-show="showInner">
+    <div class="panel-body" ng-bind-html="errorDetails | htmlsafe"></div>
+  </div>
 </div>
+
 <div class="modal-footer">
-  <button ng-click="cancel()" type="button" class="btn btn-default">Cancel</button>
+  <button ng-click="cancel()" type="button" class="btn btn-default" ng-bind-html="button_ok | htmlsafe"></button>
 </div>

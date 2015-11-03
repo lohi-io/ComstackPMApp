@@ -2,8 +2,8 @@
  * Created by fechit01 on 15/10/2015.
  */
 var services = angular.module('ComstackPMApp.Services');
-services.factory('requestInterceptor', ['$q', 'configurationService', 'errorState', '$location',
-  function ($q, configurationService, errorState, $location) {
+services.factory('requestInterceptor', ['$q', 'configurationService', 'errorState', '$window',
+  function ($q, configurationService, errorState, $window) {
 
     var request = function (config) {
 
@@ -16,26 +16,31 @@ services.factory('requestInterceptor', ['$q', 'configurationService', 'errorStat
       return config;
     };
 
+
+    // optional method
+    var requestError = function(rejection) {
+      var settings = configurationService.get();
+      errorState.activate(settings.library_path + '/app/html/error.html', rejection);
+      return $q.reject(rejection);
+    };
+
+
+
     var responseError = function (rejection) {
       var settings = configurationService.get();
       if(rejection.status === 401) {
-        $location.path(settings.base_url).replace();
-        $scope.apply();
+        $window.location.href = settings.base_url;
         return $q.reject(rejection);
-      }
-      if(rejection.status == 0) {
-        rejection.status_text = "CORS error";
       }
 
       console.log(rejection);
-      //errorState.activate(settings.library_path + '/app/html/error.html', rejection);
+      errorState.activate(settings.library_path + '/app/html/error.html', rejection);
       return $q.reject(rejection);
-
-
     };
 
     return {
       'request': request,
+      'requestError': requestError,
       'responseError': responseError
     }
   }]);
