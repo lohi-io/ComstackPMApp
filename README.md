@@ -21,6 +21,8 @@ Assuming these dependencies are installed:
 
 Depending on your network conditions, bower may not be able to clone dependencies. If this happens, run `git config url."https://".insteadOf git://` and `npm install` again.
 
+If for some reason you make JS changes without the grunt server running, you will want to recompile the JS files again by running `grunt uglify`
+
 #### Dependencies
 
 ComstackPMApp assumes nothing of its working environment. Hence, it will work without jQuery, however, if you are using jQuery you will need to be on at least 1.9 and jQuery should be loaded before Angular.js.
