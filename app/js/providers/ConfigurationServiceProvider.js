@@ -70,6 +70,7 @@ app.provider("configurationService", function () {
       "modal__unblock__text": "Are you sure you want to unblock the user @name@?",
       "modal__unblock__text__multiple": "Users I want to unblock:",
       "modal__unblock__text__not_allowed": "You cannot unblock this user.",
+      "modal__error__heading": "Error",
       "error__no_connection": "We're having trouble contacting the server, are you connected to the internet?",
       "error__api_bad_response": "The API returned an error so something has gone wrong.",
       "error__show_text": "Show the error",
