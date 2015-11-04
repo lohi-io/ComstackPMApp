@@ -297,15 +297,6 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       $scope.glued = false;
     };
 
-
-    $scope.goToInbox = function () {
-      $state.go('inbox', {
-        page: 1
-      }, {
-        reload: 'inbox'
-      });
-    };
-
     $scope.submitReply = function () {
       Conversation.reply({id: $stateParams.id}, $scope.reply).$promise.then(function (response) {
         $scope.glued = true;
