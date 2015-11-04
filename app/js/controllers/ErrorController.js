@@ -11,7 +11,7 @@ app.controller('ErrorCtrl', [
     $scope.modal_error_heading = config.getString('modal__error__heading');
     $scope.button_ok = config.getString('button__ok');
 
-    if($scope.error.status == null || $scope.data == null || $scope.error.status === 0 || $scope.error.status === -1){
+    if($scope.error.status == null || $scope.error.data == null || $scope.error.status === 0 || $scope.error.status === -1){
       config.setSettingValue('http_error', true);
       $scope.errorMessage = config.getString('error__no_connection');
     }else{
