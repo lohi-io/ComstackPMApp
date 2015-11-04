@@ -1,3 +1,5 @@
+var templates = angular.module('ComstackPMApp.Templates', []);
+
 var app = angular.module('ComstackPMApp', ['ui.router',
                                            'ui.bootstrap',
                                            'ComstackPMApp.Services',
@@ -6,7 +8,8 @@ var app = angular.module('ComstackPMApp', ['ui.router',
                                            'emguo.poller',
                                            'ui.scroll',
                                            'ui.scroll.jqlite',
-                                           'ComstackPMApp.Directives']);
+                                           'ComstackPMApp.Directives',
+                                           'ComstackPMApp.Templates']);
 
 app.config([
   "$urlRouterProvider",
@@ -37,29 +40,29 @@ app.config([
       .state('Home', {
         url: '/home',
         controller: 'HomeCtrl',
-        templateUrl: templatesPath + '/app/html/home.html'
+        templateUrl: 'html/home.html'
       })
       .state('inbox', {
         url: '/inbox/:page',
         controller: 'InboxCtrl',
-        templateUrl: templatesPath + '/app/html/inbox.html'
+        templateUrl: 'html/inbox.html'
       })
       .state('message', {
         url: '/message',
         controller: 'MessageCtrl',
-        templateUrl: templatesPath + '/app/html/message.html'
+        templateUrl: 'html/message.html'
       })
       .state('conversation', {
         url: '/conversation/:id',
         controller: 'ConversationCtrl',
-        templateUrl: templatesPath + '/app/html/conversation.html'
+        templateUrl: 'html/conversation.html'
       })
       .state('inbox.delete',
         {
           url: '/delete/:id',
           onEnter: [
             'deleteConversationState', '$stateParams', function (deleteConversationState, $stateParams) {
-              deleteConversationState.activate(templatesPath + '/app/html/deleteConversation.html',
+              deleteConversationState.activate('html/deleteConversation.html',
                 {state: 'inbox', params: $stateParams},
                 {state: 'inbox', params: $stateParams}
               );
@@ -71,7 +74,7 @@ app.config([
           url: '/delete',
           onEnter: [
             'deleteConversationState', '$stateParams', function (deleteConversationState, $stateParams) {
-              deleteConversationState.activate(templatesPath + '/app/html/deleteConversation.html',
+              deleteConversationState.activate('html/deleteConversation.html',
                 {state: 'inbox', params: {page: 1}},
                 {state: 'conversation', params: $stateParams}
               );
@@ -83,7 +86,7 @@ app.config([
           url: '/report/:id',
           onEnter: [
             'reportConversationState', '$stateParams', function (reportConversationState, $stateParams) {
-              reportConversationState.activate(templatesPath + '/app/html/reportConversation.html',
+              reportConversationState.activate('/html/reportConversation.html',
                 {state: 'inbox', params: $stateParams},
                 {state: 'inbox', params: $stateParams}
               );
@@ -95,7 +98,7 @@ app.config([
           url: '/report',
           onEnter: [
             'reportConversationState', '$stateParams', function (reportConversationState, $stateParams) {
-              reportConversationState.activate(templatesPath + '/app/html/reportConversation.html',
+              reportConversationState.activate('html/reportConversation.html',
                 {state: 'conversation', params: $stateParams},
                 {state: 'conversation', params: $stateParams}
               );
@@ -107,7 +110,7 @@ app.config([
           url: '/block',
           onEnter: [
             'blockUserState', '$stateParams', function (blockUserState, $stateParams) {
-              blockUserState.activate(templatesPath + '/app/html/blockUser.html',
+              blockUserState.activate('html/blockUser.html',
                 {state: 'conversation', params: $stateParams},
                 {state: 'conversation', params: $stateParams}
               );
@@ -119,7 +122,7 @@ app.config([
           url: '/unblock',
           onEnter: [
             'unblockUserState', '$stateParams', function (unblockUserState, $stateParams) {
-              unblockUserState.activate(templatesPath + '/app/html/unblockUser.html',
+              unblockUserState.activate('html/unblockUser.html',
                 {state: 'conversation', params: $stateParams},
                 {state: 'conversation', params: $stateParams}
               );

@@ -24,23 +24,35 @@ module.exports = function(grunt){
                 singleRun: true
             }
         },
+
         watch: {
             js: {
                 files: [
+                    'app/html/**/*.html',
                     'app/js/**/*.js',
                     'specs/**/*.js',
                     '!app/js/ComstackPMApp.js'
                 ],
-                tasks: ['karma:unitbg:run', 'uglify']
+                tasks: ['karma:unitbg:run', 'ngtemplates', 'uglify']
             },
             grunt: {
                 files: ['gruntfile.js']
             }
         },
+
+        ngtemplates: {
+          ComstackPMApp: {
+            cwd: 'app',
+            src: 'html/**/*.html',
+            dest: 'app/js/ComstackPMAppTpls.js'
+          }
+        },
+
         uglify: {
           app: {
             src: [
               'app/js/app.js',
+              'app/js/ComstackPMAppTpls.js',
               'app/js/providers/ConfigurationServiceProvider.js',
               'app/js/directives/01_bootstrap.js',
               'app/js/directives/EmojiDirective.js',
@@ -75,5 +87,5 @@ module.exports = function(grunt){
       }
     });
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
-    grunt.registerTask('default', ['http-server:dev', 'uglify', 'watch']);
+    grunt.registerTask('default', ['http-server:dev','ngtemplates','uglify', 'watch']);
 };

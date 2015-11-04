@@ -2,8 +2,22 @@
  * Created by fechit01 on 15/10/2015.
  */
 var services = angular.module('ComstackPMApp.Services');
-services.factory('requestInterceptor', ['$q', 'configurationService', 'errorState', '$window',
-  function ($q, configurationService, errorState, $window) {
+services.factory('requestInterceptor', ['$q', 'configurationService', 'errorState', '$window', '$injector',
+  function ($q, configurationService, errorState, $window, $injector) {
+
+    var settings = configurationService.get();
+
+    function showError(error){
+      if(!settings.http_error) {
+        errorState.activate('html/error.html', error);
+      }
+    }
+
+    function stopPolling(){
+      if(settings.http_error){
+        $injector.get('poller').stopAll();
+      }
+    }
 
     var request = function (config) {
 
@@ -16,25 +30,22 @@ services.factory('requestInterceptor', ['$q', 'configurationService', 'errorStat
       return config;
     };
 
-
     // optional method
     var requestError = function(rejection) {
-      var settings = configurationService.get();
-      errorState.activate(settings.library_path + '/app/html/error.html', rejection);
+        showError(rejection);
+        stopPolling();
+
       return $q.reject(rejection);
     };
 
-
-
     var responseError = function (rejection) {
-      var settings = configurationService.get();
       if(rejection.status === 401) {
         $window.location.href = settings.base_url;
         return $q.reject(rejection);
       }
-
       console.log(rejection);
-      errorState.activate(settings.library_path + '/app/html/error.html', rejection);
+      showError(rejection);
+      stopPolling();
       return $q.reject(rejection);
     };
 

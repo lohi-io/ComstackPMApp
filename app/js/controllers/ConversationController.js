@@ -136,8 +136,6 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
           $scope.isContactAvailable = availableUsers.hasOwnProperty('data') &&
             $filter('filter')(availableUsers.data, {id: contactId}).length === 1;
         });
-
-       // $scope.$apply();
       });
     };
 
@@ -396,12 +394,17 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
      };
 
       if (angular.isUndefined($scope.currentUser.user)) {
-        messagesPoller.stop();
-      }
+        poller.stopAll();
+      }else{
+          if(angular.isUndefined($scope.currentUser.preferences)){
+            poller.stopAll();
+          }else{
+            if (!angular.isUndefined($scope.currentUser.preferences.read_only_mode) && $scope.currentUser.preferences.read_only_mode) {
+              poller.stopAll();
+            }
+          }
+        }
 
-      if (!angular.isUndefined($scope.currentUser.preferences.read_only_mode) && $scope.currentUser.preferences.read_only_mode) {
-        messagesPoller.stop();
-      }
 
     });
 
