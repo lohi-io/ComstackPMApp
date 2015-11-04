@@ -48,7 +48,7 @@ app.config([
         templateUrl: 'html/inbox.html'
       })
       .state('message', {
-        url: '/message',
+        url: '/message/:userId',
         controller: 'MessageCtrl',
         templateUrl: 'html/message.html'
       })

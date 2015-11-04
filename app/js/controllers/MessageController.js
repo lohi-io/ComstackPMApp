@@ -1,13 +1,25 @@
-app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers', 'configurationService', 'Conversation', 'getCurrentUser',
-  function ($scope, $state, getAvailableUsers, config, Conversation, userService) {
+app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers',
+              'configurationService', 'Conversation', 'getCurrentUser', '$stateParams', '$filter',
+  function ($scope, $state, getAvailableUsers, config, Conversation, userService, $stateParams, $filter) {
 
     var settings = config.get();
+    $scope.requiredUsers = $stateParams.userId;
     $scope.currentUser = {};
-
+    $scope.maxTags = settings.max_participants - 1;
     $scope.isContactsAvailable = true;
 
     getAvailableUsers.get().then(function(availableUsers) {
       $scope.isContactsAvailable = availableUsers.data.length > 0;
+      if($scope.requiredUsers){
+         var requiredUsers = $scope.requiredUsers.split(',');
+         var allowed = $scope.maxTags <  requiredUsers.length ? $scope.maxTags : requiredUsers.length;
+         for(var i = 0; i < allowed; i++){
+           var userAvailable = $filter('filter')(availableUsers.data, {id: requiredUsers[i]});
+           if(userAvailable.length > 0){
+             $scope.users.push(userAvailable[0]);
+           };
+         };
+      }
     });
 
     $scope.cancelString = config.getString('button__cancel');
@@ -23,7 +35,7 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers', 'configu
     });
 
     $scope.allow_emoji = settings.allow_emoji;
-    $scope.maxTags = settings.max_participants - 1;
+
     var numberLabel = '';
     $scope.textMaxLength = settings.text__maxlength;
     $scope.form_to_label = config.getString('form__to__label');

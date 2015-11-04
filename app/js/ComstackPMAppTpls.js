@@ -583,7 +583,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "        ng-bind-html=\"form_to_validation_empty | htmlsafe\">\n" +
     "      </span>\n" +
     "      <span class=\"help-block\"\n" +
-    "        ng-show=\"newMessageForm.recipients.$dirty && !newMessageForm.recipients.$error.required && newMessageForm.recipients.$invalid && users.length > maxTags\"\n" +
+    "        ng-show=\"(newMessageForm.recipients.$dirty && !newMessageForm.recipients.$error.required && newMessageForm.recipients.$invalid && users.length > maxTags) || users.length > maxTags\"\n" +
     "        ng-bind-html=\"form_to_validation_limit_exceeded | htmlsafe\">\n" +
     "      </span>\n" +
     "    </div>\n" +
