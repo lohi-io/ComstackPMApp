@@ -29,7 +29,7 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
         user_id: $scope.currentUser.user.id
       });
       $scope.button_friends_list = config.getString('button__friends_list');
-      $scope.friends_link = config.base_url + '/friends/' + $scope.currentUser.user.id;
+      $scope.friends_link = settings.base_url + '/friends/' + $scope.currentUser.user.id;
     };
 
     $scope.goToPage = function (page) {

@@ -24,6 +24,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         $scope.paging = messages.paging;
         results.push.apply(results, messages.data);
         results = $filter('orderBy')(results, 'id');
+
         if (results.length < 10) {
           $scope.moreMessages = false;
         } else {
@@ -136,8 +137,6 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
           $scope.isContactAvailable = availableUsers.hasOwnProperty('data') &&
             $filter('filter')(availableUsers.data, {id: contactId}).length === 1;
         });
-
-       // $scope.$apply();
       });
     };
 
@@ -260,7 +259,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
             }
 
 
-            $scope.lastIndex = index;
+
             $timeout(function () {
               Conversation.getMessages({
                 id: $stateParams.id,
@@ -284,7 +283,10 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
                    };
 
                  }
+
+
                  success(afterLoad(messages, false));
+                 $scope.lastIndex = index;
               });
             });
           } else {
@@ -303,6 +305,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       Conversation.reply({id: $stateParams.id}, $scope.reply).$promise.then(function (response) {
         $scope.glued = true;
         config.setSettingValue('lastMessageId', response.data[0].id);
+        $scope.lastMessageId = response.data[0].id;
         if($scope.isMobile)
         {
           $scope.messages.push(response.data[0]);
@@ -356,6 +359,9 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       // Reduce DOM thrashing
       var results = [];
       console.log('messages poll try');
+      if(data.data.length == 0){
+        console.log($scope.glued);
+      }
 
       if($scope.scrollCalls >=3 &&  data.data.length > 0){
         results.push.apply(results, data.data);
@@ -387,12 +393,17 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
      };
 
       if (angular.isUndefined($scope.currentUser.user)) {
-        messagesPoller.stop();
-      }
+        poller.stopAll();
+      }else{
+          if(angular.isUndefined($scope.currentUser.preferences)){
+            poller.stopAll();
+          }else{
+            if (!angular.isUndefined($scope.currentUser.preferences.read_only_mode) && $scope.currentUser.preferences.read_only_mode) {
+              poller.stopAll();
+            }
+          }
+        }
 
-      if (!angular.isUndefined($scope.currentUser.preferences.read_only_mode) && $scope.currentUser.preferences.read_only_mode) {
-        messagesPoller.stop();
-      }
 
     });
 
