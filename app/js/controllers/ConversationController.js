@@ -24,6 +24,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         $scope.paging = messages.paging;
         results.push.apply(results, messages.data);
         results = $filter('orderBy')(results, 'id');
+
         if (results.length < 10) {
           $scope.moreMessages = false;
         } else {
@@ -258,7 +259,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
             }
 
 
-            $scope.lastIndex = index;
+
             $timeout(function () {
               Conversation.getMessages({
                 id: $stateParams.id,
@@ -282,7 +283,11 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
                    };
 
                  }
+                 //testing some shit
+
+
                  success(afterLoad(messages, false));
+                 $scope.lastIndex = index;
               });
             });
           } else {
@@ -301,6 +306,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       Conversation.reply({id: $stateParams.id}, $scope.reply).$promise.then(function (response) {
         $scope.glued = true;
         config.setSettingValue('lastMessageId', response.data[0].id);
+        $scope.lastMessageId = response.data[0].id;
         if($scope.isMobile)
         {
           $scope.messages.push(response.data[0]);
@@ -354,6 +360,9 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       // Reduce DOM thrashing
       var results = [];
       console.log('messages poll try');
+      if(data.data.length == 0){
+        console.log($scope.glued);
+      }
 
       if($scope.scrollCalls >=3 &&  data.data.length > 0){
         results.push.apply(results, data.data);

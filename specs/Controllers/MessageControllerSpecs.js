@@ -3,7 +3,7 @@
 
   describe('MessageCtrl', function () {
     var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config, currentUser,
-      urlAvailableUsers, requiresHttp, createController, accessToken, base_url, urlApi;
+      urlAvailableUsers, requiresHttp, createController, accessToken, base_url, urlApi, stateParams, maxTags;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
@@ -30,7 +30,17 @@
       };
 
       availableUsers = {
-        data: [],
+        data: [{
+          id: 1,
+          name: 'Alice'
+        },{
+          id: 2,
+          name: 'Bob'
+        },{
+          id: 3,
+          name: 'Matt'
+        }
+        ],
         paging: {
           previous: {},
           next: {},
@@ -44,6 +54,8 @@
         }
       };
 
+      stateParams = {userId : '1,2,5'};
+
 
       $httpBackend = _$httpBackend_;
       config =  $injector.get('configurationService');
@@ -52,6 +64,8 @@
       spyOn(config, 'getString');
       accessToken = config.getSetting('access_token');
       base_url = config.getSetting('base_url');
+
+
 
       urlApi = config.getSetting('api_url');
 
@@ -68,7 +82,8 @@
         return $controller('MessageCtrl', {
           '$scope': scope,
           '$state': state,
-          'config': config
+          'config': config,
+          '$stateParams': stateParams
         });
       };
 
@@ -116,31 +131,19 @@
       expect(message.$save).toHaveBeenCalled();
     });
 
+    it('Should pre-populate to field with the users from params, limited to the max participants setting', function() {
+      scope.maxTags = 1;
+      expect(scope.users.length).toEqual(1);
+      expect(scope.users[0].id).toEqual(1);
+    });
+
+
     it('Should determine if any users are contactable on initialisation', function() {
-      expect(scope.isContactsAvailable).toEqual(false);
-
-      $httpBackend.verifyNoOutstandingExpectation();
-      $httpBackend.verifyNoOutstandingRequest();
-      $httpBackend.resetExpectations();
-
-      availableUsers = {
-        data: [{
-          name: 'Alice'
-        }],
-        paging: {
-          previous: {},
-          next: {},
-          range: 10,
-          total: 12,
-          current_page: 2
-        }
-      };
-
-      $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
-
-      ctrl = createController();
       expect(scope.isContactsAvailable).toEqual(true);
     });
+
+
+
 
     it('Should get the strings from configuration', function(){
       var maxLength = config.getSetting('text__maxlength');
