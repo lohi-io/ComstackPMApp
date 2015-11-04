@@ -144,21 +144,6 @@
         //expect(scope.scrollAdapter.append).toHaveBeenCalledWith([{}, {}]);
     });
 
-
-
-
-
-    it('Should be able to navigate to the inbox', function() {
-      requiresHttp = false;
-
-      expect(scope.goToInbox).not.toBeUndefined();
-      expect(typeof scope.goToInbox).toEqual('function');
-      spyOn(state, 'go');
-      scope.goToInbox();
-      expect(state.go).toHaveBeenCalledWith('inbox', {page: 1}, {reload: 'inbox'});
-    });
-
-
     it('Should load in the current user on initialisation', function () {
 
       $httpBackend.flush();
