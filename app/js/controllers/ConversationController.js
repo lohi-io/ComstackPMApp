@@ -283,7 +283,6 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
                    };
 
                  }
-                 //testing some shit
 
 
                  success(afterLoad(messages, false));
