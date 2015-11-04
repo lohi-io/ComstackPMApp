@@ -7,7 +7,9 @@ function reportConversationState($state, $modal) {
       templateUrl: templateUrl,
       controller: 'ReportConversationCtrl',
       backdrop: 'static',
-      size: 'md'
+      size: 'md',
+      windowClass: 'cs-pm-modal',
+      backdropClass: 'cs-pm-modal-backdrop'
     }).result.then(function (result) {
       if (result === true) {
         $state.go(okDestination.state,
