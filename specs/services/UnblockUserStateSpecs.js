@@ -47,7 +47,9 @@
           templateUrl: '/app/html/unblockUser.html',
           controller: 'UnblockUserCtrl',
           backdrop: 'static',
-          size: 'sm'
+          size: 'sm',
+          windowClass: 'cs-pm-modal',
+          backdropClass: 'cs-pm-modal-backdrop'
         });
     });
 

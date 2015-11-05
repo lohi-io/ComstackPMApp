@@ -47,7 +47,9 @@
           templateUrl: '/app/html/reportConversation.html',
           controller: 'ReportConversationCtrl',
           backdrop: 'static',
-          size: 'md'
+          size: 'md',
+          windowClass: 'cs-pm-modal',
+          backdropClass: 'cs-pm-modal-backdrop'
         });
     });
 

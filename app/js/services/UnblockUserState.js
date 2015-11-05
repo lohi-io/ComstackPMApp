@@ -7,7 +7,9 @@ function unblockUserState($state, $modal) {
       templateUrl: templateUrl,
       controller: 'UnblockUserCtrl',
       backdrop: 'static',
-      size: 'sm'
+      size: 'sm',
+      windowClass: 'cs-pm-modal',
+      backdropClass: 'cs-pm-modal-backdrop'
     }).result.then(function (result) {
       if (result === true) {
         $state.go(okDestination.state,
