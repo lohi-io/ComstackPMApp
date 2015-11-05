@@ -193,6 +193,8 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
 
     $scope.messagesDatasource = {
       get: function (index, count, success) {
+        console.log(index);
+        console.log($scope.scrollAdapter);
         if($scope.isMobile){
           success([]);
         }else{
@@ -281,10 +283,11 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
                    {
                      $scope.scrollPosition = 'between';
                    };
-
                  }
-
-
+                 //index = index <= 0 ? index + 1 : index -1;
+                 //console.log(index);
+                 //console.log(afterLoad(messages, false).slice(index, index + count));
+                 //success(afterLoad(messages, false).slice(index, index + count));
                  success(afterLoad(messages, false));
                  $scope.lastIndex = index;
               });
@@ -361,6 +364,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       console.log('messages poll try');
       if(data.data.length == 0){
         console.log($scope.glued);
+        $scope.glued = false;
       }
 
       if($scope.scrollCalls >=3 &&  data.data.length > 0){
@@ -383,6 +387,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
           }else{
             $scope.messages.push.apply($scope.messages, results);
             $scope.messages = $filter('orderBy')( $scope.messages, 'id');
+            $scope.glued = false;
             markAsRead();
           }
         }
@@ -392,17 +397,17 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         console.log(results);
      };
 
-      if (angular.isUndefined($scope.currentUser.user)) {
-        poller.stopAll();
-      }else{
-          if(angular.isUndefined($scope.currentUser.preferences)){
-            poller.stopAll();
-          }else{
-            if (!angular.isUndefined($scope.currentUser.preferences.read_only_mode) && $scope.currentUser.preferences.read_only_mode) {
-              poller.stopAll();
-            }
-          }
-        }
+      //if (angular.isUndefined($scope.currentUser.user)) {
+      //  poller.stopAll();
+      //}else{
+      //    if(angular.isUndefined($scope.currentUser.preferences)){
+      //      poller.stopAll();
+      //    }else{
+      //      if (!angular.isUndefined($scope.currentUser.preferences.read_only_mode) && $scope.currentUser.preferences.read_only_mode) {
+      //        poller.stopAll();
+      //      }
+      //    }
+      //  }
 
 
     });
