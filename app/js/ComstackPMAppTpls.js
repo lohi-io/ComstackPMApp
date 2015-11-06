@@ -248,7 +248,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "          ng-repeat=\"conversation in conversations\">\n" +
     "        <div class=\"media-left cs-pm__avatar pull-left\">\n" +
     "          <img class=\"media-object\"\n" +
-    "               ng-src=\"{{conversation.last_message.sender.avatars['200-200']}}\"\n" +
+    "               ng-src=\"{{computeAvatar(conversation, '200-200')}}\"\n" +
     "               alt=\"\"\n" +
     "               style=\"width:50px;height:50px;\">\n" +
     "        </div>\n" +
