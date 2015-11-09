@@ -246,7 +246,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "          <img class=\"media-object\"\r" +
     "\n" +
-    "               ng-src=\"{{conversation.last_message.sender.avatars['200-200']}}\"\r" +
+    "               ng-src=\"{{computeAvatar(conversation, '200-200')}}\"\r" +
     "\n" +
     "               alt=\"\"\r" +
     "\n" +

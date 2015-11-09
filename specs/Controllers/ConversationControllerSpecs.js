@@ -112,6 +112,7 @@
       });
       $httpBackend.expectGET(urlConversation).respond(conversation);
       $httpBackend.expectPUT(urlMarkAsRead, {}).respond({});
+      $httpBackend.expectGET(urlMessages+'&after=&before=&range=20').respond(messages);
 
 
       /* eslint-enable max-len */
@@ -135,9 +136,6 @@
 
     it('Should call the get of the poller', function(){
         scope.lastMessageId = 0;
-        scope.scrollAdapter = {append: function(){}};
-        spyOn(scope.scrollAdapter, 'append');
-        scope.scrollCalls = 4;
         spyOn(poller,'get').and.callThrough();
         $httpBackend.flush();
         expect(poller.get).toHaveBeenCalled();
