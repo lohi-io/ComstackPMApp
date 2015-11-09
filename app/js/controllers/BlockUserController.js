@@ -10,12 +10,14 @@ app.controller('BlockUserCtrl', [
         $scope.users.push(user);
       })
 
-      if ( $scope.users.length === 0) {
+      $scope.users = $filter('filter')($scope.users, {id: '!' + $scope.currentUser.user.id});
+
+      if ($scope.users.length === 0) {
         conversation.historical_participants.forEach(function(user){
           $scope.users.push(user);
         })
       }
-      $scope.users = $filter('filter')($scope.users, {id: '!' + $scope.currentUser.user.id});
+
     };
 
 

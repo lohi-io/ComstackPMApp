@@ -23,9 +23,17 @@
     </div>
   </div>
 
-
-
-  <div id="conversation-wrapper" class="conversation-wrapper" style="max-height: 600px; overflow: auto" scroll-glue="!!glued" ng-show="isMobile">
+  <div id="conversation-wrapper"
+       class="conversation-wrapper"
+       style="max-height: 600px; overflow: auto"
+       scroll-glue="!!glued"
+       dynamic-scroll
+       on-scroll-up="onScrollUp()"
+       on-scroll-down="onScrollDown()"
+       is-loading="isLoading"
+       eof-down="eofDown"
+       eof-up="eofUp"
+       is-mobile="isMobile">
 
     <div class="delete-message-msg collapse">
       <div class="alert alert-info" role="alert" ng-cloak>{{ text__select_messages_to_delete }}</div>
@@ -36,8 +44,8 @@
         button__load_older_messages }}</a>
     </div>
 
-    <ul class="media-list" ng-show="isMobile">
-      <li ng-repeat="message in messages" buffer-size="10" padding="0.3" adapter="scrollAdapter"
+    <ul class="media-list">
+      <li ng-repeat="message in messages track by message.id" buffer-size="10" padding="0.3"
           ng-class="{'message-own': message.sender.id === $parent.currentUser.user.id}"
           class="media">
         <div ng-hide="'Hiding this until we implement message deletion'"
@@ -58,40 +66,8 @@
         </div>
       </li>
     </ul>
-  </div>
-
-
-  <div id="conversation-wrapper" class="conversation-wrapper" style="max-height: 600px; overflow: auto" ui-scroll-viewport scroll-glue="!!glued" ng-hide="isMobile">
-
-    <div class="delete-message-msg collapse">
-      <div class="alert alert-info" role="alert" ng-cloak>{{ text__select_messages_to_delete }}</div>
-    </div>
-
-    <ul class="media-list">
-      <li ui-scroll="message in messagesDatasource" buffer-size="10" padding="0.3" adapter="scrollAdapter"
-          ng-class="{'message-own': message.sender.id === $parent.currentUser.user.id}"
-          class="media">
-        <div ng-hide="'Hiding this until we implement message deletion'"
-             class="media-left checkbox-wrap">
-          <div class="checkbox"><label><input type="checkbox" value="message.id"
-                                              aria-label="Delete this message"></label></div>
-        </div>
-        <div ng-if="message.sender.id !== $parent.currentUser.user.id" class="media-left cs-pm__avatar">
-          <img class="media-object" ng-src="{{ message.sender.avatars['100-100'] }}" alt="" style="width:50px;height:50px;">
-        </div>
-        <div class="cs-pm-body media-body">
-          <div class="cs-pm-message-meta message-meta small"><a
-            ng-hide="message.sender.id === $parent.currentUser.user.id" ng-href="{{ message.sender.profile }}"
-            ng-bind="message.sender.name"></a> <abbr class="timeago"
-                                                            ng-attr-title="{{message.sent | formatDate}}"
-                                                            ng-bind="message.sent | dateFromNow"></abbr></div>
-          <div class="cs-pm-message message" ng-class="{'arrow_box': message.sender.id != $parent.currentUser.user.id}"><p ng-bind-html="message.text | htmlsafe"></p></div>
-        </div>
-      </li>
-    </ul>
 
   </div>
-
   <div class="cs-pm-reply-wrapper reply-wrapper">
     <div data-ng-form="newMessageForm" novalidate role="form">
       <div class="form-group" ng-class="{'has-error': newMessageForm.replyText.$invalid && newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.maxlength || newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))}">
