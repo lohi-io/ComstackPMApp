@@ -1,8 +1,12 @@
 <div id="message" class="page-wrapper cs-pm-page-wrapper" style="display: block">
 
   <div class="messages-header cs-pm__header clearfix" ng-cloak>
-    <h2 class="pull-left cs-pm-left"><a ui-sref="inbox({page: 1})" ui-sref-opts="{reload: true}" class="messages-trigger"><span class="icomoon icomoon-back cs-pm-icon--back"></span>{{ heading__messages }}</a></h2>
-    <div class="pull-right cs-pm-right"><a ui-sref="message" class="btn btn-default cs-pm__new-message"><span class="icomoon icomoon-speech-bubble cs-pm-icon--new-message"></span> {{ button__new_conversation }}</a></div>
+    <h2 class="pull-left cs-pm-left"><a ui-sref="inbox({page: 1})" ui-sref-opts="{reload: true}"
+                                        class="messages-trigger"><span
+      class="icomoon icomoon-back cs-pm-icon--back"></span>{{ heading__messages }}</a></h2>
+
+    <div class="pull-right cs-pm-right"><a ui-sref="message" class="btn btn-default cs-pm__new-message"><span
+      class="icomoon icomoon-speech-bubble cs-pm-icon--new-message"></span> {{ button__new_conversation }}</a></div>
   </div>
 
   <div class="alert alert-warning" ng-show="currentUser.preferences.read_only_mode"
@@ -19,7 +23,8 @@
          ng-bind-html="link__report | htmlsafe"></a>
       <a ng-hide="isContactBlocked" href="" ui-sref="conversation.block" class="btn btn-link btn-small"
          ng-bind="link__block"></a>
-      <a ng-show="isContactBlocked" ui-sref="conversation.unblock" class="btn btn-link btn-small" ng-bind="link__unblock"></a>
+      <a ng-show="isContactBlocked" ui-sref="conversation.unblock" class="btn btn-link btn-small"
+         ng-bind="link__unblock"></a>
     </div>
   </div>
 
@@ -40,8 +45,28 @@
     </div>
 
     <div class="clearfix text-center">
-      <a class="btn btn-primary btn-load-more" id="load-more" ng-cloak ng-click="loadMessages('', paging.cursors.after)" ng-show="isMobile && moreMessages">{{
-        button__load_older_messages }}</a>
+      <a class="btn btn-primary btn-load-more" id="loading" disabled="disabled" ng-show="isLoading">
+        <div class="sk-circle">
+          <div class="sk-circle1 sk-child"></div>
+          <div class="sk-circle2 sk-child"></div>
+          <div class="sk-circle3 sk-child"></div>
+          <div class="sk-circle4 sk-child"></div>
+          <div class="sk-circle5 sk-child"></div>
+          <div class="sk-circle6 sk-child"></div>
+          <div class="sk-circle7 sk-child"></div>
+          <div class="sk-circle8 sk-child"></div>
+          <div class="sk-circle9 sk-child"></div>
+          <div class="sk-circle10 sk-child"></div>
+          <div class="sk-circle11 sk-child"></div>
+          <div class="sk-circle12 sk-child"></div>
+        </div>
+      </a>
+    </div>
+
+    <div class="clearfix text-center">
+      <a class="btn btn-primary btn-load-more" id="load-more" ng-cloak ng-click="loadMessages('', paging.cursors.after)"
+         ng-show="isMobile && moreMessages && !isLoading">
+        {{button__load_older_messages }}</a>
     </div>
 
     <ul class="media-list">
@@ -54,7 +79,8 @@
                                               aria-label="Delete this message"></label></div>
         </div>
         <div ng-if="message.sender.id !== $parent.currentUser.user.id" class="media-left cs-pm__avatar">
-          <img class="media-object" ng-src="{{ message.sender.avatars['100-100'] }}" alt="" style="width:50px;height:50px;">
+          <img class="media-object" ng-src="{{ message.sender.avatars['100-100'] }}" alt=""
+               style="width:50px;height:50px;">
         </div>
         <div class="cs-pm-body media-body">
           <div class="cs-pm-message-meta message-meta small"><a
@@ -62,7 +88,8 @@
             ng-bind="message.sender.name"></a> <abbr class="timeago"
                                                      ng-attr-title="{{message.sent | formatDate}}"
                                                      ng-bind="message.sent | dateFromNow"></abbr></div>
-          <div class="cs-pm-message message" ng-class="{'arrow_box': message.sender.id != $parent.currentUser.user.id}"><p ng-bind-html="message.text | htmlsafe"></p></div>
+          <div class="cs-pm-message message" ng-class="{'arrow_box': message.sender.id != $parent.currentUser.user.id}">
+            <p ng-bind-html="message.text | htmlsafe"></p></div>
         </div>
       </li>
     </ul>
@@ -70,7 +97,8 @@
   </div>
   <div class="cs-pm-reply-wrapper reply-wrapper">
     <div data-ng-form="newMessageForm" novalidate role="form">
-      <div class="form-group" ng-class="{'has-error': newMessageForm.replyText.$invalid && newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.maxlength || newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))}">
+      <div class="form-group"
+           ng-class="{'has-error': newMessageForm.replyText.$invalid && newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.maxlength || newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))}">
 
          <textarea emoji
                    class="form-control"

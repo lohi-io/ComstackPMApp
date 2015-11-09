@@ -23,8 +23,12 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "<div id=\"message\" class=\"page-wrapper cs-pm-page-wrapper\" style=\"display: block\">\n" +
     "\n" +
     "  <div class=\"messages-header cs-pm__header clearfix\" ng-cloak>\n" +
-    "    <h2 class=\"pull-left cs-pm-left\"><a ui-sref=\"inbox({page: 1})\" ui-sref-opts=\"{reload: true}\" class=\"messages-trigger\"><span class=\"icomoon icomoon-back cs-pm-icon--back\"></span>{{ heading__messages }}</a></h2>\n" +
-    "    <div class=\"pull-right cs-pm-right\"><a ui-sref=\"message\" class=\"btn btn-default cs-pm__new-message\"><span class=\"icomoon icomoon-speech-bubble cs-pm-icon--new-message\"></span> {{ button__new_conversation }}</a></div>\n" +
+    "    <h2 class=\"pull-left cs-pm-left\"><a ui-sref=\"inbox({page: 1})\" ui-sref-opts=\"{reload: true}\"\n" +
+    "                                        class=\"messages-trigger\"><span\n" +
+    "      class=\"icomoon icomoon-back cs-pm-icon--back\"></span>{{ heading__messages }}</a></h2>\n" +
+    "\n" +
+    "    <div class=\"pull-right cs-pm-right\"><a ui-sref=\"message\" class=\"btn btn-default cs-pm__new-message\"><span\n" +
+    "      class=\"icomoon icomoon-speech-bubble cs-pm-icon--new-message\"></span> {{ button__new_conversation }}</a></div>\n" +
     "  </div>\n" +
     "\n" +
     "  <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode\"\n" +
@@ -41,7 +45,8 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "         ng-bind-html=\"link__report | htmlsafe\"></a>\n" +
     "      <a ng-hide=\"isContactBlocked\" href=\"\" ui-sref=\"conversation.block\" class=\"btn btn-link btn-small\"\n" +
     "         ng-bind=\"link__block\"></a>\n" +
-    "      <a ng-show=\"isContactBlocked\" ui-sref=\"conversation.unblock\" class=\"btn btn-link btn-small\" ng-bind=\"link__unblock\"></a>\n" +
+    "      <a ng-show=\"isContactBlocked\" ui-sref=\"conversation.unblock\" class=\"btn btn-link btn-small\"\n" +
+    "         ng-bind=\"link__unblock\"></a>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "\n" +
@@ -62,8 +67,28 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "    </div>\n" +
     "\n" +
     "    <div class=\"clearfix text-center\">\n" +
-    "      <a class=\"btn btn-primary btn-load-more\" id=\"load-more\" ng-cloak ng-click=\"loadMessages('', paging.cursors.after)\" ng-show=\"isMobile && moreMessages\">{{\n" +
-    "        button__load_older_messages }}</a>\n" +
+    "      <a class=\"btn btn-primary btn-load-more\" id=\"loading\" disabled=\"disabled\" ng-show=\"isLoading\">\n" +
+    "        <div class=\"sk-circle\">\n" +
+    "          <div class=\"sk-circle1 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle2 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle3 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle4 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle5 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle6 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle7 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle8 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle9 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle10 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle11 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle12 sk-child\"></div>\n" +
+    "        </div>\n" +
+    "      </a>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"clearfix text-center\">\n" +
+    "      <a class=\"btn btn-primary btn-load-more\" id=\"load-more\" ng-cloak ng-click=\"loadMessages('', paging.cursors.after)\"\n" +
+    "         ng-show=\"isMobile && moreMessages && !isLoading\">\n" +
+    "        {{button__load_older_messages }}</a>\n" +
     "    </div>\n" +
     "\n" +
     "    <ul class=\"media-list\">\n" +
@@ -76,7 +101,8 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "                                              aria-label=\"Delete this message\"></label></div>\n" +
     "        </div>\n" +
     "        <div ng-if=\"message.sender.id !== $parent.currentUser.user.id\" class=\"media-left cs-pm__avatar\">\n" +
-    "          <img class=\"media-object\" ng-src=\"{{ message.sender.avatars['100-100'] }}\" alt=\"\" style=\"width:50px;height:50px;\">\n" +
+    "          <img class=\"media-object\" ng-src=\"{{ message.sender.avatars['100-100'] }}\" alt=\"\"\n" +
+    "               style=\"width:50px;height:50px;\">\n" +
     "        </div>\n" +
     "        <div class=\"cs-pm-body media-body\">\n" +
     "          <div class=\"cs-pm-message-meta message-meta small\"><a\n" +
@@ -84,7 +110,8 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "            ng-bind=\"message.sender.name\"></a> <abbr class=\"timeago\"\n" +
     "                                                     ng-attr-title=\"{{message.sent | formatDate}}\"\n" +
     "                                                     ng-bind=\"message.sent | dateFromNow\"></abbr></div>\n" +
-    "          <div class=\"cs-pm-message message\" ng-class=\"{'arrow_box': message.sender.id != $parent.currentUser.user.id}\"><p ng-bind-html=\"message.text | htmlsafe\"></p></div>\n" +
+    "          <div class=\"cs-pm-message message\" ng-class=\"{'arrow_box': message.sender.id != $parent.currentUser.user.id}\">\n" +
+    "            <p ng-bind-html=\"message.text | htmlsafe\"></p></div>\n" +
     "        </div>\n" +
     "      </li>\n" +
     "    </ul>\n" +
@@ -92,7 +119,8 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "  </div>\n" +
     "  <div class=\"cs-pm-reply-wrapper reply-wrapper\">\n" +
     "    <div data-ng-form=\"newMessageForm\" novalidate role=\"form\">\n" +
-    "      <div class=\"form-group\" ng-class=\"{'has-error': newMessageForm.replyText.$invalid && newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.maxlength || newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))}\">\n" +
+    "      <div class=\"form-group\"\n" +
+    "           ng-class=\"{'has-error': newMessageForm.replyText.$invalid && newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.maxlength || newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))}\">\n" +
     "\n" +
     "         <textarea emoji\n" +
     "                   class=\"form-control\"\n" +
@@ -202,184 +230,117 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
 
 
   $templateCache.put('html/inbox.html',
-    "<div id=\"messages-wrapper\"\r" +
-    "\n" +
-    "     class=\"clearfix cs-pm__wrapper\"\r" +
-    "\n" +
-    "     style=\"margin-top: 10px;\" ng-cloak>\r" +
-    "\n" +
-    "  <div id=\"messages\" class=\"page-wrapper cs-pm-page-wrapper\" ng-show=\"conversations.length\">\r" +
-    "\n" +
-    "    <div class=\"messages-header cs-pm__header clearfix\">\r" +
-    "\n" +
-    "      <h2 class=\"pull-left cs-pm-left\" style=\"\" ng-bind-html=\"text_heading_messages | htmlsafe\"></h2>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "      <div class=\"pull-right cs-pm-right\">\r" +
-    "\n" +
-    "        <a href=\"{{friends_link}}\" class=\"btn btn-link btn-link-outline\">{{button_friends_list}}</a>\r" +
-    "\n" +
-    "        <a class=\"btn btn-default cs-pm__new-message\" ui-sref=\"message\" ng-hide=\"currentUser.preferences.read_only_mode\">\r" +
-    "\n" +
-    "          <span class=\"icomoon icomoon-speech-bubble cs-pm-icon--new-message\"></span> {{button_new_conversation}}\r" +
-    "\n" +
-    "        </a>\r" +
-    "\n" +
-    "      </div>\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
-    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode\"\r" +
-    "\n" +
-    "         ng-bind-html=\"text_read_only | htmlsafe\"></div>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "    <ul class=\"media-list conversations-list\">\r" +
-    "\n" +
-    "      <li class=\"media cs-pm-conversation\" ng-class=\"{'conversation--unread': conversation.unread_count != 0}\"\r" +
-    "\n" +
-    "          ng-repeat=\"conversation in conversations\">\r" +
-    "\n" +
-    "        <div class=\"media-left cs-pm__avatar pull-left\">\r" +
-    "\n" +
-    "          <img class=\"media-object\"\r" +
-    "\n" +
-    "               ng-src=\"{{computeAvatar(conversation, '200-200')}}\"\r" +
-    "\n" +
-    "               alt=\"\"\r" +
-    "\n" +
-    "               style=\"width:50px;height:50px;\">\r" +
-    "\n" +
-    "        </div>\r" +
-    "\n" +
-    "        <div class=\"cs-pm-body media-body\">\r" +
-    "\n" +
-    "          <a ui-sref=\"conversation({id: conversation.id})\" class=\"message-trigger\">\r" +
-    "\n" +
-    "            <h4 class=\"media-heading\">{{computeHeading(conversation)}}\r" +
-    "\n" +
-    "              <span ng-show=\"conversation.unread_count != 0\"\r" +
-    "\n" +
-    "                    class=\"notifications-count\"\r" +
-    "\n" +
-    "                    ng-bind=\"conversation.unread_count\"></span>\r" +
-    "\n" +
-    "            </h4>\r" +
-    "\n" +
-    "            <span ng-switch=\"conversation.unread_count\">\r" +
-    "\n" +
-    "              <strong ng-switch-default\r" +
-    "\n" +
-    "                      ng-bind-html=\"conversation.last_message.text | squish | truncate:70 | htmlsafe \"></strong>\r" +
-    "\n" +
-    "              <p ng-switch-when=\"0\" ng-bind-html=\"conversation.last_message.text | squish | truncate:70 | htmlsafe \"></p>\r" +
-    "\n" +
-    "            </span>\r" +
-    "\n" +
-    "          </a>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "          <div class=\"date\">\r" +
-    "\n" +
-    "            <span class=\"hidden-xs\">{{text_last_message}}</span> <abbr class=\"timeago\"\r" +
-    "\n" +
-    "                                                                       ng-attr-title=\"{{formatDate(conversation.updated)}}\">{{fromNow(conversation.updated)}}</abbr>\r" +
-    "\n" +
-    "          </div>\r" +
-    "\n" +
-    "          <div class=\"controls\">\r" +
-    "\n" +
-    "            <small>\r" +
-    "\n" +
-    "              <a ui-sref=\"inbox.delete({id: conversation.id})\" class=\"delete-conversation\" ng-show=\"currentUser.permissions.conversations.leave\"\r" +
-    "\n" +
-    "                 ng-bind-html=\"text_link_delete | htmlsafe\"></a>\r" +
-    "\n" +
-    "              <span\r" +
-    "\n" +
-    "                ng-show=\"currentUser.permissions.conversations.leave && currentUser.permissions.conversations.report\"> | </span>\r" +
-    "\n" +
-    "              <a ui-sref=\"inbox.report({id: conversation.id})\" href=\"\" ng-click=\"report(conversation)\" class=\"report-conversation\" ng-show=\"currentUser.permissions.conversations.report\"\r" +
-    "\n" +
-    "                 ng-bind-html=\"text_link_report | htmlsafe\"></a>\r" +
-    "\n" +
-    "            </small>\r" +
-    "\n" +
-    "          </div>\r" +
-    "\n" +
-    "        </div>\r" +
-    "\n" +
-    "      </li>\r" +
-    "\n" +
-    "    </ul>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "    <div class=\"text-center\">\r" +
-    "\n" +
-    "      <div class=\"pagination-wrapper text-center\">\r" +
-    "\n" +
-    "        <ul class=\"pagination\" ng-show=\"pages.length > 1\">\r" +
-    "\n" +
-    "          <li ng-hide=\"paging.current_page === 1\" class=\"prev first\"><a ng-attr-href=\"#inbox/{{paging.current_page - 1}}\" title=\"Go to previous page\" ng-click=\"$event.preventDefault(); previous()\"></a></li>\r" +
-    "\n" +
-    "          <li ng-repeat=\"page in pages\"\r" +
-    "\n" +
-    "              ng-class=\"{'active': paging.current_page === page.number, 'first': page.number === 1}\">\r" +
-    "\n" +
-    "            <a ng-attr-href=\"{{page.url}}\" ng-click=\" $event.preventDefault(); goToPage(page.number)\" ng-attr-title=\"Go to page {{page.number}}\" ng-bind=\"page.number\"></a>\r" +
-    "\n" +
-    "          </li>\r" +
-    "\n" +
-    "          <li ng-hide=\"paging.current_page === pages.length\" class=\"next last\"><a ng-attr-href=\"#inbox/{{paging.current_page + 1}}\" title=\"Go to next page\" ng-click=\"$event.preventDefault(); next()\"></a></li>\r" +
-    "\n" +
-    "        </ul>\r" +
-    "\n" +
-    "      </div>\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
-    "  </div>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "  <div id=\"messages-empty\" class=\"page-wrapper cs-pm-page-wrapper\" ng-hide=\"conversations.length\" ng-cloak>\r" +
-    "\n" +
-    "    <div class=\"messages-header cs-pm__header clearfix\">\r" +
-    "\n" +
-    "      <h2 class=\"pull-left cs-pm-left\" style=\"\"><a href=\"\" class=\"messages-trigger\"\r" +
-    "\n" +
-    "                                                   ng-bind-html=\"text_heading_messages | htmlsafe\"></a></h2>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "      <div class=\"pull-right cs-pm-right\">\r" +
-    "\n" +
-    "        <a href=\"{{friends_link}}\" class=\"btn btn-link btn-link-outline\">{{button_friends_list}}</a>\r" +
-    "\n" +
-    "        <a class=\"btn btn-default cs-pm__new-message\" ui-sref=\"message\" ng-hide=\"currentUser.preferences.read_only_mode\">\r" +
-    "\n" +
-    "          <span class=\"icomoon icomoon-speech-bubble cs-pm-icon--new-message\"></span> {{button_new_conversation}}\r" +
-    "\n" +
-    "        </a>\r" +
-    "\n" +
-    "      </div>\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
-    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode\"\r" +
-    "\n" +
-    "         ng-bind-html=\"text_read_only | htmlsafe\"></div>\r" +
-    "\n" +
-    "    <div class=\"cs-pm-boxing messaging-boxing text-center\" ng-bind-html=\"text_no_conversations | htmlsafe\"></div>\r" +
-    "\n" +
-    "  </div>\r" +
-    "\n" +
-    "</div>\r" +
-    "\n"
+    "<div id=\"messages-wrapper\"\n" +
+    "     class=\"clearfix cs-pm__wrapper\"\n" +
+    "     style=\"margin-top: 10px;\" ng-cloak>\n" +
+    "\n" +
+    "  <div class=\"cs-pm-new-wrapper new-wrapper\" style=\"height: 300px;\" ng-show=\"isLoading\">\n" +
+    "  <div class=\"clearfix text-center\" style=\"position: relative; top: 50%;\">\n" +
+    "    <a class=\"btn btn-primary btn-load-more\" id=\"loading\" disabled=\"disabled\">\n" +
+    "      <div class=\"sk-circle\">\n" +
+    "        <div class=\"sk-circle1 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle2 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle3 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle4 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle5 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle6 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle7 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle8 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle9 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle10 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle11 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle12 sk-child\"></div>\n" +
+    "      </div>\n" +
+    "    </a>\n" +
+    "  </div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div id=\"messages\" class=\"page-wrapper cs-pm-page-wrapper\" ng-show=\"conversations.length\">\n" +
+    "    <div class=\"messages-header cs-pm__header clearfix\">\n" +
+    "      <h2 class=\"pull-left cs-pm-left\" style=\"\" ng-bind-html=\"text_heading_messages | htmlsafe\"></h2>\n" +
+    "\n" +
+    "      <div class=\"pull-right cs-pm-right\">\n" +
+    "        <a href=\"{{friends_link}}\" class=\"btn btn-link btn-link-outline\">{{button_friends_list}}</a>\n" +
+    "        <a class=\"btn btn-default cs-pm__new-message\" ui-sref=\"message\" ng-hide=\"currentUser.preferences.read_only_mode\">\n" +
+    "          <span class=\"icomoon icomoon-speech-bubble cs-pm-icon--new-message\"></span> {{button_new_conversation}}\n" +
+    "        </a>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode\"\n" +
+    "         ng-bind-html=\"text_read_only | htmlsafe\"></div>\n" +
+    "\n" +
+    "    <ul class=\"media-list conversations-list\">\n" +
+    "      <li class=\"media cs-pm-conversation\" ng-class=\"{'conversation--unread': conversation.unread_count != 0}\"\n" +
+    "          ng-repeat=\"conversation in conversations\">\n" +
+    "        <div class=\"media-left cs-pm__avatar pull-left\">\n" +
+    "          <img class=\"media-object\"\n" +
+    "               ng-src=\"{{computeAvatar(conversation, '200-200')}}\"\n" +
+    "               alt=\"\"\n" +
+    "               style=\"width:50px;height:50px;\">\n" +
+    "        </div>\n" +
+    "        <div class=\"cs-pm-body media-body\">\n" +
+    "          <a ui-sref=\"conversation({id: conversation.id})\" class=\"message-trigger\">\n" +
+    "            <h4 class=\"media-heading\">{{computeHeading(conversation)}}\n" +
+    "              <span ng-show=\"conversation.unread_count != 0\"\n" +
+    "                    class=\"notifications-count\"\n" +
+    "                    ng-bind=\"conversation.unread_count\"></span>\n" +
+    "            </h4>\n" +
+    "            <span ng-switch=\"conversation.unread_count\">\n" +
+    "              <strong ng-switch-default\n" +
+    "                      ng-bind-html=\"conversation.last_message.text | squish | truncate:70 | htmlsafe \"></strong>\n" +
+    "              <p ng-switch-when=\"0\" ng-bind-html=\"conversation.last_message.text | squish | truncate:70 | htmlsafe \"></p>\n" +
+    "            </span>\n" +
+    "          </a>\n" +
+    "\n" +
+    "          <div class=\"date\">\n" +
+    "            <span class=\"hidden-xs\">{{text_last_message}}</span> <abbr class=\"timeago\"\n" +
+    "                                                                       ng-attr-title=\"{{formatDate(conversation.updated)}}\">{{fromNow(conversation.updated)}}</abbr>\n" +
+    "          </div>\n" +
+    "          <div class=\"controls\">\n" +
+    "            <small>\n" +
+    "              <a ui-sref=\"inbox.delete({id: conversation.id})\" class=\"delete-conversation\" ng-show=\"currentUser.permissions.conversations.leave\"\n" +
+    "                 ng-bind-html=\"text_link_delete | htmlsafe\"></a>\n" +
+    "              <span\n" +
+    "                ng-show=\"currentUser.permissions.conversations.leave && currentUser.permissions.conversations.report\"> | </span>\n" +
+    "              <a ui-sref=\"inbox.report({id: conversation.id})\" href=\"\" ng-click=\"report(conversation)\" class=\"report-conversation\" ng-show=\"currentUser.permissions.conversations.report\"\n" +
+    "                 ng-bind-html=\"text_link_report | htmlsafe\"></a>\n" +
+    "            </small>\n" +
+    "          </div>\n" +
+    "        </div>\n" +
+    "      </li>\n" +
+    "    </ul>\n" +
+    "\n" +
+    "    <div class=\"text-center\">\n" +
+    "      <div class=\"pagination-wrapper text-center\">\n" +
+    "        <ul class=\"pagination\" ng-show=\"pages.length > 1\">\n" +
+    "          <li ng-hide=\"paging.current_page === 1\" class=\"prev first\"><a ng-attr-href=\"#inbox/{{paging.current_page - 1}}\" title=\"Go to previous page\" ng-click=\"$event.preventDefault(); previous()\"></a></li>\n" +
+    "          <li ng-repeat=\"page in pages\"\n" +
+    "              ng-class=\"{'active': paging.current_page === page.number, 'first': page.number === 1}\">\n" +
+    "            <a ng-attr-href=\"{{page.url}}\" ng-click=\" $event.preventDefault(); goToPage(page.number)\" ng-attr-title=\"Go to page {{page.number}}\" ng-bind=\"page.number\"></a>\n" +
+    "          </li>\n" +
+    "          <li ng-hide=\"paging.current_page === pages.length\" class=\"next last\"><a ng-attr-href=\"#inbox/{{paging.current_page + 1}}\" title=\"Go to next page\" ng-click=\"$event.preventDefault(); next()\"></a></li>\n" +
+    "        </ul>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "\n" +
+    "  <div id=\"messages-empty\" class=\"page-wrapper cs-pm-page-wrapper\" ng-hide=\"conversations.length || isLoading\" ng-cloak>\n" +
+    "    <div class=\"messages-header cs-pm__header clearfix\">\n" +
+    "      <h2 class=\"pull-left cs-pm-left\" style=\"\" ng-bind-html=\"text_heading_messages | htmlsafe\"></h2>\n" +
+    "\n" +
+    "      <div class=\"pull-right cs-pm-right\">\n" +
+    "        <a href=\"{{friends_link}}\" class=\"btn btn-link btn-link-outline\">{{button_friends_list}}</a>\n" +
+    "        <a class=\"btn btn-default cs-pm__new-message\" ui-sref=\"message\" ng-hide=\"currentUser.preferences.read_only_mode\">\n" +
+    "          <span class=\"icomoon icomoon-speech-bubble cs-pm-icon--new-message\"></span> {{button_new_conversation}}\n" +
+    "        </a>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode\"\n" +
+    "         ng-bind-html=\"text_read_only | htmlsafe\"></div>\n" +
+    "    <div class=\"cs-pm-boxing messaging-boxing text-center\" ng-bind-html=\"text_no_conversations | htmlsafe\"></div>\n" +
+    "  </div>\n" +
+    "</div>\n"
   );
 
 

@@ -193,6 +193,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
           }
         }
         $scope.isLoading = false;
+
         if(!$scope.isMobile){
 
           if(after != ''){
@@ -217,8 +218,11 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       Conversation.reply({id: $stateParams.id}, $scope.reply).$promise.then(function (response) {
         $scope.glued = true;
         config.setSettingValue('lastMessageId', response.data[0].id);
-        $scope.lastMessageId = response.data[0].id;
-        $scope.messages.push(response.data[0]);
+        response.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = response.data[0].id : $scope.lastMessageId;
+        var results = $filter('filter')($scope.messages,{id: response.data[0].id});
+        if(results.length == 0){
+          $scope.messages.push(response.data[0]);
+        }
         $scope.reply.text = '';
         $scope.newMessageForm.$setPristine();
         $timeout(function () {

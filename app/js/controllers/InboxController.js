@@ -1,6 +1,6 @@
 app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'getCurrentUser', 'Conversation',
-  'configurationService', '$filter', 'poller',
-  function ($scope, $window, $state, $stateParams, userService, Conversation, config, $filter, poller) {
+  'configurationService', '$filter', 'poller', '$timeout',
+  function ($scope, $window, $state, $stateParams, userService, Conversation, config, $filter, poller, $timeout) {
 
     var settings = config.get();
 
@@ -160,6 +160,7 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
     $scope.paging = {};
     $scope.currentUser = {};
     $scope.conversationsPollDelay = config.getSetting(['poll_intervals', 'conversations']) * 1000;
+    $scope.isLoading = true;
 
     userService.get().then(function (data) {
       $scope.currentUser = data.data;
@@ -181,6 +182,8 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
       }
       $scope.paging = data.paging;
       calculatePages();
+      $scope.isLoading = false;
+
 
       if ($scope.currentUser.preferences.read_only_mode) {
         ConversationsPoller.stop();
