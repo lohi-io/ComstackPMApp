@@ -218,12 +218,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         $scope.glued = true;
         config.setSettingValue('lastMessageId', response.data[0].id);
         $scope.lastMessageId = response.data[0].id;
-        if ($scope.isMobile) {
-          $scope.messages.push(response.data[0]);
-        } else {
-          $scope.scrollAdapter.append([response.data[0]]);
-        }
-
+        $scope.messages.push(response.data[0]);
         $scope.reply.text = '';
         $scope.newMessageForm.$setPristine();
         $timeout(function () {
