@@ -107,6 +107,55 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
       return otherParticipantNames;
     };
 
+    /**
+     * Computes the avatar which represents a conversation.
+     *
+     * The avatar which represents a conversation depends on whether the conversation is between two people
+     * or more than two. For the case where the conversation is between two people, the avatar will be the chosen
+     * from the user who is not the current user.
+     *
+     * Currently, this app does not fully support more than two people in a conversation, so the avatar will be chosen
+     * from the first user excluding the current user.
+     * @param conversation
+     *   The conversation model to avatarise.
+     * @param imageStyle
+     *   The style of avatar requested.
+     *
+     * @return {string}
+     *   The URL of the avatar that represents conversation.
+     */
+    $scope.computeAvatar = function(conversation, imageStyle) {
+      if (angular.isUndefined($scope.currentUser.user)) {
+        return ''; // @TODO: This should preferably return a default avatar delivered by the API.
+      }
+
+      // Find the participants of the conversation, excluding the current user.
+      var otherParticipants = $filter('filter')(conversation.participants, {
+        id: '!' + $scope.currentUser.user.id
+      });
+
+      // If there are no other participants, check historical participants instead.
+      if (otherParticipants.length === 0) {
+        otherParticipants = $filter('filter')(conversation.historical_participants, {
+          id: '!' + $scope.currentUser.user.id
+        });
+      }
+
+      // If there are still no other participants, give up.
+      if (otherParticipants.length === 0) {
+        return ''; // @TODO: This should preferably return a default avatar delivered by the API.
+      }
+
+      var avatarUser = otherParticipants[0];
+
+      if (avatarUser.avatars[imageStyle]) {
+        return avatarUser.avatars[imageStyle];
+      } else {
+        var avatarStyles = Object.keys(avatarUser.avatars);
+        return avatarUser.avatars[avatarStyles[0]];
+      }
+    };
+
     $scope.conversations = [];
     $scope.paging = {};
     $scope.currentUser = {};

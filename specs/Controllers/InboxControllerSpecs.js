@@ -237,6 +237,54 @@
       expect(scope.computeHeading(conversation)).toEqual('Boycey, Craig and David');
     });
 
+    it('Should determine a conversation avatar for a conversation with 2 participants', function() {
+      var expectedAvatarUrl = 'Success!'
+      var conversation = {
+        participants: [{
+          id: 1,
+          name: 'Alli',
+          avatars: {
+            '100-100': 'Current User\'s 100-100',
+            '200-200': 'Current User\'s 200-200'
+          }
+        }, {
+          id: 2,
+          name: 'Boycey',
+          avatars: {
+            '100-100': 'User 2\'s 100-100',
+            '200-200': 'User 2\'s 200-200'
+          }
+        }]
+      };
+      var targetImageStyle = '200-200';
+
+      conversation.participants[1].avatars[targetImageStyle] = expectedAvatarUrl;
+      expect(scope.computeAvatar(conversation, '200-200')).toEqual(expectedAvatarUrl);
+    });
+
+    it('Should determine a conversation avatar for a conversation with 2 participants when no avatar styling is given',
+      function() {
+        var conversation = {
+          participants: [{
+            id: 1,
+            name: 'Alli',
+            avatars: {
+              '100-100': 'Current User\'s 100-100',
+              '200-200': 'Current User\'s 200-200'
+            }
+          }, {
+            id: 2,
+            name: 'Boycey',
+            avatars: {
+              '100-100': 'User 2\'s 100-100',
+              '200-200': 'User 2\'s 200-200'
+            }
+          }]
+        };
+        expect(scope.computeAvatar(conversation)).toEqual(conversation.participants[1].avatars['100-100']);
+      }
+    );
+
     it('Should get the strings from configuration', function(){
       var base_url = configurationService.getSetting('base_url');
 
