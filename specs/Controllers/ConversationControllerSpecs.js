@@ -5,7 +5,7 @@
     var scope, currentUser, messages, conversation, state, stateParams, configurationService;
     var urlUser, urlConversation, urlMessages, urlAvailableUsers, urlBlockedUsers;
     var $httpBackend, requiresHttp, timeout, urlPoller, urlMarkAsRead, $q, deferred, poller, messagePoller, blockedUsers;
-    var urlApi, queryString, accessToken;
+    var urlApi, queryString, accessToken, availabilityPoller;
 
     var contact, availableUsers, $window;
 
@@ -69,6 +69,7 @@
       };
 
       deferred = $q.defer();
+
       messagePoller =
       {
         delay: 15000,
@@ -79,9 +80,20 @@
         smart: true
       };
 
+
+      availabilityPoller =  {
+        delay: 15000,
+        deferred: deferred,
+        promise: {then: function(){
+          deferred.resolve(blockedUsers);
+          return deferred.promise}},
+        smart: true
+      };
+
+
       poller = {
         'get': function() {
-          return messagePoller;
+            return availabilityPoller;
         }
       };
 
@@ -110,9 +122,9 @@
       $httpBackend.expectGET(urlUser).respond({
         data: currentUser
       });
-      $httpBackend.expectGET(urlConversation).respond(conversation);
-      $httpBackend.expectPUT(urlMarkAsRead, {}).respond({});
-      $httpBackend.expectGET(urlMessages+'&after=&before=&range=20').respond(messages);
+      //$httpBackend.expectGET(urlConversation).respond(conversation);
+      //$httpBackend.expectPUT(urlMarkAsRead, {}).respond({});
+      //$httpBackend.expectGET(urlMessages+'&after=&before=&range=20').respond(messages);
 
 
       /* eslint-enable max-len */
@@ -135,6 +147,7 @@
     });
 
     it('Should call the get of the poller', function(){
+        AssumeHttpRequestResponded();
         scope.lastMessageId = 0;
         spyOn(poller,'get').and.callThrough();
         $httpBackend.flush();
@@ -143,7 +156,7 @@
     });
 
     it('Should load in the current user on initialisation', function () {
-
+      AssumeHttpRequestResponded();
       $httpBackend.flush();
       // Let the initial XHRs finish.
       expect(angular.equals(scope.currentUser, currentUser)).toBeTruthy();
@@ -151,7 +164,7 @@
 
     it('Should determine the conversation title for a conversation with 2 participants', function() {
 
-      //AssumeHttpRequestResponded();
+      AssumeHttpRequestResponded();
       // Let the initial XHRs finish.
 
       spyOn(configurationService, 'getString');
@@ -170,10 +183,7 @@
       });
     });
 
-    // XIT: Descoping support for multi-participant headings until CC is sorted.
-    xit('Should determine the conversation title for a conversation with 3 participants', function() {
-      AssumeHttpRequestResponded();
-      // Let the initial XHRs finish.
+    it('Should determine the conversation title for a conversation with 3 participants', function() {
 
       conversation = {
         data: {
@@ -187,12 +197,10 @@
         }
       };
 
-
-      $httpBackend.expectGET(urlMessages).respond(messages);
       $httpBackend.expectGET(urlConversation).respond(conversation);
-      $httpBackend.expectPUT(urlMarkAsRead,{}).respond({});
-      $httpBackend.expectGET(urlBlockedUsers).respond({});
-      $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
+      $httpBackend.expectPUT(urlMarkAsRead, {}).respond({});
+      $httpBackend.expectGET(urlMessages+'&after=&before=&range=20').respond(messages);
+
 
       // Let the initial XHRs finish.
       spyOn(configurationService, 'getString');
@@ -203,8 +211,7 @@
       });
     });
 
-    // XIT: Descoping support for multi-participant headings until CC is sorted.
-    xit('Should determine the conversation title for a conversation with 4 participants', function() {
+    it('Should determine the conversation title for a conversation with 4 participants', function() {
       conversation = {
         data: {
           participants: [
@@ -220,9 +227,8 @@
         }
       };
       $httpBackend.expectGET(urlConversation).respond(conversation);
-      $httpBackend.expectGET(urlBlockedUsers).respond({});
-      $httpBackend.expectPUT(urlMarkAsRead,{}).respond({});
-      $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
+      $httpBackend.expectPUT(urlMarkAsRead, {}).respond({});
+      $httpBackend.expectGET(urlMessages+'&after=&before=&range=20').respond(messages);
       // Let the initial XHRs finish.
 
       spyOn(configurationService, 'getString');
@@ -232,14 +238,12 @@
           conversation.data.participants[3].name
       });
     });
-    //
+
     //it('Should detect when the contact is available, assuming they are not blocked', function() {
-    //  spyOn(poller,'get').and.callThrough();
-    //  $httpBackend.expectGET(urlBlockedUsers).respond(blockedUsers);
+    //  AssumeHttpRequestResponded();
     //
-    //  //AssumeHttpRequestResponded();
-    //  // Expect controller defaults which assume user is not available for contact.
-    //  expect(scope.isContactAvailable).toEqual(false);
+    //  spyOn(poller,'get').and.callThrough();
+    //
     //  expect(scope.isContactBlocked).toEqual(false);
     //
     //  $httpBackend.flush();
@@ -394,13 +398,18 @@
     //});
     //
     //
-    //function AssumeHttpRequestResponded(){
-    //  $httpBackend.expectGET(urlConversation).respond(conversation);
-    //  $httpBackend.expectPUT(urlMarkAsRead, {}).respond({});
-    //  $httpBackend.expectGET(urlPoller).respond(messages);
-    //
-    //  $httpBackend.expectGET(urlBlockedUsers).respond(blockedUsers);
-    //  $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
-    //}
+    function AssumeHttpRequestResponded(){
+      $httpBackend.expectGET(urlConversation).respond(conversation);
+      $httpBackend.expectPUT(urlMarkAsRead, {}).respond({});
+      $httpBackend.expectGET(urlMessages+'&after=&before=&range=20').respond(messages);
+
+      //
+      //$httpBackend.expectGET(urlConversation).respond(conversation);
+      //$httpBackend.expectPUT(urlMarkAsRead, {}).respond({});
+      //$httpBackend.expectGET(urlPoller).respond(messages);
+      //
+      //$httpBackend.expectGET(urlBlockedUsers).respond(blockedUsers);
+      //$httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
+    }
   });
 })(describe, it, expect, inject, angular, beforeEach, afterEach, spyOn);

@@ -23,6 +23,11 @@ directives.directive("dynamicScroll", function() {
                  //here to catch the scroll up
                  $scope.onScrollUp();
                }
+
+               if(rootElement.scrollHeight - rootElement.scrollTop == rootElement.clientHeight){
+                 $scope.onScrollDown();
+               }
+
              }
              else{
              if(!$scope.eofUp) {

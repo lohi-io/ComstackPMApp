@@ -23,6 +23,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       if (otherParticipants.length === 0) {
         otherParticipants = conversation.historical_participants;
       }
+      otherParticipants = $filter('filter')(otherParticipants, {id: '!' + $scope.currentUser.user.id});
 
       angular.forEach(otherParticipants, function (participant, key) {
         var suffix = '';
@@ -85,8 +86,20 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         return;
       }
 
+      var contactId = 0;
+
       var contacts = $filter('filter')(conversation.participants, {id: '!' + $scope.currentUser.user.id});
-      var contactId = contacts[0].id;
+      if (contacts.length == 0) {
+        contacts = $filter('filter')(conversation.historical_participants, {id: '!' + $scope.currentUser.user.id});
+        if (contacts.length != 0) {
+          contactId = contacts[0].id;
+        }
+      } else {
+        contactId = contacts[0].id;
+      }
+
+      if (contactId != 0) {
+
 
       // Check if current user has blocked contact every `availabilityDelay` milliseconds.
       availabilityPoller = poller.get(User, {
@@ -100,6 +113,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
 
       // After checking is contact is blocked, determine if they are available.
       availabilityPoller.promise.then(null, null, function (blockedUsers) {
+
         $scope.isContactBlocked = blockedUsers.data.length > 0 &&
           $filter('filter')(blockedUsers.data, {user: {id: contactId}}).length === 1;
 
@@ -117,6 +131,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
             $filter('filter')(availableUsers.data, {id: contactId}).length === 1;
         });
       });
+    }
     };
 
     var greaterThan = function (attribute, value) {
@@ -158,7 +173,8 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         $scope.scrollPosition = 'between';
         $scope.loadMessages('', $scope.messages[0].id);
       }else{
-        $scope.glue = false;
+        //$scope.glue = false;
+        $scope.scrollPosition = 'between';
       }
     }
 
@@ -249,58 +265,66 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
           computeHeading(conversation.data);
           computeAvailability(conversation.data);
           $scope.loadMessages('', '', 20, true);
+
+
         });
       });
 
-    messagesPoller = poller.get(Conversation, {
-      action: 'getMessages',
-      argumentsArray: [{
-        id: $stateParams.id,
-        range: 50,
-        poll: true
-      }],
-      delay: $scope.messagesPollDelay,
-      smart: true
-    });
+    $scope.$watch('lastMessageId', function(newValue, oldValue) {
 
-    messagesPoller.promise.then(null, null, function (data) {
-      // Reduce DOM thrashing
-      var results = [];
-      console.log($scope.scrollPosition);
-      console.log($scope.glued);
-      console.log('messages poll try');
-      $scope.glued = false;
-      if (data.data.length == 0) {
-        $scope.glued = false;
-      }
+      if(newValue !== 0 && oldValue === 0){
+        console.log('set the poller');
 
-      if (data.data.length > 0) {
-        results.push.apply(results, data.data);
-        results = $filter('filter')(results, greaterThan('id', $scope.lastMessageId), true);
-        results = $filter('orderBy')(results, 'id');
-        if (results.length > 0) {
-          $scope.messages.push.apply($scope.messages, results);
+        messagesPoller = poller.get(Conversation, {
+          action: 'getMessages',
+          argumentsArray: [{
+            id: $stateParams.id,
+            range: 50,
+            poll: true
+          }],
+          delay: $scope.messagesPollDelay,
+          smart: true
+        });
 
-          if (!$scope.isMobile) {
-            if ($scope.scrollPosition == 'bottom') {
-              markAsRead();
-              $scope.glued = true;
-            }
-            console.log($scope.scrollPosition);
-            $timeout(function () {
-              $scope.glued = false;
-            });
-          } else {
+
+
+        messagesPoller.promise.then(null, null, function (data) {
+          // Reduce DOM thrashing
+          var results = [];
+          console.log($scope.scrollPosition);
+          console.log($scope.glued);
+          console.log('messages poll try');
+          if (data.data.length == 0) {
             $scope.glued = false;
-            markAsRead();
           }
-        }
-        data.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = data.data[0].id : $scope.lastMessageId;
-        config.setSettingValue('lastMessageId', $scope.lastMessageId);
-        console.log('messages poll done');
-        console.log(results);
-      };
+
+          if (data.data.length > 0) {
+            results.push.apply(results, data.data);
+            results = $filter('filter')(results, greaterThan('id', $scope.lastMessageId), true);
+            results = $filter('orderBy')(results, 'id');
+            if (results.length > 0) {
+              $scope.messages.push.apply($scope.messages, results);
+              if ($scope.scrollPosition == 'bottom') {
+                markAsRead();
+                $scope.glued = true;
+              }
+              console.log($scope.scrollPosition);
+              $timeout(function () {
+                $scope.glued = false;
+              });
+            }
+            data.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = data.data[0].id : $scope.lastMessageId;
+            config.setSettingValue('lastMessageId', $scope.lastMessageId);
+            console.log('messages poll done');
+            console.log(results);
+          };
+        });
+
+      } else {
+        return;
+      }
     });
+
 
   }
 ]);

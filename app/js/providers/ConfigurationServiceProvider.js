@@ -9,7 +9,7 @@ app.provider("configurationService", function () {
     "authorization_header": "",
     "access_token": "",
     "csrf_token": "",
-    "lastMessageId": 9999,
+    "lastMessageId": 0,
     "library_path": "",
     "max_participants": 2,
     "text__maxlength": 100000,
