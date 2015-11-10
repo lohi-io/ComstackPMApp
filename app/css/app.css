@@ -7,13 +7,3 @@
 tags-input .tags .input:focus {
   width: 0;
 }
-
-.container {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.content {
-  background-color: red; /* just for the demo */
-  display: inline-block;
-}
