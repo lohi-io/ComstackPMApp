@@ -1,7 +1,6 @@
 {
   "name": "ComstackPMApp",
-  "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Angular App which provides a UI for Communications Stack Private Messaging.",
   "repository": "https://github.com/lohi-io/ComstackPMApp",
   "license": "MIT",
