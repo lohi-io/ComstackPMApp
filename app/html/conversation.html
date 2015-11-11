@@ -72,7 +72,7 @@
     <ul class="media-list">
       <li ng-repeat="message in messages track by message.id" buffer-size="10" padding="0.3"
           ng-class="{'message-own': message.sender.id === $parent.currentUser.user.id}"
-          class="media">
+          class="media" id="{{message.id}}">
         <div ng-hide="'Hiding this until we implement message deletion'"
              class="media-left checkbox-wrap">
           <div class="checkbox"><label><input type="checkbox" value="message.id"

@@ -1,6 +1,6 @@
 app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams', '$filter', '$sce', 'getCurrentUser',
-  'User', 'Conversation', 'configurationService', '$timeout', 'poller',
-  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout, poller) {
+  'User', 'Conversation', 'configurationService', '$timeout', 'poller', '$anchorScroll', '$location',
+  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout, poller, $anchorScroll, $location) {
 
     console.log($window.isMobile);
     $scope.isMobile = $window.isMobile.any;
@@ -101,37 +101,37 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       if (contactId != 0) {
 
 
-      // Check if current user has blocked contact every `availabilityDelay` milliseconds.
-      availabilityPoller = poller.get(User, {
-        action: 'getBlockedUsers',
-        argumentsArray: [{
-          'filter[user]': contactId
-        }],
-        delay: $scope.availabilityDelay,
-        smart: true
-      });
-
-      // After checking is contact is blocked, determine if they are available.
-      availabilityPoller.promise.then(null, null, function (blockedUsers) {
-
-        $scope.isContactBlocked = blockedUsers.data.length > 0 &&
-          $filter('filter')(blockedUsers.data, {user: {id: contactId}}).length === 1;
-
-        // If contact is blocked, we won't be able to check if they are available, so assume they are not.
-        if ($scope.isContactBlocked) {
-          $scope.isContactAvailable = false;
-          return;
-        }
-
-        User.getAvailableUsers({
-          'filter[id]': contactId
-        }).$promise.then(function (availableUsers) {
-          // Check the response data only contains the contact's id.
-          $scope.isContactAvailable = availableUsers.hasOwnProperty('data') &&
-            $filter('filter')(availableUsers.data, {id: contactId}).length === 1;
+        // Check if current user has blocked contact every `availabilityDelay` milliseconds.
+        availabilityPoller = poller.get(User, {
+          action: 'getBlockedUsers',
+          argumentsArray: [{
+            'filter[user]': contactId
+          }],
+          delay: $scope.availabilityDelay,
+          smart: true
         });
-      });
-    }
+
+        // After checking is contact is blocked, determine if they are available.
+        availabilityPoller.promise.then(null, null, function (blockedUsers) {
+
+          $scope.isContactBlocked = blockedUsers.data.length > 0 &&
+            $filter('filter')(blockedUsers.data, {user: {id: contactId}}).length === 1;
+
+          // If contact is blocked, we won't be able to check if they are available, so assume they are not.
+          if ($scope.isContactBlocked) {
+            $scope.isContactAvailable = false;
+            return;
+          }
+
+          User.getAvailableUsers({
+            'filter[id]': contactId
+          }).$promise.then(function (availableUsers) {
+            // Check the response data only contains the contact's id.
+            $scope.isContactAvailable = availableUsers.hasOwnProperty('data') &&
+              $filter('filter')(availableUsers.data, {id: contactId}).length === 1;
+          });
+        });
+      }
     };
 
     var greaterThan = function (attribute, value) {
@@ -185,6 +185,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     }
 
     $scope.loadMessages = function (before, after, range, glue) {
+
       glue = glue || false;
       range = range || 10;
       $scope.isLoading = true;
@@ -201,11 +202,19 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         }
         $scope.glued = glue;
         if (messages.data.length > 0) {
+          var oldestMessageId = messages.data[0].id;
+          console.log('older');
+          console.log(oldestMessageId);
           messages.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = messages.data[0].id : $scope.lastMessageId;
           config.setSettingValue('lastMessageId', $scope.lastMessageId);
           $scope.paging = messages.paging;
           for(var i = 0; i < messages.data.length; i++){
             $scope.messages.unshift(messages.data[i]);
+          }
+
+          if($scope.isMobile){
+            $location.hash(oldestMessageId);
+            $anchorScroll();
           }
         }
         $scope.isLoading = false;
@@ -264,9 +273,12 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
           markAsRead();
           computeHeading(conversation.data);
           computeAvailability(conversation.data);
-          $scope.loadMessages('', '', 20, true);
-
-
+          if($scope.isMobile){
+            $scope.loadMessages('', '', 10, true);
+          }
+          else{
+            $scope.loadMessages('', '', 20, true);
+          }
         });
       });
 

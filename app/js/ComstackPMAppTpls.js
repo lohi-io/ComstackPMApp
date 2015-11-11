@@ -94,7 +94,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "    <ul class=\"media-list\">\n" +
     "      <li ng-repeat=\"message in messages track by message.id\" buffer-size=\"10\" padding=\"0.3\"\n" +
     "          ng-class=\"{'message-own': message.sender.id === $parent.currentUser.user.id}\"\n" +
-    "          class=\"media\">\n" +
+    "          class=\"media\" id=\"{{message.id}}\">\n" +
     "        <div ng-hide=\"'Hiding this until we implement message deletion'\"\n" +
     "             class=\"media-left checkbox-wrap\">\n" +
     "          <div class=\"checkbox\"><label><input type=\"checkbox\" value=\"message.id\"\n" +
@@ -397,6 +397,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "    <div class=\"form-group\" ng-class=\"{'has-error': newMessageForm.message.$invalid && newMessageForm.message.$dirty && (newMessageForm.message.$error.maxlength || newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji))}\">\n" +
     "      <textarea class=\"form-control\"\n" +
+    "                ctrl-enter=\"save()\"\n" +
     "        emoji\n" +
     "        id=\"message\"\n" +
     "        name=\"message\"\n" +
@@ -486,7 +487,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "  <button ng-click=\"confirm()\"\n" +
     "          type=\"button\"\n" +
     "          class=\"btn btn-default report-close-trigger\"\n" +
-    "          ng-disabled=\"reportForm.$invalid || (!data.isSpam && !data.isAbuse && !data.isBreach && !data.isUnknown && !data.isOther)\">Report</button>\n" +
+    "          ng-disabled=\"reportForm.$invalid || (!data.isSpam && !data.isAbuse && !data.isBreach && !data.isObscene && !data.isOther)\">Report</button>\n" +
     "</div>\n"
   );
 

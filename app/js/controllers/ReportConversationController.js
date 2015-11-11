@@ -21,8 +21,8 @@ app.controller('ReportConversationCtrl', [
     $scope.data = {
       isSpam: false,
       isAbuse: false,
+      isObscene: false,
       isBreach: false,
-      isUnknown: false,
       isOther: false,
       otherDetails: ""
     };
@@ -32,8 +32,6 @@ app.controller('ReportConversationCtrl', [
       $modalInstance.dismiss('cancel');
     };
     $scope.confirm = function () {
-
-
 
       var report = {
         'conversation_id': $stateParams.id,

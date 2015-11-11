@@ -49,6 +49,7 @@
 
     <div class="form-group" ng-class="{'has-error': newMessageForm.message.$invalid && newMessageForm.message.$dirty && (newMessageForm.message.$error.maxlength || newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji))}">
       <textarea class="form-control"
+                ctrl-enter="save()"
         emoji
         id="message"
         name="message"
