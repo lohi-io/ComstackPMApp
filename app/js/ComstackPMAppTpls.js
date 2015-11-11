@@ -123,6 +123,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "           ng-class=\"{'has-error': newMessageForm.replyText.$invalid && newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.maxlength || newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))}\">\n" +
     "\n" +
     "         <textarea emoji\n" +
+    "                   ctrl-enter=\"submitReply()\"\n" +
     "                   class=\"form-control\"\n" +
     "                   id=\"replyText\"\n" +
     "                   name=\"replyText\"\n" +

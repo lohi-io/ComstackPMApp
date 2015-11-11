@@ -233,8 +233,8 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     $scope.submitReply = function () {
       Conversation.reply({id: $stateParams.id}, $scope.reply).$promise.then(function (response) {
         $scope.glued = true;
-        config.setSettingValue('lastMessageId', response.data[0].id);
-        response.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = response.data[0].id : $scope.lastMessageId;
+        //config.setSettingValue('lastMessageId', response.data[0].id);
+        //response.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = response.data[0].id : $scope.lastMessageId;
         var results = $filter('filter')($scope.messages,{id: response.data[0].id});
         if(results.length == 0){
           $scope.messages.push(response.data[0]);
@@ -291,7 +291,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         messagesPoller.promise.then(null, null, function (data) {
           // Reduce DOM thrashing
           var results = [];
-          console.log($scope.scrollPosition);
+          console.log($scope.lastMessageId);
           console.log($scope.glued);
           console.log('messages poll try');
           if (data.data.length == 0) {
@@ -303,6 +303,8 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
             results = $filter('filter')(results, greaterThan('id', $scope.lastMessageId), true);
             results = $filter('orderBy')(results, 'id');
             if (results.length > 0) {
+              var toBeRemoved = $filter('filter')($scope.messages, greaterThan('id', $scope.lastMessageId), true);
+              $scope.messages.splice(-toBeRemoved.length, toBeRemoved.length);
               $scope.messages.push.apply($scope.messages, results);
               if ($scope.scrollPosition == 'bottom') {
                 markAsRead();

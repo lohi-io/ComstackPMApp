@@ -57,6 +57,7 @@ module.exports = function(grunt){
               'app/js/directives/01_bootstrap.js',
               'app/js/directives/EmojiDirective.js',
               'app/js/directives/DynamicScrollDirective.js',
+              'app/js/directives/CtrlEnterDirective.js',
               'app/js/filters/SquishFilter.js',
               'app/js/filters/HtmlSafeFilter.js',
               'app/js/filters/TruncateFilter.js',

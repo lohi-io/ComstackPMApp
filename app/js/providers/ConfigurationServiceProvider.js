@@ -12,7 +12,7 @@ app.provider("configurationService", function () {
     "lastMessageId": 0,
     "library_path": "",
     "max_participants": 2,
-    "text__maxlength": 100000,
+    "text__maxlength": 10,
     "allow_emoji": false,
     "allow_separate_conversations": false,
     "share_data_storage": true,

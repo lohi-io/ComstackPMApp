@@ -101,6 +101,7 @@
            ng-class="{'has-error': newMessageForm.replyText.$invalid && newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.maxlength || newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))}">
 
          <textarea emoji
+                   ctrl-enter="submitReply()"
                    class="form-control"
                    id="replyText"
                    name="replyText"
