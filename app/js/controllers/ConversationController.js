@@ -15,7 +15,18 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     var messagesPoller;
     var availabilityPoller;
 
-    var computeHeading = function (conversation) {
+    /**
+     * Determines the conversation heading used for this conversation.
+     * @param conversation
+     *   See Comstack API Conversation model.
+     * @param boolean participantsOnly
+     *   If true, only returns the participants involved in the conversation rather than the full heading.
+     *
+     * @return string
+     *   Either a full heading to be used to represent the conversation or
+     *   a comma separated list of participants excluding the current user.
+     */
+    $scope.computeHeading = function (conversation, participantsOnly) {
       // use historical participants if participants array is empty
       var otherParticipants = conversation.participants;
       var otherParticipantNames = '';
@@ -39,7 +50,11 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         otherParticipantNames = otherParticipantNames + participant.name + suffix;
       });
 
-      $scope.conversationHeading = config.getString('heading__conversation_with', {participants: otherParticipantNames});
+      if (participantsOnly) {
+        return otherParticipantNames;
+      }
+
+      return config.getString('heading__conversation_with', {participants: otherParticipantNames});
     };
 
     var computeStrings = function () {
@@ -77,8 +92,6 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
      * @param conversation
      *  The current conversation.
      */
-
-
     var computeAvailability = function (conversation) {
       if (angular.isUndefined($scope.currentUser.user)) {
         $scope.isContactAvailable = false;
@@ -139,11 +152,6 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         return item[attribute] > value;
       }
     };
-    /**
-     * Determines the conversation heading used for this conversation.
-     * @param conversation
-     *   See Comstack API Conversation model.
-     */
 
     $scope.isLoading = false;
     $scope.paging = {};
@@ -271,13 +279,19 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
           access_token: settings.access_token
         }).$promise.then(function (conversation) {
           markAsRead();
-          computeHeading(conversation.data);
+          $scope.conversationHeading = $scope.computeHeading(conversation.data);
           computeAvailability(conversation.data);
           if($scope.isMobile){
             $scope.loadMessages('', '', 10, true);
           }
           else{
             $scope.loadMessages('', '', 20, true);
+          }
+
+          // Confirm that conversation report action was successful.
+          if ($stateParams.reported) {
+            var otherParticipants = $scope.computeHeading(conversation.data, true);
+            $scope.reportedConversation = config.getString('text__report_success', {participants: otherParticipants});
           }
         });
       });

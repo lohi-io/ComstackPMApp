@@ -35,6 +35,11 @@
       </div>
     </div>
 
+    <div class="alert alert-block alert-success" ng-show="reportedConversation">
+      <p class="close" data-dismiss="alert">×</p>
+      <p ng-bind="reportedConversation"></p>
+    </div>
+
     <div class="alert alert-warning" ng-show="currentUser.preferences.read_only_mode"
          ng-bind-html="text_read_only | htmlsafe"></div>
 

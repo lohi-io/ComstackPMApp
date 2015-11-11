@@ -162,6 +162,21 @@
       expect(angular.equals(scope.currentUser, currentUser)).toBeTruthy();
     });
 
+    it('Should determine the participants involved in a conversation, excluding the current user', function() {
+      AssumeHttpRequestResponded();
+      $httpBackend.flush();
+      conversation = {
+        data: {
+          participants: [
+            currentUser.user,
+            contact.user
+          ]
+        }
+      };
+
+      expect(scope.computeHeading(conversation.data, true)).toEqual(contact.user.name);
+    });
+
     it('Should determine the conversation title for a conversation with 2 participants', function() {
 
       AssumeHttpRequestResponded();

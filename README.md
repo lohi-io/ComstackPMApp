@@ -73,6 +73,7 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
     "heading__conversation_with": "Conversation with @participants@",
     "text__last_message": "Last message",
     "text__no_available_users": "",
+    "text__report_success": 'Your conversation with @participants@ has been reported',
     "text__read_only": 'You\'re currently opted out of private messaging, <a href="@base_url@/user/@user_id@/account-settings">click here</a> to go the the account settings form.',
     "text__select_messages_to_delete": "Select the messages you'd like to delete",
     "text__select_messages_to_report": "Select the messages you'd like to report",

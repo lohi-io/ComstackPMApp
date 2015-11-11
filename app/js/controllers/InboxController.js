@@ -190,6 +190,19 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
       }
     });
 
+    if ($stateParams.reported) {
+      Conversation.get({
+        id: $stateParams.reported
+      }).$promise.then(function(response) {
+        if (response.data) {
+          var participants = $scope.computeHeading(response.data);
+          $scope.reportedConversation = config.getString('text__report_success', {
+            participants: participants
+          });
+        }
+      });
+    }
+
     $scope.paging.pagesCount = 0;
     $scope.pages = [];
   }

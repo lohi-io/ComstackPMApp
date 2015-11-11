@@ -43,7 +43,7 @@ app.config([
         templateUrl: 'html/home.html'
       })
       .state('inbox', {
-        url: '/inbox/:page',
+        url: '/inbox/:page?reported',
         controller: 'InboxCtrl',
         templateUrl: 'html/inbox.html'
       })
@@ -53,7 +53,7 @@ app.config([
         templateUrl: 'html/message.html'
       })
       .state('conversation', {
-        url: '/conversation/:id',
+        url: '/conversation/:id?reported',
         controller: 'ConversationCtrl',
         templateUrl: 'html/conversation.html'
       })
@@ -91,8 +91,11 @@ app.config([
           url: '/report/:id',
           onEnter: [
             'reportConversationState', '$stateParams', function (reportConversationState, $stateParams) {
+              var successParams = $stateParams;
+              successParams.reported = true;
+
               reportConversationState.activate('html/reportConversation.html',
-                {state: 'inbox', params: $stateParams},
+                {state: 'inbox', params: successParams},
                 {state: 'inbox', params: $stateParams}
               );
             }
@@ -103,8 +106,11 @@ app.config([
           url: '/report',
           onEnter: [
             'reportConversationState', '$stateParams', function (reportConversationState, $stateParams) {
+              var successParams = $stateParams;
+              successParams.reported = $stateParams.id;
+
               reportConversationState.activate('html/reportConversation.html',
-                {state: 'conversation', params: $stateParams},
+                {state: 'conversation', params: successParams},
                 {state: 'conversation', params: $stateParams}
               );
             }
