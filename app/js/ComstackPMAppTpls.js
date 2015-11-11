@@ -448,84 +448,46 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
 
 
   $templateCache.put('html/reportConversation.html',
-    "<div class=\"modal-header\">\r" +
+    "<div class=\"modal-header\">\n" +
+    "  <button type=\"button\" ng-click=\"cancel()\" class=\"bootbox-close-button close\" aria-hidden=\"true\">×</button>\n" +
+    "  <h4 class=\"modal-title\" ng-bind-html=\"modal_report_heading | htmlsafe\"></h4>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "  <div class=\"bootbox-body\">Reason for reporting:</div>\n" +
+    "  <form name=\"reportForm\" ng-submit=\"save()\" class=\"form-horizontal\">\n" +
+    "    <div class=\"checkbox\">\n" +
+    "      <label><input type=\"checkbox\" ng-model=\"data.isSpam\">Spam or unsolicited advertising</label>\n" +
+    "    </div>\n" +
+    "    <div class=\"checkbox\">\n" +
+    "      <label><input type=\"checkbox\" ng-model=\"data.isAbuse\">Abusive, impersonation or harassment</label>\n" +
+    "    </div>\n" +
+    "    <div class=\"checkbox\">\n" +
+    "      <label><input type=\"checkbox\" ng-model=\"data.isObscene\">Obscene, violent or profane content</label>\n" +
+    "    </div>\n" +
+    "    <div class=\"checkbox\">\n" +
+    "      <label><input type=\"checkbox\" ng-model=\"data.isBreach\">In breach of site terms and conditions</label>\n" +
+    "    </div>\n" +
     "\n" +
-    "  <button type=\"button\" ng-click=\"cancel()\" class=\"bootbox-close-button close\" aria-hidden=\"true\">×</button>\r" +
-    "\n" +
-    "  <h4 class=\"modal-title\" ng-bind-html=\"modal_report_heading | htmlsafe\"></h4>\r" +
-    "\n" +
-    "</div>\r" +
-    "\n" +
-    "<div class=\"modal-body\">\r" +
-    "\n" +
-    "  <div class=\"bootbox-body\">Reason for reporting:</div>\r" +
-    "\n" +
-    "  <form name=\"reportForm\" ng-submit=\"save()\" class=\"form-horizontal\">\r" +
-    "\n" +
-    "    <div class=\"checkbox\">\r" +
-    "\n" +
-    "      <label><input type=\"checkbox\" ng-model=\"data.isSpam\">Spam or unsolicited advertising</label>\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
-    "    <div class=\"checkbox\">\r" +
-    "\n" +
-    "      <label><input type=\"checkbox\" ng-model=\"data.isAbuse\">Abusive or offensive</label>\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
-    "    <div class=\"checkbox\">\r" +
-    "\n" +
-    "      <label><input type=\"checkbox\" ng-model=\"data.isBreach\">Is in breach of forum terms and conditions</label>\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
-    "    <div class=\"checkbox\">\r" +
-    "\n" +
-    "      <label><input type=\"checkbox\" ng-model=\"data.isUnknown\">It's from someone I don't know</label>\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
-    "    <div class=\"checkbox\"><label><input type=\"checkbox\" ng-model=\"data.isOther\">Other - please give details</label>\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
-    "    <textarea class=\"form-control\"\r" +
-    "\n" +
-    "              ng-show=\"data.isOther\"\r" +
-    "\n" +
-    "              id=\"otherDetails\"\r" +
-    "\n" +
-    "              name=\"otherDetails\"\r" +
-    "\n" +
-    "              ng-maxlength=\"{{ other_reason_maxlength }}\"\r" +
-    "\n" +
-    "              rows=\"3\"\r" +
-    "\n" +
-    "              placeholder=\"Write details\"\r" +
-    "\n" +
-    "              ng-model=\"data.otherDetails\"\r" +
-    "\n" +
-    "              ng-required=\"data.isOther\"></textarea>\r" +
-    "\n" +
-    "  </form>\r" +
-    "\n" +
-    "</div>\r" +
-    "\n" +
-    "<div class=\"modal-footer\">\r" +
-    "\n" +
-    "  <button ng-click=\"cancel()\" type=\"button\" class=\"btn btn-default\">Cancel</button>\r" +
-    "\n" +
-    "  <button ng-click=\"confirm()\"\r" +
-    "\n" +
-    "          type=\"button\"\r" +
-    "\n" +
-    "          class=\"btn btn-default report-close-trigger\"\r" +
-    "\n" +
-    "          ng-disabled=\"reportForm.$invalid || (!data.isSpam && !data.isAbuse && !data.isBreach && !data.isUnknown && !data.isOther)\">Report</button>\r" +
-    "\n" +
-    "</div>\r" +
-    "\n"
+    "    <div class=\"checkbox\"><label><input type=\"checkbox\" ng-model=\"data.isOther\">Other - please give details</label>\n" +
+    "    </div>\n" +
+    "    <textarea class=\"form-control\"\n" +
+    "              ng-show=\"data.isOther\"\n" +
+    "              id=\"otherDetails\"\n" +
+    "              name=\"otherDetails\"\n" +
+    "              ng-maxlength=\"{{ other_reason_maxlength }}\"\n" +
+    "              rows=\"3\"\n" +
+    "              placeholder=\"Write details\"\n" +
+    "              ng-model=\"data.otherDetails\"\n" +
+    "              ng-required=\"data.isOther\"></textarea>\n" +
+    "  </form>\n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">\n" +
+    "  <button ng-click=\"cancel()\" type=\"button\" class=\"btn btn-default\">Cancel</button>\n" +
+    "  <button ng-click=\"confirm()\"\n" +
+    "          type=\"button\"\n" +
+    "          class=\"btn btn-default report-close-trigger\"\n" +
+    "          ng-disabled=\"reportForm.$invalid || (!data.isSpam && !data.isAbuse && !data.isBreach && !data.isUnknown && !data.isOther)\">Report</button>\n" +
+    "</div>\n"
   );
 
 

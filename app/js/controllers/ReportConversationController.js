@@ -7,9 +7,9 @@ app.controller('ReportConversationCtrl', [
 
     var reasonsValues = {
       isSpam: 'spam',
-      isAbuse: 'abuse',
-      isBreach: 'breach',
-      isUnknown: 'unknown',
+      isAbuse: 'abusive',
+      isObscene: 'obscene',
+      isBreach: 'in-breach',
       isOther: 'other'
     };
 
@@ -42,10 +42,11 @@ app.controller('ReportConversationCtrl', [
         'posts': []
       };
 
+
       $scope.data.isSpam ? report.reasons.push(reasonsValues.isSpam):'';
       $scope.data.isAbuse ? report.reasons.push(reasonsValues.isAbuse):'';
+      $scope.data.isObscene ? report.reasons.push(reasonsValues.isObscene):'';
       $scope.data.isBreach ? report.reasons.push(reasonsValues.isBreach):'';
-      $scope.data.isUnknown ? report.reasons.push(reasonsValues.isUnknown):'';
       $scope.data.isOther ? report.reasons.push(reasonsValues.isOther):'';
 
       Conversation.report({}, report, function () {
