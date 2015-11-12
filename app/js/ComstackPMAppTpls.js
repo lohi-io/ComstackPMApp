@@ -386,6 +386,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "          add-from-autocomplete-only=\"true\"\n" +
     "          max-tags=\"{{maxTags}}\"\n" +
     "          on-tag-adding=\"$tag.id != 0\"\n" +
+    "          on-tag-added=\"handleTagAdded()\"\n" +
     "          required>\n" +
     "          <auto-complete\n" +
     "            source=\"getAvailableUsers($query)\"\n" +

@@ -24,13 +24,13 @@ module.exports = function (config) {
       'bower_components/angular-ui-scroll/dist/ui-scroll.js',
       'bower_components/angular-ui-scroll/dist/ui-scroll-jqlite.js',
       'bower_components/angularpoller/angular-poller.js',
+      'bower_components/ng-focus-if/focusIf.min.js',
 
 
       'app/js/app.js',
       'app/js/directives/*.js',
       'app/js/providers/*.js',
       'app/js/services/*.js',
-      'app/js/configuration/*.js',
       'app/js/controllers/*.js',
       'app/js/filters/*.js',
       'specs/**/*.js'

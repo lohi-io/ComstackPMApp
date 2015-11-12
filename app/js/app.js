@@ -8,6 +8,7 @@ var app = angular.module('ComstackPMApp', ['ui.router',
                                            'emguo.poller',
                                            'ui.scroll',
                                            'ui.scroll.jqlite',
+                                           'focus-if',
                                            'ComstackPMApp.Directives',
                                            'ComstackPMApp.Templates']);
 
