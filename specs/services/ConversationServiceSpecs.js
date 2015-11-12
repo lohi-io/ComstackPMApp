@@ -206,6 +206,24 @@
         expect(Conversation.getOtherParticipants(conversation, currentUser)).toEqual([contact.user]);
       });
 
+
+      it('Should get an array of participants even if the current user is not provided properly', function() {
+        var conversation = {
+          participants: [
+            {
+              id: 1,
+              name: 'Alice'
+            },
+            {
+              id: 2,
+              name: 'Bob'
+            }
+          ]
+        };
+
+        expect(Conversation.getOtherParticipants(conversation, null)).toEqual(conversation.participants);
+      });
+
       it('Should list other participants in a human readable fashion', function() {
         var currentUser = {
           user: {

@@ -75,18 +75,26 @@ services.factory('Conversation', ['$resource', 'configurationService', '$filter'
      * @param currentUser
      *   See Comstack API User model.
      *
-     * @return array
+     * @return Array
      *   Array of users involved in the conversation excluding the current user.
      */
     Conversation.getOtherParticipants = function(conversation, currentUser) {
       // use historical participants if participants array is empty
       var otherParticipants = conversation.participants;
 
-      otherParticipants = $filter('filter')(otherParticipants, {id: '!' + currentUser.user.id});
+      var filterOptions = {};
+
+      // In the case where the current user wasn't successfully loaded,
+      // don't filter, just give a list of all participants.
+      if (currentUser && currentUser.hasOwnProperty('user') && currentUser.user.hasOwnProperty('id') ) {
+        filterOptions.id = '!' + currentUser.user.id;
+      }
+
+      otherParticipants = $filter('filter')(otherParticipants, filterOptions);
       if (otherParticipants.length === 0) {
         otherParticipants = conversation.historical_participants;
       }
-      otherParticipants = $filter('filter')(otherParticipants, {id: '!' + currentUser.user.id});
+      otherParticipants = $filter('filter')(otherParticipants, filterOptions);
 
       return otherParticipants;
     };
