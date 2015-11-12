@@ -92,11 +92,8 @@ app.config([
           url: '/report/:id',
           onEnter: [
             'reportConversationState', '$stateParams', function (reportConversationState, $stateParams) {
-              var successParams = $stateParams;
-              successParams.reported = $stateParams.id;
-
               reportConversationState.activate('html/reportConversation.html',
-                {state: 'inbox', params: successParams},
+                {state: 'inbox', params: $stateParams},
                 {state: 'inbox', params: $stateParams}
               );
             }
@@ -107,11 +104,8 @@ app.config([
           url: '/report',
           onEnter: [
             'reportConversationState', '$stateParams', function (reportConversationState, $stateParams) {
-              var successParams = $stateParams;
-              successParams.reported = true;
-
               reportConversationState.activate('html/reportConversation.html',
-                {state: 'conversation', params: successParams},
+                {state: 'conversation', params: $stateParams},
                 {state: 'conversation', params: $stateParams}
               );
             }

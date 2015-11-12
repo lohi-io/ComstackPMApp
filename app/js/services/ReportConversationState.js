@@ -12,8 +12,14 @@ function reportConversationState($state, $modal) {
       backdropClass: 'cs-pm-modal-backdrop'
     }).result.then(function (result) {
       if (result === true) {
+        var successParams = okDestination.params;
+        if (okDestination.state === 'inbox') {
+          successParams.reported = okDestination.params.id;
+        } else if (okDestination.state === 'conversation') {
+          successParams.reported = true;
+        }
         $state.go(okDestination.state,
-          okDestination.params,
+          successParams,
           {
             reload: okDestination.state,
             inherit: false,
