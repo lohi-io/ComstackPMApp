@@ -10,6 +10,25 @@ app.filter('dateFromNow', ['$window', function($window) {
    * @return relativeTimestamp
    */
   return function(timestamp) {
+
+    $window.moment.locale('en', {
+      relativeTime : {
+        future: "just now",
+        past:   "%s ago",
+        s:  "seconds",
+        m:  "a minute",
+        mm: "%d minutes",
+        h:  "an hour",
+        hh: "%d hours",
+        d:  "a day",
+        dd: "%d days",
+        M:  "a month",
+        MM: "%d months",
+        y:  "a year",
+        yy: "%d years"
+      }
+    });
+
     return $window.moment(timestamp).fromNow();
   };
 }]);

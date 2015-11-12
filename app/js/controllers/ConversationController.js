@@ -198,7 +198,22 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         if (messages.data.length < 10) {
           $scope.moreMessages = false;
         } else {
-          $scope.moreMessages = true;
+          if($scope.isMobile){
+          Conversation.getMessages({
+            id: $stateParams.id,
+            before: before,
+            after: messages.data[messages.data.length-1].id,
+            range: range
+          }).$promise.then(function(nextLoad){
+            if (nextLoad.data.length > 0) {
+              $scope.moreMessages = true;
+            }else{
+              $scope.moreMessages = false;
+            }
+          });
+          }else{
+            $scope.moreMessages = true;
+          }
         }
         $scope.glued = glue;
         if (messages.data.length > 0) {
@@ -211,7 +226,6 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
           for(var i = 0; i < messages.data.length; i++){
             $scope.messages.unshift(messages.data[i]);
           }
-
           if($scope.isMobile){
             $location.hash(oldestMessageId);
             $anchorScroll();
