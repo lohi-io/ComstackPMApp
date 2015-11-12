@@ -1,9 +1,9 @@
 var services = angular.module('ComstackPMApp.Services');
 
-services.factory('Conversation', ['$resource', 'configurationService',
-  function ($resource, config) {
+services.factory('Conversation', ['$resource', 'configurationService', '$filter',
+  function ($resource, config, $filter) {
     var settings = config.get();
-    return $resource(settings.api_url + '/cs-pm/conversations/:id', {
+    var Conversation = $resource(settings.api_url + '/cs-pm/conversations/:id', {
       access_token: settings.access_token,
       page: '@page'
     }, {
@@ -67,6 +67,64 @@ services.factory('Conversation', ['$resource', 'configurationService',
         isArray: false
       }
     });
+
+    /**
+     * Gets an array of the participants in a conversation, excluding the given current user.
+     * @param conversation
+     *   See Comstack API Conversation model.
+     * @param currentUser
+     *   See Comstack API User model.
+     *
+     * @return array
+     *   Array of users involved in the conversation excluding the current user.
+     */
+    Conversation.getOtherParticipants = function(conversation, currentUser) {
+      // use historical participants if participants array is empty
+      var otherParticipants = conversation.participants;
+
+      otherParticipants = $filter('filter')(otherParticipants, {id: '!' + currentUser.user.id});
+      if (otherParticipants.length === 0) {
+        otherParticipants = conversation.historical_participants;
+      }
+      otherParticipants = $filter('filter')(otherParticipants, {id: '!' + currentUser.user.id});
+
+      return otherParticipants;
+    };
+
+    /**
+     * Gets a string listing the participants in a conversations.
+     *
+     * Logic for which participants will be in the string is handled by Conversation.getOtherParticipants
+     * @see Conversation.getOtherParticipants
+     * @param conversation
+     *   See Comstack API Conversation model.
+     * @param currentUser
+     *   See Comstack API User model.
+     * @returns {string}
+     *   A comma delimited list of participant names for the conversation.
+     */
+    Conversation.getReadableOtherParticipants = function(conversation, currentUser) {
+      var otherParticipants = Conversation.getOtherParticipants(conversation, currentUser);
+      var otherParticipantNames = '';
+
+      angular.forEach(otherParticipants, function (participant, key) {
+        var suffix = '';
+
+        // if 2nd to last, add ' and '
+        // if not last, add ', '
+        if (key === otherParticipants.length - 2) {
+          suffix = ' and ';
+        } else if (key !== otherParticipants.length - 1) {
+          suffix = ', ';
+        }
+
+        otherParticipantNames = otherParticipantNames + participant.name + suffix;
+      });
+
+      return otherParticipantNames;
+    };
+
+    return Conversation;
   }
 ]);
 

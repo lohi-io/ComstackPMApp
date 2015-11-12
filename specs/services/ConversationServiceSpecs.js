@@ -164,5 +164,67 @@
       expect(angular.equals(result, response)).toBeTruthy();
     });
 
+    describe('Conversation representation', function() {
+      it('Should get an array of participants based on who the current user is', function() {
+        var currentUser = {
+          user: {
+            id: 1,
+            name: 'Alice'
+          }
+        };
+        var contact = {
+          user: {
+            id: 2,
+            name: 'Bob'
+          }
+        };
+        var conversation = {
+          participants: [currentUser.user, contact.user]
+        };
+
+        expect(Conversation.getOtherParticipants(conversation, currentUser)).toEqual([contact.user]);
+      });
+
+      it('Should get an array of participants based on who the current user is, when other users have left the conversation', function() {
+        var currentUser = {
+          user: {
+            id: 1,
+            name: 'Alice'
+          }
+        };
+        var contact = {
+          user: {
+            id: 2,
+            name: 'Bob'
+          }
+        };
+        var conversation = {
+          participants: [currentUser.user],
+          historical_participants: [currentUser.user, contact.user]
+        };
+
+        expect(Conversation.getOtherParticipants(conversation, currentUser)).toEqual([contact.user]);
+      });
+
+      it('Should list other participants in a human readable fashion', function() {
+        var currentUser = {
+          user: {
+            id: 1,
+            name: 'Alice'
+          }
+        };
+        var contact = {
+          user: {
+            id: 2,
+            name: 'Bob'
+          }
+        };
+        var conversation = {
+          participants: [currentUser.user, contact.user]
+        };
+
+        expect(Conversation.getReadableOtherParticipants(conversation, currentUser)).toEqual(contact.user.name);
+      });
+    });
   });
 })(describe, it, expect, inject, angular, beforeEach, angular.mock.module);
