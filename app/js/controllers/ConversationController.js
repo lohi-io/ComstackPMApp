@@ -15,48 +15,6 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     var messagesPoller;
     var availabilityPoller;
 
-    /**
-     * Determines the conversation heading used for this conversation.
-     * @param conversation
-     *   See Comstack API Conversation model.
-     * @param boolean participantsOnly
-     *   If true, only returns the participants involved in the conversation rather than the full heading.
-     *
-     * @return string
-     *   Either a full heading to be used to represent the conversation or
-     *   a comma separated list of participants excluding the current user.
-     */
-    $scope.computeHeading = function (conversation, participantsOnly) {
-      // use historical participants if participants array is empty
-      var otherParticipants = conversation.participants;
-      var otherParticipantNames = '';
-      otherParticipants = $filter('filter')(otherParticipants, {id: '!' + $scope.currentUser.user.id});
-      if (otherParticipants.length === 0) {
-        otherParticipants = conversation.historical_participants;
-      }
-      otherParticipants = $filter('filter')(otherParticipants, {id: '!' + $scope.currentUser.user.id});
-
-      angular.forEach(otherParticipants, function (participant, key) {
-        var suffix = '';
-
-        // if 2nd to last, add ' and '
-        // if not last, add ', '
-        if (key === otherParticipants.length - 2) {
-          suffix = ' and ';
-        } else if (key !== otherParticipants.length - 1) {
-          suffix = ', ';
-        }
-
-        otherParticipantNames = otherParticipantNames + participant.name + suffix;
-      });
-
-      if (participantsOnly) {
-        return otherParticipantNames;
-      }
-
-      return config.getString('heading__conversation_with', {participants: otherParticipantNames});
-    };
-
     var computeStrings = function () {
       $scope.text_read_only = config.getString('text__read_only', {
         name: $scope.currentUser.user.name,
@@ -279,19 +237,21 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
           access_token: settings.access_token
         }).$promise.then(function (conversation) {
           markAsRead();
-          $scope.conversationHeading = $scope.computeHeading(conversation.data);
+          var otherParticipantsNames = Conversation.getOtherParticipantsNames(conversation.data, $scope.currentUser);
+          $scope.conversationHeading = config.getString('heading__conversation_with', {
+            participants: otherParticipantsNames
+          });
           computeAvailability(conversation.data);
           if($scope.isMobile){
             $scope.loadMessages('', '', 10, true);
           }
-          else{
+          else {
             $scope.loadMessages('', '', 20, true);
           }
 
           // Confirm that conversation report action was successful.
           if ($stateParams.reported) {
-            var otherParticipants = $scope.computeHeading(conversation.data, true);
-            $scope.reportedConversation = config.getString('text__report_success', {participants: otherParticipants});
+            $scope.reportedConversation = config.getString('text__report_success', {participants: otherParticipantsNames});
           }
         });
       });

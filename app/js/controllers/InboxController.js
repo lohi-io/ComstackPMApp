@@ -61,50 +61,10 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
     /**
      * Computes the heading of a given conversation.
      *
-     * A conversation heading consists of a list of participants excluding the current user.
-     * If a conversation's list of participants is empty aside from the current user,
-     * historical participants will be used.
-     * @param conversation
-     * @returns {string}
-     *  Conversation heading as defined above. Example formatting: "B, C and D", where the current user is A
-     *  and the conversation participants are A, B, C and D.
+     * @see Conversation.getOtherParticipantsNames
      */
     $scope.computeHeading = function(conversation) {
-      // The return of this function is used in template bindings so
-      // we should make sure this doesn't error out if the current user hasn't been determined.
-      if (angular.isUndefined($scope.currentUser.user)) {
-        return '';
-      }
-
-      // Find the participants of the conversation, excluding the current user.
-      // If there are no other participants, check historical participants instead.
-      var otherParticipants = $filter('filter')(conversation.participants, {
-        id: '!' + $scope.currentUser.user.id
-      });
-
-      if (otherParticipants.length === 0) {
-        otherParticipants = $filter('filter')(conversation.historical_participants, {
-          id: '!' + $scope.currentUser.user.id
-        });
-      }
-
-      var otherParticipantNames = '';
-
-      angular.forEach(otherParticipants, function(participant, key) {
-        var suffix = '';
-
-        // if 2nd to last, add ' and '
-        // if not last, add ', '
-        if (key === otherParticipants.length - 2) {
-          suffix = ' and ';
-        } else if (key !== otherParticipants.length - 1) {
-          suffix = ', ';
-        }
-
-        otherParticipantNames = otherParticipantNames + participant.name + suffix;
-      });
-
-      return otherParticipantNames;
+      return Conversation.getOtherParticipantsNames(conversation, $scope.currentUser);
     };
 
     /**
@@ -125,23 +85,9 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
      *   The URL of the avatar that represents conversation.
      */
     $scope.computeAvatar = function(conversation, imageStyle) {
-      if (angular.isUndefined($scope.currentUser.user)) {
-        return ''; // @TODO: This should preferably return a default avatar delivered by the API.
-      }
+      var otherParticipants = Conversation.getOtherParticipants(conversation, $scope.currentUser);
 
-      // Find the participants of the conversation, excluding the current user.
-      var otherParticipants = $filter('filter')(conversation.participants, {
-        id: '!' + $scope.currentUser.user.id
-      });
-
-      // If there are no other participants, check historical participants instead.
-      if (otherParticipants.length === 0) {
-        otherParticipants = $filter('filter')(conversation.historical_participants, {
-          id: '!' + $scope.currentUser.user.id
-        });
-      }
-
-      // If there are still no other participants, give up.
+      // If there are no other participants, give up.
       if (otherParticipants.length === 0) {
         return ''; // @TODO: This should preferably return a default avatar delivered by the API.
       }
@@ -195,9 +141,9 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
         id: $stateParams.reported
       }).$promise.then(function(response) {
         if (response.data) {
-          var participants = $scope.computeHeading(response.data);
+          var otherParticipantsNames = Conversation.getOtherParticipantsNames(response.data, $scope.currentUser);
           $scope.reportedConversation = config.getString('text__report_success', {
-            participants: participants
+            participants: otherParticipantsNames
           });
         }
       });

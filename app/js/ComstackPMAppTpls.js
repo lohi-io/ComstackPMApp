@@ -314,7 +314,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "                 ng-bind-html=\"text_link_delete | htmlsafe\"></a>\n" +
     "              <span\n" +
     "                ng-show=\"currentUser.permissions.conversations.leave && currentUser.permissions.conversations.report\"> | </span>\n" +
-    "              <a ui-sref=\"inbox.report({id: conversation.id})\" href=\"\" ng-click=\"report(conversation)\" class=\"report-conversation\" ng-show=\"currentUser.permissions.conversations.report\"\n" +
+    "              <a ui-sref=\"inbox.report({id: conversation.id})\" href=\"\" class=\"report-conversation\" ng-show=\"currentUser.permissions.conversations.report\"\n" +
     "                 ng-bind-html=\"text_link_report | htmlsafe\"></a>\n" +
     "            </small>\n" +
     "          </div>\n" +

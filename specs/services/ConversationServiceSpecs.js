@@ -223,7 +223,7 @@
           participants: [currentUser.user, contact.user]
         };
 
-        expect(Conversation.getReadableOtherParticipants(conversation, currentUser)).toEqual(contact.user.name);
+        expect(Conversation.getOtherParticipantsNames(conversation, currentUser)).toEqual(contact.user.name);
       });
     });
   });

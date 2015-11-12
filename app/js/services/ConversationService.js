@@ -103,7 +103,7 @@ services.factory('Conversation', ['$resource', 'configurationService', '$filter'
      * @returns {string}
      *   A comma delimited list of participant names for the conversation.
      */
-    Conversation.getReadableOtherParticipants = function(conversation, currentUser) {
+    Conversation.getOtherParticipantsNames = function(conversation, currentUser) {
       var otherParticipants = Conversation.getOtherParticipants(conversation, currentUser);
       var otherParticipantNames = '';
 
