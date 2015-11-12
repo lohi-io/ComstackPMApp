@@ -386,7 +386,6 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "          add-from-autocomplete-only=\"true\"\n" +
     "          max-tags=\"{{maxTags}}\"\n" +
     "          on-tag-adding=\"$tag.id != 0\"\n" +
-    "          on-tag-added=\"handleTagAdded()\"\n" +
     "          required>\n" +
     "          <auto-complete\n" +
     "            source=\"getAvailableUsers($query)\"\n" +
@@ -405,7 +404,6 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "      </span>\n" +
     "    </div>\n" +
     "\n" +
-    "\n" +
     "    <div class=\"form-group\" ng-class=\"{'has-error': newMessageForm.message.$invalid && newMessageForm.message.$dirty && (newMessageForm.message.$error.maxlength || newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji))}\">\n" +
     "      <textarea class=\"form-control\"\n" +
     "                ctrl-enter=\"save()\"\n" +
@@ -416,6 +414,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "        rows=\"3\"\n" +
     "        placeholder=\"{{form_text_placeholder}}\"\n" +
     "        ng-model=\"message.text\"\n" +
+    "        focus-if=\"users.length\"\n" +
     "        required></textarea>\n" +
     "      <span class=\"help-block\"\n" +
     "        ng-show=\"newMessageForm.message.$dirty && (newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji))\"\n" +
