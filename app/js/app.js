@@ -57,11 +57,6 @@ app.config([
         controller: 'ConversationCtrl',
         templateUrl: 'html/conversation.html'
       })
-      .state('test', {
-        url: '/test/:id',
-        controller: 'TestCtrl',
-        templateUrl: 'html/test.html'
-      })
       .state('inbox.delete',
         {
           url: '/delete/:id',
