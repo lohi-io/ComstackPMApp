@@ -2,7 +2,7 @@
 (function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module) {
 
   describe('DeleteConversationCtrl', function () {
-    var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config, convesation, stateParams, modalInstance, urlApi, queryString, getEnpPoint, deleteEndPoint, accessToken;
+    var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config, convesation, stateParams, modalInstance, urlApi, queryString, getEnpPoint, deleteEndPoint, accessToken, getAllEndpoint, conversations;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
@@ -18,35 +18,13 @@
         }
       };
 
+      conversations = {data:[{id: 1},{id: 2}]};
+
       convesation = {
-        "data": [{
-          "type": "message",
-          "id": 1,
-          "conversation_id": 1,
-          "sender": {
-            "type": "user",
-            "id": 70116,
-            "name": "basic_user_1",
-          },
-          "sent": "2015-10-02T16:15:00+01:00",
-          "updated": "2015-10-02T16:15:00+01:00",
-          "text": "message 1",
-          "deleted": false
-        },
-          {
-            "type": "message",
-            "id": 2,
-            "conversation_id": 1,
-            "sender": {
-              "type": "user",
-              "id": 70116,
-              "name": "basic_user_1",
-            },
-            "sent": "2015-10-02T16:15:00+01:00",
-            "updated": "2015-10-02T16:15:00+01:00",
-            "text": "message 2",
-            "deleted": false
-          }]
+        "data": {
+          "type": "conversation",
+          "id": 1
+        }
       };
 
       state = {
@@ -55,14 +33,15 @@
       };
       $httpBackend = _$httpBackend_;
       config = $injector.get('configurationService');
-      stateParams = {id: 1};
+      stateParams = {id: 1, page:2};
 
       accessToken = config.getSetting('access_token');
       urlApi = config.getSetting('api_url');
 
       queryString = 'access_token='+accessToken;
       getEnpPoint = '/cs-pm/conversations/1';
-      deleteEndPoint = '/cs-pm/conversations';
+      getAllEndpoint = '/cs-pm/conversations';
+      deleteEndPoint = '/cs-pm/conversations/1';
 
 
       modalInstance = {
@@ -87,19 +66,24 @@
     }));
 
     afterEach(function () {
-      $httpBackend.verifyNoOutstandingExpectation();
-      $httpBackend.verifyNoOutstandingRequest();
-      $httpBackend.resetExpectations();
+      //$httpBackend.verifyNoOutstandingExpectation();
+      //$httpBackend.verifyNoOutstandingRequest();
+      //$httpBackend.resetExpectations();
     });
 
     function AssumeConfirmIsCalled() {
       //spyOn(config, 'getSetting').and.returnValue('qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc');
-      scope.confirm();
+
       var url = urlApi + getEnpPoint + '?' + queryString;
       $httpBackend.expectGET(url).respond(convesation);
-      url = urlApi + deleteEndPoint + '?' + queryString;
 
+      url = urlApi + deleteEndPoint + '?' + queryString;
       $httpBackend.expectDELETE(url).respond({});
+
+      url = urlApi + getAllEndpoint + '?' + queryString+'&page=2';
+      $httpBackend.expectGET(url).respond(conversations);
+
+      scope.confirm();
       $httpBackend.flush();
     }
 

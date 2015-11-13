@@ -8,8 +8,13 @@ function deleteConversationState($state, $modal) {
       controller: 'DeleteConversationCtrl',
       backdrop: 'static',
       size: 'sm'
-    }).result.then(function (result) {
-      if (result === true) {
+    }).result.then(function (params) {
+      if (params.result === true) {
+        Object.keys(params).forEach(function(key){
+          if(okDestination.params[key] !== undefined){
+            okDestination.params[key] = params[key];
+          }
+        });
         $state.go(okDestination.state,
           okDestination.params,
           {

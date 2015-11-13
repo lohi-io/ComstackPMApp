@@ -19,7 +19,24 @@ app.controller('DeleteConversationCtrl', [
         access_token: config.getSetting('access_token')
       }).$promise.then(function (conversation) {
         conversation.$delete({id: conversation.data.id}, function () {
-          $modalInstance.close(true);
+            Conversation.get({
+              page: $stateParams.page,
+              access_token: config.getSetting('access_token')
+            }).$promise.then(function(conversations){
+                var params = {};
+                if(conversations.data.length == 0){
+                   if($stateParams.page > 1) {
+                     params.page = $stateParams.page - 1;
+                   }else{
+                     params.page = 1
+                   }
+                }
+                params.result = true;
+                $modalInstance.close(params);
+            })
+
+
+
         },
           function (error) {
             //error handling;

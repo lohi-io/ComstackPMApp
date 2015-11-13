@@ -59,8 +59,18 @@
 
     it('Should go to ok state destination', function () {
       service.activate(templateUrl, okDestination, cancelDestination);
-      successHandler(true);
+      successHandler({result: true});
       expect(state.go).toHaveBeenCalledWith('okState', {id: 1}, {
+        reload: 'okState',
+        inherit: false,
+        notify: true
+      });
+    });
+
+    it('Should change OK destination parameters', function () {
+      service.activate(templateUrl, okDestination, cancelDestination);
+      successHandler({result: true, id:3});
+      expect(state.go).toHaveBeenCalledWith('okState', {id: 3}, {
         reload: 'okState',
         inherit: false,
         notify: true

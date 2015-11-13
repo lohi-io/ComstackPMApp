@@ -12,22 +12,24 @@
         _d: 'foo',
         fromNow: function (time) {
           return time;
-        }
+        },
+        locale: function(){ return {};}
       };
 
       moment = function () {
         return Moment;
       };
 
-
       $window = _$window_;
-
       $window.moment = moment;
-
+      $window.moment.locale = function () {
+          return {};
+      };
       dateFromNow = dateFromNowFilter;
     }));
 
     it('Should convert a timestamp to a relative timestamp via Moment.js', function () {
+
       spyOn(Moment, 'fromNow');
       spyOn($window, 'moment').and.callThrough();
       dateFromNow(timestamp);
