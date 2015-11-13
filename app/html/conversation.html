@@ -87,7 +87,7 @@
             ng-hide="message.sender.id === $parent.currentUser.user.id" ng-href="{{ message.sender.profile }}"
             ng-bind="message.sender.name"></a> <abbr class="timeago"
                                                      ng-attr-title="{{message.sent | formatDate}}"
-                                                     ng-bind="message.sent | dateFromNow"></abbr></div>
+                                                     ng-bind="message.fromNow"></abbr></div>
           <div class="cs-pm-message message" ng-class="{'arrow_box': message.sender.id != $parent.currentUser.user.id}">
             <p ng-bind-html="message.text | htmlsafe"></p></div>
         </div>

@@ -1,6 +1,6 @@
 app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams', '$filter', '$sce', 'getCurrentUser',
-  'User', 'Conversation', 'configurationService', '$timeout', 'poller', '$anchorScroll', '$location',
-  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout, poller, $anchorScroll, $location) {
+  'User', 'Conversation', 'configurationService', '$timeout', 'poller', '$anchorScroll', '$location', '$interval',
+  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout, poller, $anchorScroll, $location, $interval) {
 
     console.log($window.isMobile);
     $scope.isMobile = $window.isMobile.any;
@@ -168,6 +168,16 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     $scope.eofUp = false;
 
 
+    $scope.fromNow = function(){
+      $scope.messages.forEach(function(message){
+        message.fromNow = $filter('dateFromNow')(message.sent);
+      });
+    };
+
+    setInterval(function(){
+      $scope.fromNow();
+    }, 60000)
+
     $scope.onScrollUp = function () {
       if(!$scope.isMobile){
         $scope.scrollPosition = 'between';
@@ -226,6 +236,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
           for(var i = 0; i < messages.data.length; i++){
             $scope.messages.unshift(messages.data[i]);
           }
+          $scope.fromNow();
           if($scope.isMobile){
             $location.hash(oldestMessageId);
             $anchorScroll();
@@ -260,6 +271,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         //response.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = response.data[0].id : $scope.lastMessageId;
         var results = $filter('filter')($scope.messages,{id: response.data[0].id});
         if(results.length == 0){
+          response.data[0].fromNow = $filter('dateFromNow')(response.data[0].sent);
           $scope.messages.push(response.data[0]);
         }
         $scope.reply.text = '';
@@ -332,6 +344,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
               var toBeRemoved = $filter('filter')($scope.messages, greaterThan('id', $scope.lastMessageId), true);
               $scope.messages.splice(-toBeRemoved.length, toBeRemoved.length);
               $scope.messages.push.apply($scope.messages, results);
+              $scope.fromNow();
               if ($scope.scrollPosition == 'bottom') {
                 markAsRead();
                 $scope.glued = true;

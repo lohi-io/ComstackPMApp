@@ -109,7 +109,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "            ng-hide=\"message.sender.id === $parent.currentUser.user.id\" ng-href=\"{{ message.sender.profile }}\"\n" +
     "            ng-bind=\"message.sender.name\"></a> <abbr class=\"timeago\"\n" +
     "                                                     ng-attr-title=\"{{message.sent | formatDate}}\"\n" +
-    "                                                     ng-bind=\"message.sent | dateFromNow\"></abbr></div>\n" +
+    "                                                     ng-bind=\"message.fromNow\"></abbr></div>\n" +
     "          <div class=\"cs-pm-message message\" ng-class=\"{'arrow_box': message.sender.id != $parent.currentUser.user.id}\">\n" +
     "            <p ng-bind-html=\"message.text | htmlsafe\"></p></div>\n" +
     "        </div>\n" +
