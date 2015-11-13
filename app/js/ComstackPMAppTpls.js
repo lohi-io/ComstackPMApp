@@ -27,7 +27,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "                                        class=\"messages-trigger\"><span\n" +
     "      class=\"icomoon icomoon-back cs-pm-icon--back\"></span>{{ heading__messages }}</a></h2>\n" +
     "\n" +
-    "    <div class=\"pull-right cs-pm-right\"><a ui-sref=\"message\" class=\"btn btn-default cs-pm__new-message\"><span\n" +
+    "    <div class=\"pull-right cs-pm-right\"><a ui-sref=\"message\" class=\"btn btn-default cs-pm__new-message\" ng-show=\"!currentUser.preferences.read_only_mode\"><span\n" +
     "      class=\"icomoon icomoon-speech-bubble cs-pm-icon--new-message\"></span> {{ button__new_conversation }}</a></div>\n" +
     "  </div>\n" +
     "\n" +

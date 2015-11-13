@@ -43,7 +43,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     };
 
     var computeStrings = function () {
-      $scope.text_read_only = config.getString('text__read_only', {
+      $scope.text_read_only = config.getString('text__read_only', {base_url: settings.base_url,
         name: $scope.currentUser.user.name,
         user_id: $scope.currentUser.user.id
       });
