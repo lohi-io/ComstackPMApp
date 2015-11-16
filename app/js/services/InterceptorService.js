@@ -2,8 +2,8 @@
  * Created by fechit01 on 15/10/2015.
  */
 var services = angular.module('ComstackPMApp.Services');
-services.factory('requestInterceptor', ['$q', 'configurationService', 'errorState', '$window', '$injector',
-  function ($q, configurationService, errorState, $window, $injector) {
+services.factory('requestInterceptor', ['$q', 'configurationService', 'errorState', '$window', '$injector', '$log',
+  function ($q, configurationService, errorState, $window, $injector, $log) {
 
     var settings = configurationService.get();
 
@@ -43,7 +43,7 @@ services.factory('requestInterceptor', ['$q', 'configurationService', 'errorStat
         $window.location.href = settings.base_url;
         return $q.reject(rejection);
       }
-      console.log(rejection);
+      $log.error(rejection);
       showError(rejection);
       stopPolling();
       return $q.reject(rejection);

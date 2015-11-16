@@ -40,7 +40,6 @@ app.controller('DeleteConversationCtrl', [
         },
           function (error) {
             //error handling;
-            console.log(error);
           })
       });
 

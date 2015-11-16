@@ -1,6 +1,6 @@
 app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers',
-              'configurationService', 'Conversation', 'getCurrentUser', '$stateParams', '$filter',
-  function ($scope, $state, getAvailableUsers, config, Conversation, userService, $stateParams, $filter) {
+              'configurationService', 'Conversation', 'getCurrentUser', '$stateParams', '$filter', '$log',
+  function ($scope, $state, getAvailableUsers, config, Conversation, userService, $stateParams, $filter, $log) {
 
     var settings = config.get();
     $scope.requiredUsers = $stateParams.userId;
@@ -105,7 +105,7 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers',
       },
         function (error) {
           //error handling;
-          console.log(error);
+          $log.error(error);
         });
     }
 

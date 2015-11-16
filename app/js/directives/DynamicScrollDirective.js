@@ -18,7 +18,6 @@ directives.directive("dynamicScroll", function() {
              //console.log('rootElement.scrollTop: '+rootElement.scrollTop);
              //console.log('rootElement.clientHeight: '+rootElement.clientHeight);
              if($scope.isMobile) {
-               console.log('Scrolling mobile');
                if(rootElement.scrollHeight - rootElement.scrollTop > rootElement.clientHeight){
                  //here to catch the scroll up
                  $scope.onScrollUp();

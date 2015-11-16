@@ -5,10 +5,6 @@ directives.directive('ctrlEnter', function () {
     require: 'ngModel',
     link: function (scope, element, attrs, ctrl) {
 
-
-      console.log(ctrl);
-      console.log(attrs);
-
       element.bind('keydown keypress', function (event) {
         var code = event.keyCode || event.which;
         if (code === 13) {

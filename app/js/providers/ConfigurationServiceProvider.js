@@ -16,6 +16,7 @@ app.provider("configurationService", function () {
     "allow_emoji": false,
     "allow_separate_conversations": false,
     "share_data_storage": true,
+    "debug_mode": false,
     "http_error": false,
     "poll_intervals": {
       "conversations": 30,

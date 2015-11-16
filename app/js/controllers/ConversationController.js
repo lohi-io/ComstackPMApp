@@ -1,8 +1,7 @@
 app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams', '$filter', '$sce', 'getCurrentUser',
-  'User', 'Conversation', 'configurationService', '$timeout', 'poller', '$anchorScroll', '$location', '$interval',
-  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout, poller, $anchorScroll, $location, $interval) {
+  'User', 'Conversation', 'configurationService', '$timeout', 'poller', '$anchorScroll', '$location', '$interval', '$log',
+  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout, poller, $anchorScroll, $location, $interval, $log) {
 
-    console.log($window.isMobile);
     $scope.isMobile = $window.isMobile.any;
 
     var settings = config.get();
@@ -228,8 +227,6 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         $scope.glued = glue;
         if (messages.data.length > 0) {
           var oldestMessageId = messages.data[0].id;
-          console.log('older');
-          console.log(oldestMessageId);
           messages.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = messages.data[0].id : $scope.lastMessageId;
           config.setSettingValue('lastMessageId', $scope.lastMessageId);
           $scope.paging = messages.paging;
@@ -311,7 +308,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     $scope.$watch('lastMessageId', function(newValue, oldValue) {
 
       if(newValue !== 0 && oldValue === 0){
-        console.log('set the poller');
+        $log.debug('set the poller');
 
         messagesPoller = poller.get(Conversation, {
           action: 'getMessages',
@@ -329,9 +326,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         messagesPoller.promise.then(null, null, function (data) {
           // Reduce DOM thrashing
           var results = [];
-          console.log($scope.lastMessageId);
-          console.log($scope.glued);
-          console.log('messages poll try');
+          $log.debug('messages poll try');
           if (data.data.length == 0) {
             $scope.glued = false;
           }
@@ -349,15 +344,13 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
                 markAsRead();
                 $scope.glued = true;
               }
-              console.log($scope.scrollPosition);
               $timeout(function () {
                 $scope.glued = false;
               });
             }
             data.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = data.data[0].id : $scope.lastMessageId;
             config.setSettingValue('lastMessageId', $scope.lastMessageId);
-            console.log('messages poll done');
-            console.log(results);
+            $log.debug('messages poll done');
           };
         });
 
