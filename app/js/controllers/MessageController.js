@@ -1,6 +1,6 @@
 app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers',
-              'configurationService', 'Conversation', 'getCurrentUser', '$stateParams', '$filter',
-  function ($scope, $state, getAvailableUsers, config, Conversation, userService, $stateParams, $filter) {
+              'configurationService', 'Conversation', 'getCurrentUser', '$stateParams', '$filter', '$log', '$window',
+  function ($scope, $state, getAvailableUsers, config, Conversation, userService, $stateParams, $filter, $log, $window) {
 
     var settings = config.get();
     $scope.requiredUsers = $stateParams.userId;
@@ -68,6 +68,19 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers',
       return tag.id != 0
     }
 
+    $scope.cancel = function(){
+      if($scope.requiredUsers){
+        $window.location.href = settings.base_url + '/friends/' + $scope.currentUser.user.id;
+      }else{
+        $state.go('inbox', {page: 1},
+          {
+            reload: 'conversation',
+            inherit: false,
+            notify: true
+          });
+      }
+    }
+
     $scope.getAvailableUsers = function (search) {
       $scope.noResults = "";
       return getAvailableUsers.get(search).then(function (response) {
@@ -105,7 +118,7 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers',
       },
         function (error) {
           //error handling;
-          console.log(error);
+          $log.error(error);
         });
     }
 

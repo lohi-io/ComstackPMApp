@@ -1,8 +1,7 @@
 app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams', '$filter', '$sce', 'getCurrentUser',
-  'User', 'Conversation', 'configurationService', '$timeout', 'poller', '$anchorScroll', '$location',
-  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout, poller, $anchorScroll, $location) {
+  'User', 'Conversation', 'configurationService', '$timeout', 'poller', '$anchorScroll', '$location', '$interval', '$log',
+  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout, poller, $anchorScroll, $location, $interval, $log) {
 
-    console.log($window.isMobile);
     $scope.isMobile = $window.isMobile.any;
 
     var settings = config.get();
@@ -16,7 +15,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     var availabilityPoller;
 
     var computeStrings = function () {
-      $scope.text_read_only = config.getString('text__read_only', {
+      $scope.text_read_only = config.getString('text__read_only', {base_url: settings.base_url,
         name: $scope.currentUser.user.name,
         user_id: $scope.currentUser.user.id
       });
@@ -35,6 +34,9 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       $scope.form_text_validation_maxlength = config.getString('form__text__validation__maxlength', {number: $scope.textMaxLength});
       $scope.form_text_validation_empty = config.getString('form__text__validation__empty');
       $scope.form_text_warning_emoji = config.getString('form__text__warning__emoji');
+      $scope.text_forced_read_only = config.getString('text__forced_read_only');
+
+
     };
 
     /**
@@ -134,6 +136,16 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     $scope.eofUp = false;
 
 
+    $scope.fromNow = function(){
+      $scope.messages.forEach(function(message){
+        message.fromNow = $filter('dateFromNow')(message.sent);
+      });
+    };
+
+    setInterval(function(){
+      $scope.fromNow();
+    }, 60000)
+
     $scope.onScrollUp = function () {
       if(!$scope.isMobile){
         $scope.scrollPosition = 'between';
@@ -184,14 +196,13 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         $scope.glued = glue;
         if (messages.data.length > 0) {
           var oldestMessageId = messages.data[0].id;
-          console.log('older');
-          console.log(oldestMessageId);
           messages.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = messages.data[0].id : $scope.lastMessageId;
           config.setSettingValue('lastMessageId', $scope.lastMessageId);
           $scope.paging = messages.paging;
           for(var i = 0; i < messages.data.length; i++){
             $scope.messages.unshift(messages.data[i]);
           }
+          $scope.fromNow();
           if($scope.isMobile){
             $location.hash(oldestMessageId);
             $anchorScroll();
@@ -226,6 +237,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         //response.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = response.data[0].id : $scope.lastMessageId;
         var results = $filter('filter')($scope.messages,{id: response.data[0].id});
         if(results.length == 0){
+          response.data[0].fromNow = $filter('dateFromNow')(response.data[0].sent);
           $scope.messages.push(response.data[0]);
         }
         $scope.reply.text = '';
@@ -273,7 +285,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     $scope.$watch('lastMessageId', function(newValue, oldValue) {
 
       if(newValue !== 0 && oldValue === 0){
-        console.log('set the poller');
+        $log.debug('set the poller');
 
         messagesPoller = poller.get(Conversation, {
           action: 'getMessages',
@@ -291,9 +303,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         messagesPoller.promise.then(null, null, function (data) {
           // Reduce DOM thrashing
           var results = [];
-          console.log($scope.lastMessageId);
-          console.log($scope.glued);
-          console.log('messages poll try');
+          $log.debug('messages poll try');
           if (data.data.length == 0) {
             $scope.glued = false;
           }
@@ -306,19 +316,18 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
               var toBeRemoved = $filter('filter')($scope.messages, greaterThan('id', $scope.lastMessageId), true);
               $scope.messages.splice(-toBeRemoved.length, toBeRemoved.length);
               $scope.messages.push.apply($scope.messages, results);
+              $scope.fromNow();
               if ($scope.scrollPosition == 'bottom') {
                 markAsRead();
                 $scope.glued = true;
               }
-              console.log($scope.scrollPosition);
               $timeout(function () {
                 $scope.glued = false;
               });
             }
             data.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = data.data[0].id : $scope.lastMessageId;
             config.setSettingValue('lastMessageId', $scope.lastMessageId);
-            console.log('messages poll done');
-            console.log(results);
+            $log.debug('messages poll done');
           };
         });
 

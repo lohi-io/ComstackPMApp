@@ -2,8 +2,8 @@
  * Created by fechit01 on 05/10/2015.
  */
 app.controller('ReportConversationCtrl', [
-  '$scope', '$modalInstance', 'Conversation', '$stateParams', 'configurationService',
-  function ($scope, $modalInstance, Conversation, $stateParams, config) {
+  '$scope', '$modalInstance', 'Conversation', '$stateParams', 'configurationService', '$log',
+  function ($scope, $modalInstance, Conversation, $stateParams, config, $log) {
 
     var reasonsValues = {
       isSpam: 'spam',
@@ -52,7 +52,7 @@ app.controller('ReportConversationCtrl', [
       },
         function (error) {
           //error handling;
-          console.log(error);
+          $log.error(error);
         });
     };
   }

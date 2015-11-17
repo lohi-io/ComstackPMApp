@@ -120,6 +120,12 @@
       expect(config.getString).toHaveBeenCalledWith('modal__delete_conversation__text');
     });
 
+    it('Should disable the OK button on confirm', function(){
+      scope.OkClicked = false;
+      AssumeConfirmIsCalled();
+      expect(scope.OkClicked).toBeTruthy();
+    });
+
 
   });
 })(describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, angular.mock.module);

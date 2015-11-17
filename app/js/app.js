@@ -14,17 +14,19 @@ var app = angular.module('ComstackPMApp', ['ui.router',
 
 app.config([
   "$urlRouterProvider",
-  "$stateProvider", 'configurationServiceProvider', '$httpProvider', 'tagsInputConfigProvider', function ($urlRouterProvider, $stateProvider, configurationServiceProvider, $httpProvider, tagsInputConfigProvider) {
+  "$stateProvider", 'configurationServiceProvider', '$httpProvider', 'tagsInputConfigProvider', 'pollerConfig', '$logProvider',
+  function ($urlRouterProvider, $stateProvider, configurationServiceProvider, $httpProvider, tagsInputConfigProvider, pollerConfig, $logProvider) {
+
+
+    var settings = configurationServiceProvider.get();
 
     tagsInputConfigProvider.setDefaults('tagsInput', {placeholder: ''});
     tagsInputConfigProvider.setActiveInterpolation('tagsInput', {placeholder: true});
-
+    pollerConfig.resetOnStateChange = true;
     $httpProvider.interceptors.push('requestInterceptor');
+    $logProvider.debugEnabled(settings.debug_mode);
 
-    var settings = configurationServiceProvider.get();
-    var templatesPath = settings.library_path;
     var environment = settings.environment;
-
 
     switch (environment) {
       case 'local':
@@ -57,11 +59,6 @@ app.config([
         url: '/conversation/:id?reported',
         controller: 'ConversationCtrl',
         templateUrl: 'html/conversation.html'
-      })
-      .state('test', {
-        url: '/test/:id',
-        controller: 'TestCtrl',
-        templateUrl: 'html/test.html'
       })
       .state('inbox.delete',
         {
