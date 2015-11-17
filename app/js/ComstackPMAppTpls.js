@@ -31,8 +31,10 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "      class=\"icomoon icomoon-speech-bubble cs-pm-icon--new-message\"></span> {{ button__new_conversation }}</a></div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode\"\n" +
+    "  <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode && !currentUser.preferences.forced_read_only\"\n" +
     "       ng-bind-html=\"text_read_only | htmlsafe\"></div>\n" +
+    "  <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.forced_read_only\"\n" +
+    "       ng-bind-html=\"text_forced_read_only | htmlsafe\"></div>\n" +
     "\n" +
     "  <div class=\"messages-header cs-pm__header conversation-header clearfix\">\n" +
     "    <h2 class=\"pull-left cs-pm-left\" ng-cloak>{{ conversationHeading }}</h2>\n" +
@@ -268,8 +270,10 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "      </div>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode\"\n" +
+    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode && !currentUser.preferences.forced_read_only\"\n" +
     "         ng-bind-html=\"text_read_only | htmlsafe\"></div>\n" +
+    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.forced_read_only\"\n" +
+    "         ng-bind-html=\"text_forced_read_only | htmlsafe\"></div>\n" +
     "\n" +
     "    <ul class=\"media-list conversations-list\">\n" +
     "      <li class=\"media cs-pm-conversation\" ng-class=\"{'conversation--unread': conversation.unread_count != 0}\"\n" +
@@ -337,8 +341,11 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "        </a>\n" +
     "      </div>\n" +
     "    </div>\n" +
-    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode\"\n" +
+    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode && !currentUser.preferences.forced_read_only\"\n" +
     "         ng-bind-html=\"text_read_only | htmlsafe\"></div>\n" +
+    "  <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.forced_read_only\"\n" +
+    "         ng-bind-html=\"text_forced_read_only | htmlsafe\"></div>\n" +
+    "\n" +
     "    <div class=\"cs-pm-boxing messaging-boxing text-center\" ng-bind-html=\"text_no_conversations | htmlsafe\"></div>\n" +
     "  </div>\n" +
     "</div>\n"
