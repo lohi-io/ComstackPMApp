@@ -30,7 +30,6 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
       });
       $scope.button_friends_list = config.getString('button__friends_list');
       $scope.friends_link = settings.base_url + '/friends/' + $scope.currentUser.user.id;
-      $scope.text_forced_read_only = config.getString('text__forced_read_only');
     };
 
     $scope.goToPage = function (page) {

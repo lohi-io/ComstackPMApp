@@ -61,9 +61,6 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       $scope.form_text_validation_maxlength = config.getString('form__text__validation__maxlength', {number: $scope.textMaxLength});
       $scope.form_text_validation_empty = config.getString('form__text__validation__empty');
       $scope.form_text_warning_emoji = config.getString('form__text__warning__emoji');
-      $scope.text_forced_read_only = config.getString('text__forced_read_only');
-
-
     };
 
     /**

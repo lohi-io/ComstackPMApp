@@ -7,7 +7,6 @@ app.controller('DeleteConversationCtrl', [
 
     $scope.modal_delete_conversation__heading = config.getString('modal__delete_conversation__heading');
     $scope.modal_delete_conversation_text = config.getString('modal__delete_conversation__text');
-    $scope.OkClicked = false;
 
 
     $scope.cancel = function () {
@@ -15,7 +14,6 @@ app.controller('DeleteConversationCtrl', [
     };
 
     $scope.confirm = function () {
-      $scope.OkClicked = true;
       Conversation.get({
         id: $stateParams.id,
         access_token: config.getSetting('access_token')

@@ -41,7 +41,6 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
 | max_participants | `Integer` | The maximum number of participants allowed in one conversation, 0 = unlimited. |
 | allow_separate_conversations | `Boolean` | Prevent users from starting multiple one on one conversations, instead continue the same conversation. |
 | share_data_storage | `Boolean` | Whether or not to use local storage to reduce server requests when the app is open on multiple tabs &/ windows. |
-| debug_mode | `Boolean` | Whether or not to output debug messages to the console describing what the App is doing at certain times. |
 | library_path | `String` | The path/location of the library. |
 | poll_intervals | `Object` | An object containing the number of seconds to wait before polling the server for new data. |
 | - conversations | `Integer` | How often to check for new conversations, defaults to 20 seconds. |
@@ -60,7 +59,6 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
   "max_participants": 2,
   "allow_separate_conversations": false,
   "share_data_storage": true,
-  "debug_mode": false,
   "library_path": "https://example.com/sites/all/libraries/ComstackPMApp",
   "friends_url": "https://example.com/friends/1"
   "poll_intervals": {
@@ -76,7 +74,6 @@ The App will look for settings in the global variable `Comstack.PMApp.Settings`.
     "text__last_message": "Last message",
     "text__no_available_users": "",
     "text__read_only": 'You\'re currently opted out of private messaging, <a href="@base_url@/user/@user_id@/account-settings">click here</a> to go the the account settings form.',
-    "text__forced_read_only": "Private messaging has been temporarily disabled.",
     "text__select_messages_to_delete": "Select the messages you'd like to delete",
     "text__select_messages_to_report": "Select the messages you'd like to report",
     "text__no_conversations": '<p>You\'ve not been part of any conversations yet!</p><p>Make sure that you\'ve <a href="@base_url@/friends/@user_id@">added your friends</a> then start a new conversation.</p>',

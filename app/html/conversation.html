@@ -9,10 +9,8 @@
       class="icomoon icomoon-speech-bubble cs-pm-icon--new-message"></span> {{ button__new_conversation }}</a></div>
   </div>
 
-  <div class="alert alert-warning" ng-show="currentUser.preferences.read_only_mode && !currentUser.preferences.forced_read_only"
+  <div class="alert alert-warning" ng-show="currentUser.preferences.read_only_mode"
        ng-bind-html="text_read_only | htmlsafe"></div>
-  <div class="alert alert-warning" ng-show="currentUser.preferences.forced_read_only"
-       ng-bind-html="text_forced_read_only | htmlsafe"></div>
 
   <div class="messages-header cs-pm__header conversation-header clearfix">
     <h2 class="pull-left cs-pm-left" ng-cloak>{{ conversationHeading }}</h2>
