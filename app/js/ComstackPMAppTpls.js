@@ -45,8 +45,10 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "      class=\"icomoon icomoon-speech-bubble cs-pm-icon--new-message\"></span> {{ button__new_conversation }}</a></div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode\"\n" +
+    "  <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode && !currentUser.preferences.forced_read_only\"\n" +
     "       ng-bind-html=\"text_read_only | htmlsafe\"></div>\n" +
+    "  <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.forced_read_only\"\n" +
+    "       ng-bind-html=\"text_forced_read_only | htmlsafe\"></div>\n" +
     "\n" +
     "  <div class=\"messages-header cs-pm__header conversation-header clearfix\">\n" +
     "    <h2 class=\"pull-left cs-pm-left\" ng-cloak>{{ conversationHeading }}</h2>\n" +
@@ -310,7 +312,14 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "     style=\"margin-top: 10px;\" ng-cloak>\r" +
     "\n" +
+<<<<<<< HEAD
     "\r" +
+=======
+    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode && !currentUser.preferences.forced_read_only\"\n" +
+    "         ng-bind-html=\"text_read_only | htmlsafe\"></div>\n" +
+    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.forced_read_only\"\n" +
+    "         ng-bind-html=\"text_forced_read_only | htmlsafe\"></div>\n" +
+>>>>>>> 51b4db2... COM-1288 kill switch
     "\n" +
     "  <div class=\"cs-pm-new-wrapper new-wrapper\" style=\"height: 300px;\" ng-show=\"isLoading\">\r" +
     "\n" +
@@ -318,6 +327,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "    <a class=\"btn btn-primary btn-load-more\" id=\"loading\" disabled=\"disabled\">\r" +
     "\n" +
+<<<<<<< HEAD
     "      <div class=\"sk-circle\">\r" +
     "\n" +
     "        <div class=\"sk-circle1 sk-child\"></div>\r" +
@@ -526,6 +536,23 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "</div>\r" +
     "\n"
+=======
+    "      <div class=\"pull-right cs-pm-right\">\n" +
+    "        <a href=\"{{friends_link}}\" class=\"btn btn-link btn-link-outline\">{{button_friends_list}}</a>\n" +
+    "        <a class=\"btn btn-default cs-pm__new-message\" ui-sref=\"message\" ng-hide=\"currentUser.preferences.read_only_mode\">\n" +
+    "          <span class=\"icomoon icomoon-speech-bubble cs-pm-icon--new-message\"></span> {{button_new_conversation}}\n" +
+    "        </a>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode && !currentUser.preferences.forced_read_only\"\n" +
+    "         ng-bind-html=\"text_read_only | htmlsafe\"></div>\n" +
+    "  <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.forced_read_only\"\n" +
+    "         ng-bind-html=\"text_forced_read_only | htmlsafe\"></div>\n" +
+    "\n" +
+    "    <div class=\"cs-pm-boxing messaging-boxing text-center\" ng-bind-html=\"text_no_conversations | htmlsafe\"></div>\n" +
+    "  </div>\n" +
+    "</div>\n"
+>>>>>>> 51b4db2... COM-1288 kill switch
   );
 
 
