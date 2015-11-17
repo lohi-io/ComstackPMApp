@@ -172,7 +172,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "</div>\n" +
     "<div class=\"modal-footer\">\n" +
     "  <button ng-click=\"cancel()\" type=\"button\" class=\"btn btn-default\">Cancel</button>\n" +
-    "  <button ng-click=\"confirm()\" type=\"button\" class=\"btn btn-primary\">OK</button>\n" +
+    "  <button ng-click=\"confirm()\" type=\"button\" class=\"btn btn-primary\" data-ng-disabled=\"OkClicked\">OK</button>\n" +
     "</div>\n"
   );
 
@@ -358,7 +358,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "    <h2 class=\"pull-left cs-pm-left\"><a ui-sref=\"inbox({page:1})\" class=\"messages-trigger\"><span\n" +
     "      class=\"icomoon icomoon-back cs-pm-icon--back\"></span> Messages</a></h2>\n" +
     "\n" +
-    "    <div class=\"pull-right cs-pm-right\"><a ui-sref=\"inbox({page:1})\" class=\"btn btn-default messages-trigger\" ng-cloak><span\n" +
+    "    <div class=\"pull-right cs-pm-right\"><a ng-click=\"cancel()\" class=\"btn btn-default messages-trigger\" ng-cloak><span\n" +
     "      class=\"glyphicon glyphicon-remove cs-pm-icon--remove\"></span> {{ cancelString }}</a></div>\n" +
     "  </div>\n" +
     "\n" +

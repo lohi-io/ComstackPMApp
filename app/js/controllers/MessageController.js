@@ -1,6 +1,6 @@
 app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers',
-              'configurationService', 'Conversation', 'getCurrentUser', '$stateParams', '$filter', '$log',
-  function ($scope, $state, getAvailableUsers, config, Conversation, userService, $stateParams, $filter, $log) {
+              'configurationService', 'Conversation', 'getCurrentUser', '$stateParams', '$filter', '$log', '$window',
+  function ($scope, $state, getAvailableUsers, config, Conversation, userService, $stateParams, $filter, $log, $window) {
 
     var settings = config.get();
     $scope.requiredUsers = $stateParams.userId;
@@ -66,6 +66,19 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers',
 
     $scope.checkEmptyTag = function(tag){
       return tag.id != 0
+    }
+
+    $scope.cancel = function(){
+      if($scope.requiredUsers){
+        $window.location.href = settings.base_url + '/friends/' + $scope.currentUser.user.id;
+      }else{
+        $state.go('inbox', {page: 1},
+          {
+            reload: 'conversation',
+            inherit: false,
+            notify: true
+          });
+      }
     }
 
     $scope.getAvailableUsers = function (search) {
