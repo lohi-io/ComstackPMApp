@@ -3,7 +3,7 @@
 
   describe('MessageCtrl', function () {
     var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config, currentUser,
-      urlAvailableUsers, requiresHttp, createController, accessToken, base_url, urlApi, stateParams, maxTags;
+      urlAvailableUsers, requiresHttp, createController, accessToken, base_url, urlApi, stateParams, maxTags, window;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
@@ -64,6 +64,7 @@
       spyOn(config, 'getString');
       accessToken = config.getSetting('access_token');
       base_url = config.getSetting('base_url');
+      window = {location: {href:""}};
 
 
 
@@ -83,7 +84,8 @@
           '$scope': scope,
           '$state': state,
           'config': config,
-          '$stateParams': stateParams
+          '$stateParams': stateParams,
+          '$window': window
         });
       };
 
@@ -142,7 +144,23 @@
       expect(scope.isContactsAvailable).toEqual(true);
     });
 
+    it('Should have a cancel button', function(){
+      expect(scope.cancel).toBeDefined();
+      expect(typeof scope.cancel).toEqual('function');
+    });
 
+    it('Should redirect to the friends page when coming from there and cancel', function(){
+      scope.requiredUsers = '1111';
+      scope.cancel();
+      expect(window.location.href).toEqual(base_url+'/friends/'+scope.currentUser.user.id);
+    });
+
+    it('Should redirect to the inbox when coming from there and cancel', function(){
+      scope.requiredUsers = '';
+      spyOn(state, 'go');
+      scope.cancel();
+      expect(state.go).toHaveBeenCalledWith('inbox', {page: 1}, { reload: 'conversation', inherit: false, notify: true });
+    });
 
 
     it('Should get the strings from configuration', function(){
