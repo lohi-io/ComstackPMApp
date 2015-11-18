@@ -24,13 +24,14 @@
 
     <div class="conversation-actions">
       <a href="" ui-sref="conversation.delete" class="btn btn-link btn-small delete-conversation"
+         ng-show="currentUser.permissions.conversations.leave"
          ng-bind="link__delete"></a>
       <a href="" ui-sref="conversation.report" class="btn btn-link btn-small report-conversation"
          ng-show="currentUser.permissions.conversations.report"
          ng-bind-html="link__report | htmlsafe"></a>
-      <a ng-hide="isContactBlocked" href="" ui-sref="conversation.block" class="btn btn-link btn-small"
+      <a ng-hide="isContactBlocked || !currentUser.permissions.users.block" href="" ui-sref="conversation.block" class="btn btn-link btn-small"
          ng-bind="link__block"></a>
-      <a ng-show="isContactBlocked" ui-sref="conversation.unblock" class="btn btn-link btn-small"
+      <a ng-show="isContactBlocked && currentUser.permissions.users.block" ui-sref="conversation.unblock" class="btn btn-link btn-small"
          ng-bind="link__unblock"></a>
     </div>
   </div>
