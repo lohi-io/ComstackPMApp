@@ -34,146 +34,286 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
 
 
   $templateCache.put('html/conversation.html',
-    "<div id=\"message\" class=\"page-wrapper cs-pm-page-wrapper\" style=\"display: block\">\n" +
+    "<div id=\"message\" class=\"page-wrapper cs-pm-page-wrapper\" style=\"display: block\">\r" +
     "\n" +
-    "  <div class=\"messages-header cs-pm__header clearfix\" ng-cloak>\n" +
-    "    <h2 class=\"pull-left cs-pm-left\"><a ui-sref=\"inbox({page: 1})\" ui-sref-opts=\"{reload: true}\"\n" +
-    "                                        class=\"messages-trigger\"><span\n" +
-    "      class=\"icomoon icomoon-back cs-pm-icon--back\"></span>{{ heading__messages }}</a></h2>\n" +
+    "\r" +
     "\n" +
-    "    <div class=\"pull-right cs-pm-right\"><a ui-sref=\"message\" class=\"btn btn-default cs-pm__new-message\" ng-show=\"!currentUser.preferences.read_only_mode\"><span\n" +
-    "      class=\"icomoon icomoon-speech-bubble cs-pm-icon--new-message\"></span> {{ button__new_conversation }}</a></div>\n" +
-    "  </div>\n" +
+    "  <div class=\"messages-header cs-pm__header clearfix\" ng-cloak>\r" +
     "\n" +
-    "  <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode && !currentUser.preferences.forced_read_only\"\n" +
-    "       ng-bind-html=\"text_read_only | htmlsafe\"></div>\n" +
-    "  <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.forced_read_only\"\n" +
-    "       ng-bind-html=\"text_forced_read_only | htmlsafe\"></div>\n" +
+    "    <h2 class=\"pull-left cs-pm-left\"><a ui-sref=\"inbox({page: 1})\" ui-sref-opts=\"{reload: true}\"\r" +
     "\n" +
-    "  <div class=\"messages-header cs-pm__header conversation-header clearfix\">\n" +
-    "    <h2 class=\"pull-left cs-pm-left\" ng-cloak>{{ conversationHeading }}</h2>\n" +
+    "                                        class=\"messages-trigger\"><span\r" +
     "\n" +
-    "    <div class=\"conversation-actions\">\n" +
-    "      <a href=\"\" ui-sref=\"conversation.delete\" class=\"btn btn-link btn-small delete-conversation\"\n" +
-    "         ng-show=\"currentUser.permissions.conversations.leave\"\n" +
-    "         ng-bind=\"link__delete\"></a>\n" +
-    "      <a href=\"\" ui-sref=\"conversation.report\" class=\"btn btn-link btn-small report-conversation\"\n" +
-    "         ng-show=\"currentUser.permissions.conversations.report\"\n" +
-    "         ng-bind-html=\"link__report | htmlsafe\"></a>\n" +
-    "      <a ng-hide=\"isContactBlocked || !currentUser.permissions.users.block\" href=\"\" ui-sref=\"conversation.block\" class=\"btn btn-link btn-small\"\n" +
-    "         ng-bind=\"link__block\"></a>\n" +
-    "      <a ng-show=\"isContactBlocked && currentUser.permissions.users.block\" ui-sref=\"conversation.unblock\" class=\"btn btn-link btn-small\"\n" +
-    "         ng-bind=\"link__unblock\"></a>\n" +
-    "    </div>\n" +
-    "  </div>\n" +
+    "      class=\"icomoon icomoon-back cs-pm-icon--back\"></span>{{ heading__messages }}</a></h2>\r" +
     "\n" +
-    "  <div id=\"conversation-wrapper\"\n" +
-    "       class=\"conversation-wrapper\"\n" +
-    "       style=\"max-height: 600px; overflow: auto\"\n" +
-    "       scroll-glue=\"!!glued\"\n" +
-    "       dynamic-scroll\n" +
-    "       on-scroll-up=\"onScrollUp()\"\n" +
-    "       on-scroll-down=\"onScrollDown()\"\n" +
-    "       is-loading=\"isLoading\"\n" +
-    "       eof-down=\"eofDown\"\n" +
-    "       eof-up=\"eofUp\"\n" +
-    "       is-mobile=\"isMobile\">\n" +
+    "\r" +
     "\n" +
-    "    <div class=\"delete-message-msg collapse\">\n" +
-    "      <div class=\"alert alert-info\" role=\"alert\" ng-cloak>{{ text__select_messages_to_delete }}</div>\n" +
-    "    </div>\n" +
+    "    <div class=\"pull-right cs-pm-right\"><a ui-sref=\"message\" class=\"btn btn-default cs-pm__new-message\" ng-show=\"!currentUser.preferences.read_only_mode\"><span\r" +
     "\n" +
-    "    <div class=\"clearfix text-center\">\n" +
-    "      <a class=\"btn btn-primary btn-load-more\" id=\"loading\" disabled=\"disabled\" ng-show=\"isLoading\">\n" +
-    "        <div class=\"sk-circle\">\n" +
-    "          <div class=\"sk-circle1 sk-child\"></div>\n" +
-    "          <div class=\"sk-circle2 sk-child\"></div>\n" +
-    "          <div class=\"sk-circle3 sk-child\"></div>\n" +
-    "          <div class=\"sk-circle4 sk-child\"></div>\n" +
-    "          <div class=\"sk-circle5 sk-child\"></div>\n" +
-    "          <div class=\"sk-circle6 sk-child\"></div>\n" +
-    "          <div class=\"sk-circle7 sk-child\"></div>\n" +
-    "          <div class=\"sk-circle8 sk-child\"></div>\n" +
-    "          <div class=\"sk-circle9 sk-child\"></div>\n" +
-    "          <div class=\"sk-circle10 sk-child\"></div>\n" +
-    "          <div class=\"sk-circle11 sk-child\"></div>\n" +
-    "          <div class=\"sk-circle12 sk-child\"></div>\n" +
-    "        </div>\n" +
-    "      </a>\n" +
-    "    </div>\n" +
+    "      class=\"icomoon icomoon-speech-bubble cs-pm-icon--new-message\"></span> {{ button__new_conversation }}</a></div>\r" +
     "\n" +
-    "    <div class=\"clearfix text-center\">\n" +
-    "      <a class=\"btn btn-primary btn-load-more\" id=\"load-more\" ng-cloak ng-click=\"loadMessages('', paging.cursors.after)\"\n" +
-    "         ng-show=\"isMobile && moreMessages && !isLoading\">\n" +
-    "        {{button__load_older_messages }}</a>\n" +
-    "    </div>\n" +
+    "  </div>\r" +
     "\n" +
-    "    <ul class=\"media-list\">\n" +
-    "      <li ng-repeat=\"message in messages track by message.id\" buffer-size=\"10\" padding=\"0.3\"\n" +
-    "          ng-class=\"{'message-own': message.sender.id === $parent.currentUser.user.id}\"\n" +
-    "          class=\"media\" id=\"{{message.id}}\">\n" +
-    "        <div ng-hide=\"'Hiding this until we implement message deletion'\"\n" +
-    "             class=\"media-left checkbox-wrap\">\n" +
-    "          <div class=\"checkbox\"><label><input type=\"checkbox\" value=\"message.id\"\n" +
-    "                                              aria-label=\"Delete this message\"></label></div>\n" +
-    "        </div>\n" +
-    "        <div ng-if=\"message.sender.id !== $parent.currentUser.user.id\" class=\"media-left cs-pm__avatar\">\n" +
-    "          <img class=\"media-object\" ng-src=\"{{ message.sender.avatars['100-100'] }}\" alt=\"\"\n" +
-    "               style=\"width:50px;height:50px;\">\n" +
-    "        </div>\n" +
-    "        <div class=\"cs-pm-body media-body\">\n" +
-    "          <div class=\"cs-pm-message-meta message-meta small\"><a\n" +
-    "            ng-hide=\"message.sender.id === $parent.currentUser.user.id\" ng-href=\"{{ message.sender.profile }}\"\n" +
-    "            ng-bind=\"message.sender.name\"></a> <abbr class=\"timeago\"\n" +
-    "                                                     ng-attr-title=\"{{message.sent | formatDate}}\"\n" +
-    "                                                     ng-bind=\"message.fromNow\"></abbr></div>\n" +
-    "          <div class=\"cs-pm-message message\" ng-class=\"{'arrow_box': message.sender.id != $parent.currentUser.user.id}\">\n" +
-    "            <p ng-bind-html=\"message.text | htmlsafe\"></p></div>\n" +
-    "        </div>\n" +
-    "      </li>\n" +
-    "    </ul>\n" +
+    "\r" +
     "\n" +
-    "  </div>\n" +
-    "  <div class=\"cs-pm-reply-wrapper reply-wrapper\">\n" +
-    "    <div data-ng-form=\"newMessageForm\" novalidate role=\"form\">\n" +
-    "      <div class=\"form-group\"\n" +
-    "           ng-class=\"{'has-error': newMessageForm.replyText.$invalid && newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.maxlength || newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))}\">\n" +
+    "  <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode && !currentUser.preferences.forced_read_only\"\r" +
     "\n" +
-    "         <textarea emoji\n" +
-    "                   ctrl-enter=\"submitReply()\"\n" +
-    "                   class=\"form-control\"\n" +
-    "                   id=\"replyText\"\n" +
-    "                   name=\"replyText\"\n" +
-    "                   class=\"form-control\"\n" +
-    "                   ng-change=\"unglue()\"\n" +
-    "                   ng-maxlength=\"textMaxLength\"\n" +
-    "                   ng-disabled=\"currentUser.preferences.read_only_mode || !isContactAvailable\"\n" +
-    "                   rows=\"3\"\n" +
-    "                   placeholder=\"{{form_reply_placeholder}}\"\n" +
-    "                   ng-model=\"reply.text\"\n" +
-    "                   required></textarea>\n" +
+    "       ng-bind-html=\"text_read_only | htmlsafe\"></div>\r" +
     "\n" +
-    "      <span class=\"help-block\"\n" +
-    "            ng-show=\"newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))\"\n" +
-    "            ng-bind-html=\"form_text_validation_empty | htmlsafe\"></span>\n" +
-    "      <span class=\"help-block\"\n" +
-    "            ng-show=\"newMessageForm.replyText.$dirty && newMessageForm.replyText.$error.maxlength\"\n" +
-    "            ng-bind-html=\"form_text_validation_maxlength | htmlsafe\"></span>\n" +
-    "      <span class=\"help-block\"\n" +
-    "            ng-show=\"newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.emojiWarning && !allow_emoji)\"\n" +
-    "            ng-bind-html=\"form_text_warning_emoji | htmlsafe\"></span>\n" +
-    "      </div>\n" +
+    "  <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.forced_read_only\"\r" +
     "\n" +
-    "      <div class=\"clearfix\">\n" +
-    "        <button id=\"reply-submit\" ng-click=\"submitReply()\" type=\"submit\"\n" +
-    "                class=\"btn btn-default pull-right cs-pm-right message-trigger\"\n" +
-    "                ng-disabled=\"(newMessageForm.replyText.$invalid && newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.maxlength || newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))) || currentUser.preferences.read_only_mode || !isContactAvailable || reply.text.length === 0\"\n" +
-    "                ng-bind-html=\"form_reply_submit | htmlsafe\"></button>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
-    "  </div>\n" +
+    "       ng-bind-html=\"text_forced_read_only | htmlsafe\"></div>\r" +
     "\n" +
-    "</div>\n"
+    "\r" +
+    "\n" +
+    "  <div class=\"messages-header cs-pm__header conversation-header clearfix\">\r" +
+    "\n" +
+    "    <h2 class=\"pull-left cs-pm-left\" ng-cloak>{{ conversationHeading }}</h2>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "    <div class=\"conversation-actions\">\r" +
+    "\n" +
+    "      <a href=\"\" ui-sref=\"conversation.delete\" class=\"btn btn-link btn-small delete-conversation\"\r" +
+    "\n" +
+    "         ng-show=\"currentUser.permissions.conversations.leave\"\r" +
+    "\n" +
+    "         ng-bind=\"link__delete\"></a>\r" +
+    "\n" +
+    "      <a href=\"\" ui-sref=\"conversation.report\" class=\"btn btn-link btn-small report-conversation\"\r" +
+    "\n" +
+    "         ng-show=\"currentUser.permissions.conversations.report\"\r" +
+    "\n" +
+    "         ng-bind-html=\"link__report | htmlsafe\"></a>\r" +
+    "\n" +
+    "      <a ng-hide=\"isContactBlocked || !currentUser.permissions.users.block\" href=\"\" ui-sref=\"conversation.block\" class=\"btn btn-link btn-small\"\r" +
+    "\n" +
+    "         ng-bind=\"link__block\"></a>\r" +
+    "\n" +
+    "      <a ng-show=\"isContactBlocked && currentUser.permissions.users.block\" ui-sref=\"conversation.unblock\" class=\"btn btn-link btn-small\"\r" +
+    "\n" +
+    "         ng-bind=\"link__unblock\"></a>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "  </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "  <div id=\"conversation-wrapper\"\r" +
+    "\n" +
+    "       class=\"conversation-wrapper\"\r" +
+    "\n" +
+    "       style=\"max-height: 600px; overflow: auto\"\r" +
+    "\n" +
+    "       scroll-glue=\"!!glued\"\r" +
+    "\n" +
+    "       dynamic-scroll\r" +
+    "\n" +
+    "       on-scroll-up=\"onScrollUp()\"\r" +
+    "\n" +
+    "       on-scroll-down=\"onScrollDown()\"\r" +
+    "\n" +
+    "       is-loading=\"isLoading\"\r" +
+    "\n" +
+    "       eof-down=\"eofDown\"\r" +
+    "\n" +
+    "       eof-up=\"eofUp\"\r" +
+    "\n" +
+    "       is-mobile=\"isMobile\">\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "    <div class=\"delete-message-msg collapse\">\r" +
+    "\n" +
+    "      <div class=\"alert alert-info\" role=\"alert\" ng-cloak>{{ text__select_messages_to_delete }}</div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "    <div class=\"clearfix text-center\">\r" +
+    "\n" +
+    "      <a class=\"btn btn-primary btn-load-more\" id=\"loading\" disabled=\"disabled\" ng-show=\"isLoading\">\r" +
+    "\n" +
+    "        <div class=\"sk-circle\">\r" +
+    "\n" +
+    "          <div class=\"sk-circle1 sk-child\"></div>\r" +
+    "\n" +
+    "          <div class=\"sk-circle2 sk-child\"></div>\r" +
+    "\n" +
+    "          <div class=\"sk-circle3 sk-child\"></div>\r" +
+    "\n" +
+    "          <div class=\"sk-circle4 sk-child\"></div>\r" +
+    "\n" +
+    "          <div class=\"sk-circle5 sk-child\"></div>\r" +
+    "\n" +
+    "          <div class=\"sk-circle6 sk-child\"></div>\r" +
+    "\n" +
+    "          <div class=\"sk-circle7 sk-child\"></div>\r" +
+    "\n" +
+    "          <div class=\"sk-circle8 sk-child\"></div>\r" +
+    "\n" +
+    "          <div class=\"sk-circle9 sk-child\"></div>\r" +
+    "\n" +
+    "          <div class=\"sk-circle10 sk-child\"></div>\r" +
+    "\n" +
+    "          <div class=\"sk-circle11 sk-child\"></div>\r" +
+    "\n" +
+    "          <div class=\"sk-circle12 sk-child\"></div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "      </a>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "    <div class=\"clearfix text-center\">\r" +
+    "\n" +
+    "      <a class=\"btn btn-primary btn-load-more\" id=\"load-more\" ng-cloak ng-click=\"loadMessages('', paging.cursors.after)\"\r" +
+    "\n" +
+    "         ng-show=\"isMobile && moreMessages && !isLoading\">\r" +
+    "\n" +
+    "        {{button__load_older_messages }}</a>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "    <ul class=\"media-list\">\r" +
+    "\n" +
+    "      <li ng-repeat=\"message in messages track by message.id\" buffer-size=\"10\" padding=\"0.3\"\r" +
+    "\n" +
+    "          ng-class=\"{'message-own': message.sender.id === $parent.currentUser.user.id}\"\r" +
+    "\n" +
+    "          class=\"media\" id=\"{{message.id}}\">\r" +
+    "\n" +
+    "        <div ng-hide=\"'Hiding this until we implement message deletion'\"\r" +
+    "\n" +
+    "             class=\"media-left checkbox-wrap\">\r" +
+    "\n" +
+    "          <div class=\"checkbox\"><label><input type=\"checkbox\" value=\"message.id\"\r" +
+    "\n" +
+    "                                              aria-label=\"Delete this message\"></label></div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <div ng-if=\"message.sender.id !== $parent.currentUser.user.id\" class=\"media-left cs-pm__avatar\">\r" +
+    "\n" +
+    "          <img class=\"media-object\" ng-src=\"{{ message.sender.avatars['100-100'] }}\" alt=\"\"\r" +
+    "\n" +
+    "               style=\"width:50px;height:50px;\">\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <div class=\"cs-pm-body media-body\">\r" +
+    "\n" +
+    "          <div class=\"cs-pm-message-meta message-meta small\"><a\r" +
+    "\n" +
+    "            ng-hide=\"message.sender.id === $parent.currentUser.user.id\" ng-href=\"{{ message.sender.profile }}\"\r" +
+    "\n" +
+    "            ng-bind=\"message.sender.name\"></a> <abbr class=\"timeago\"\r" +
+    "\n" +
+    "                                                     ng-attr-title=\"{{message.sent | formatDate}}\"\r" +
+    "\n" +
+    "                                                     ng-bind=\"message.fromNow\"></abbr></div>\r" +
+    "\n" +
+    "          <div class=\"cs-pm-message message\" ng-class=\"{'arrow_box': message.sender.id != $parent.currentUser.user.id}\">\r" +
+    "\n" +
+    "            <p ng-bind-html=\"message.text | htmlsafe\"></p></div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "      </li>\r" +
+    "\n" +
+    "    </ul>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "  </div>\r" +
+    "\n" +
+    "  <div class=\"cs-pm-reply-wrapper reply-wrapper\">\r" +
+    "\n" +
+    "    <div data-ng-form=\"newMessageForm\" novalidate role=\"form\">\r" +
+    "\n" +
+    "      <div class=\"form-group\"\r" +
+    "\n" +
+    "           ng-class=\"{'has-error': newMessageForm.replyText.$invalid && newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.maxlength || newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))}\">\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "         <textarea emoji\r" +
+    "\n" +
+    "                   ctrl-enter=\"submitReply()\"\r" +
+    "\n" +
+    "                   class=\"form-control\"\r" +
+    "\n" +
+    "                   id=\"replyText\"\r" +
+    "\n" +
+    "                   name=\"replyText\"\r" +
+    "\n" +
+    "                   class=\"form-control\"\r" +
+    "\n" +
+    "                   ng-change=\"unglue()\"\r" +
+    "\n" +
+    "                   ng-maxlength=\"textMaxLength\"\r" +
+    "\n" +
+    "                   ng-disabled=\"currentUser.preferences.read_only_mode || !isContactAvailable\"\r" +
+    "\n" +
+    "                   rows=\"3\"\r" +
+    "\n" +
+    "                   placeholder=\"{{form_reply_placeholder}}\"\r" +
+    "\n" +
+    "                   ng-model=\"reply.text\"\r" +
+    "\n" +
+    "                   required></textarea>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "      <span class=\"help-block\"\r" +
+    "\n" +
+    "            ng-show=\"newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))\"\r" +
+    "\n" +
+    "            ng-bind-html=\"form_text_validation_empty | htmlsafe\"></span>\r" +
+    "\n" +
+    "      <span class=\"help-block\"\r" +
+    "\n" +
+    "            ng-show=\"newMessageForm.replyText.$dirty && newMessageForm.replyText.$error.maxlength\"\r" +
+    "\n" +
+    "            ng-bind-html=\"form_text_validation_maxlength | htmlsafe\"></span>\r" +
+    "\n" +
+    "      <span class=\"help-block\"\r" +
+    "\n" +
+    "            ng-show=\"newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.emojiWarning && !allow_emoji)\"\r" +
+    "\n" +
+    "            ng-bind-html=\"form_text_warning_emoji | htmlsafe\"></span>\r" +
+    "\n" +
+    "      </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "      <div class=\"clearfix\">\r" +
+    "\n" +
+    "        <button id=\"reply-submit\" ng-click=\"submitReply()\" type=\"submit\"\r" +
+    "\n" +
+    "                class=\"btn btn-default pull-right cs-pm-right message-trigger\"\r" +
+    "\n" +
+    "                ng-disabled=\"(newMessageForm.replyText.$invalid && newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.maxlength || newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))) || currentUser.preferences.read_only_mode || !isContactAvailable || reply.text.length === 0\"\r" +
+    "\n" +
+    "                ng-bind-html=\"form_reply_submit | htmlsafe\"></button>\r" +
+    "\n" +
+    "      </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "  </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "</div>\r" +
+    "\n"
   );
 
 
@@ -312,14 +452,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "     style=\"margin-top: 10px;\" ng-cloak>\r" +
     "\n" +
-<<<<<<< HEAD
     "\r" +
-=======
-    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode && !currentUser.preferences.forced_read_only\"\n" +
-    "         ng-bind-html=\"text_read_only | htmlsafe\"></div>\n" +
-    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.forced_read_only\"\n" +
-    "         ng-bind-html=\"text_forced_read_only | htmlsafe\"></div>\n" +
->>>>>>> 51b4db2... COM-1288 kill switch
     "\n" +
     "  <div class=\"cs-pm-new-wrapper new-wrapper\" style=\"height: 300px;\" ng-show=\"isLoading\">\r" +
     "\n" +
@@ -327,7 +460,6 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "    <a class=\"btn btn-primary btn-load-more\" id=\"loading\" disabled=\"disabled\">\r" +
     "\n" +
-<<<<<<< HEAD
     "      <div class=\"sk-circle\">\r" +
     "\n" +
     "        <div class=\"sk-circle1 sk-child\"></div>\r" +
@@ -388,9 +520,13 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "\r" +
     "\n" +
-    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode\"\r" +
+    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode && !currentUser.preferences.forced_read_only\"\r" +
     "\n" +
     "         ng-bind-html=\"text_read_only | htmlsafe\"></div>\r" +
+    "\n" +
+    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.forced_read_only\"\r" +
+    "\n" +
+    "         ng-bind-html=\"text_forced_read_only | htmlsafe\"></div>\r" +
     "\n" +
     "\r" +
     "\n" +
@@ -526,9 +662,15 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "    </div>\r" +
     "\n" +
-    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode\"\r" +
+    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode && !currentUser.preferences.forced_read_only\"\r" +
     "\n" +
     "         ng-bind-html=\"text_read_only | htmlsafe\"></div>\r" +
+    "\n" +
+    "  <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.forced_read_only\"\r" +
+    "\n" +
+    "         ng-bind-html=\"text_forced_read_only | htmlsafe\"></div>\r" +
+    "\n" +
+    "\r" +
     "\n" +
     "    <div class=\"cs-pm-boxing messaging-boxing text-center\" ng-bind-html=\"text_no_conversations | htmlsafe\"></div>\r" +
     "\n" +
@@ -536,23 +678,6 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "</div>\r" +
     "\n"
-=======
-    "      <div class=\"pull-right cs-pm-right\">\n" +
-    "        <a href=\"{{friends_link}}\" class=\"btn btn-link btn-link-outline\">{{button_friends_list}}</a>\n" +
-    "        <a class=\"btn btn-default cs-pm__new-message\" ui-sref=\"message\" ng-hide=\"currentUser.preferences.read_only_mode\">\n" +
-    "          <span class=\"icomoon icomoon-speech-bubble cs-pm-icon--new-message\"></span> {{button_new_conversation}}\n" +
-    "        </a>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
-    "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode && !currentUser.preferences.forced_read_only\"\n" +
-    "         ng-bind-html=\"text_read_only | htmlsafe\"></div>\n" +
-    "  <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.forced_read_only\"\n" +
-    "         ng-bind-html=\"text_forced_read_only | htmlsafe\"></div>\n" +
-    "\n" +
-    "    <div class=\"cs-pm-boxing messaging-boxing text-center\" ng-bind-html=\"text_no_conversations | htmlsafe\"></div>\n" +
-    "  </div>\n" +
-    "</div>\n"
->>>>>>> 51b4db2... COM-1288 kill switch
   );
 
 
