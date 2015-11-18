@@ -25,6 +25,7 @@
     "jasmine-expect": "~1.22.3",
     "jsBuilder": "~1.0.1",
     "moment": "~2.10.6",
+    "ng-idle": "~1.1.1",
     "ng-tags-input": "~3.0.0"
   },
   "resolutions": {

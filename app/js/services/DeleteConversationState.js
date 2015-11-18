@@ -15,6 +15,9 @@ function deleteConversationState($state, $modal) {
             okDestination.params[key] = params[key];
           }
         });
+        if(okDestination.params['reported'] !== undefined){
+          okDestination.params['reported'] = null;
+        }
         $state.go(okDestination.state,
           okDestination.params,
           {
