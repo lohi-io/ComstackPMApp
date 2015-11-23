@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="css/app.css">
   <script src="../bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
-<body>
+<body idle>
 <ui-view autoscroll="true">
 
 </ui-view>
@@ -34,6 +34,7 @@
 <script src="../bower_components/angularpoller/angular-poller.js"></script>
 <script src="../bower_components/isMobile/isMobile.min.js"></script>
 <script src="../bower_components/ng-focus-if/focusIf.js"></script>
+<script src="../bower_components/ng-idle/angular-idle.js"></script>
 <script src="js/app.js"></script>
 <script src="js/providers/ConfigurationServiceProvider.js"></script>
 <script src="js/directives/01_bootstrap.js"></script>
@@ -58,11 +59,14 @@
 <script src="js/services/AuthenticationService.js"></script>
 <script src="js/services/UserService.js"></script>
 <script src="js/services/ConversationService.js"></script>
+<script src="js/services/MessageService.js"></script>
 <script src="js/services/DeleteConversationState.js"></script>
 <script src="js/services/ReportConversationState.js"></script>
 <script src="js/services/BlockUserState.js"></script>
 <script src="js/services/UnblockUserState.js"></script>
 <script src="js/services/InterceptorService.js"></script>
 <script src="js/services/ErrorState.js"></script>
+<script src="js/services/PollerRegistrationService.js"></script>
+
 </body>
 </html>

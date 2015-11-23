@@ -67,7 +67,7 @@
       window = {location: {href:""}};
 
 
-
+      $httpBackend.when('GET', 'html/home.html').respond({});
       urlApi = config.getSetting('api_url');
 
       var endPoint = '/cs-pm/users/available-users';

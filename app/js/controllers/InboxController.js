@@ -1,6 +1,6 @@
 app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'getCurrentUser', 'Conversation',
-  'configurationService', '$filter', 'poller', '$timeout',
-  function ($scope, $window, $state, $stateParams, userService, Conversation, config, $filter, poller, $timeout) {
+  'configurationService', '$filter', 'poller', '$log', 'pollerRegistration',
+  function ($scope, $window, $state, $stateParams, userService, Conversation, config, $filter, poller, $log, pollerRegistration) {
 
     var settings = config.get();
 
@@ -106,13 +106,15 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
     $scope.conversations = [];
     $scope.paging = {};
     $scope.currentUser = {};
-    $scope.conversationsPollDelay = config.getSetting(['poll_intervals', 'conversations']) * 1000;
+    $scope.conversationsPollDelay = config.defaultPollingIntervals().conversations * 1000;
     $scope.isLoading = true;
 
     userService.get().then(function (data) {
       $scope.currentUser = data.data;
       computeStrings();
     });
+
+    pollerRegistration.registerPoller('Conversation', $state.current.name);
 
     var ConversationsPoller = poller.get(Conversation, {
       action: 'get',
@@ -124,6 +126,7 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
 
     ConversationsPoller.promise.then(null, null, function (data) {
       // Reduce DOM thrashing
+      $log.debug('Inbox conversation polling ' + Date());
       if (!angular.equals($scope.conversations, data.data)) {
         $scope.conversations = data.data;
       }

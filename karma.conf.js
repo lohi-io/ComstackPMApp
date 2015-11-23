@@ -25,6 +25,8 @@ module.exports = function (config) {
       'bower_components/angular-ui-scroll/dist/ui-scroll-jqlite.js',
       'bower_components/angularpoller/angular-poller.js',
       'bower_components/ng-focus-if/focusIf.min.js',
+      'bower_components/ng-idle/angular-idle.js',
+
 
 
       'app/js/app.js',

@@ -136,7 +136,7 @@ services.factory('Conversation', ['$resource', 'configurationService', '$filter'
   }
 ]);
 
-services.factory('pollMessages', ['Conversation', '$q', function(Conversation, $q) {
+services.factory('Messages', ['Conversation', '$q', function(Conversation, $q) {
   var service = {};
   service.get = function(id, before, after, range) {
     var delay = $q.defer();

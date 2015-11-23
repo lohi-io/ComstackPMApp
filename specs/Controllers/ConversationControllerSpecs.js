@@ -63,6 +63,7 @@
       scope = _$rootScope_.$new();
 
       state = {
+        current: {name: 'conversation'},
         go: function() {
           // stub method
         }
@@ -322,6 +323,7 @@
     //
     //
     function AssumeHttpRequestResponded(){
+      $httpBackend.when('GET', 'html/home.html').respond({});
       $httpBackend.expectGET(urlConversation).respond(conversation);
       $httpBackend.expectPUT(urlMarkAsRead, {}).respond({});
       $httpBackend.expectGET(urlMessages+'&after=&before=&range=20').respond(messages);

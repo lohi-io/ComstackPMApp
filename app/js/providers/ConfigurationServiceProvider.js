@@ -19,10 +19,30 @@ app.provider("configurationService", function () {
     "debug_mode": false,
     "http_error": false,
     "poll_intervals": {
-      "conversations": 30,
-      "messages": 15,
-      "available_users": 300,
-      "user_is_available": 15
+      "0": {
+        "conversations": 30,
+        "messages": 15,
+        "available_users": 300,
+        "user_is_available": 15
+      },
+      "1": {
+        "conversations": 90,
+        "messages": 45,
+        "available_users": 900,
+        "user_is_available": 45
+      },
+      "2": {
+        "conversations": 300,
+        "messages": 150,
+        "available_users": 3000,
+        "user_is_available": 150
+      },
+      "3": {
+        "conversations": 600,
+        "messages": 300,
+        "available_users": 6000,
+        "user_is_available": 300
+      }
     },
     "strings": {
       "heading__messages": "Messages",
@@ -137,6 +157,45 @@ app.provider("configurationService", function () {
     });
   }
 
+  this.idleIntervals = function(){
+    var idleIntervals = Object.keys(appSettings.poll_intervals).map(function(x) {
+      if(!isNaN(x)){
+        return x * 60;
+      }
+    });
+    idleIntervals = idleIntervals.filter(function(x){return !isNaN(x) && x > 0}).sort(function compareNumbers(a, b) {
+      return a - b;
+    });
+    return idleIntervals;
+  }
+
+  this.defaultPollingIntervals = function(){
+    return appSettings.poll_intervals["0"];
+  }
+
+
+  this.nextIdleInterval = function(current){
+    var idleIntervals = this.idleIntervals();
+    var lastInterval = idleIntervals[idleIntervals.length - 1];
+
+    idleIntervals = idleIntervals.filter(function(x){return x > current}).sort(function compareNumbers(a, b) {
+      return a - b;
+    });
+
+    if(idleIntervals.length > 0){
+      return idleIntervals[0];
+    } else {
+      return lastInterval;
+    }
+  }
+
+  this.getPollingIntervals = function(current){
+    var currentKey = current/60;
+    return appSettings.poll_intervals[currentKey];
+  }
+
+
+
   this.appSettings = appSettings;
   var self = this;
 
@@ -147,7 +206,11 @@ app.provider("configurationService", function () {
       set: self.set,
       getSetting : self.getSetting,
       setSettingValue: self.setSettingValue,
-      getString: self.getString
+      getString: self.getString,
+      idleIntervals: self.idleIntervals,
+      nextIdleInterval: self.nextIdleInterval,
+      getPollingIntervals: self.getPollingIntervals,
+      defaultPollingIntervals: self.defaultPollingIntervals
     }
   }
 });

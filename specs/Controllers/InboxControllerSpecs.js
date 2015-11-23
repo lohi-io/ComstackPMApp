@@ -38,6 +38,7 @@
       };
 
       state = {
+        current: {name: 'inbox'},
         "go": function () {
         }
       };
@@ -51,7 +52,7 @@
       accessToken = configurationService.getSetting('access_token');
       urlApi = configurationService.getSetting('api_url');
       queryString = 'access_token='+accessToken;
-
+      $httpBackend.when('GET', 'html/home.html').respond({});
       var urlUser = urlApi+'/cs-pm/users/current-user?'+queryString;
       $httpBackend.expectGET(urlUser).respond(currentUser);
       var urlConversation = urlApi+'/cs-pm/conversations?'+queryString+'&page=1';
@@ -98,8 +99,8 @@
     });
 
     it('should change state if previous exists when calling previous() function ', function () {
-      scope.conversations = {"data":[], "previous":{} };
-      scope.currentPage = 2;
+      scope.paging.previous = {}
+      scope.paging.current_page = 2;
       spyOn(state, 'go');
       scope.previous();
       expect(state.go).toHaveBeenCalledWith('inbox', {page: 1});
@@ -125,8 +126,8 @@
     });
 
     it('should change state if next exists when calling next() function ', function () {
-      scope.conversations = {"data":[], "next":{} };
-      scope.currentPage = 2;
+      scope.paging.next = {};
+      scope.paging.current_page = 2;
       spyOn(state, 'go');
       scope.next();
       expect(state.go).toHaveBeenCalledWith('inbox', {page: 3});

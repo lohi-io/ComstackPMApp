@@ -8,6 +8,7 @@
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
 
 
+
     beforeEach(inject(function (_$rootScope_, $controller, _$httpBackend_, $injector) {
       rootScope = _$rootScope_;
 
@@ -76,13 +77,14 @@
       spyOn(config, 'getString');
       spyOn(config, 'getSetting').and.returnValue(accessToken);
 
-
+      $httpBackend.when('GET', 'html/home.html').respond({});
 
 
       var urlUser = urlApi+'/cs-pm/users/current-user?'+queryString;
       $httpBackend.expectGET(urlUser).respond(currentUser);
       var urlConversation = urlApi+'/cs-pm/conversations/1?'+queryString;
       $httpBackend.expectGET(urlConversation).respond(conversation);
+
 
 
       ctrl = $controller('BlockUserCtrl', {
@@ -94,6 +96,8 @@
       });
 
     }));
+
+
 
     afterEach(function () {
       if(requiresHttp){

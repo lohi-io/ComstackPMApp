@@ -74,6 +74,7 @@
     function AssumeConfirmIsCalled() {
       //spyOn(config, 'getSetting').and.returnValue('qNlIfE4RskDFnAin9ycg1NipeSnCtqWLLLzqVXBJ6dc');
 
+      $httpBackend.when('GET', 'html/home.html').respond({});
       var url = urlApi + getEnpPoint + '?' + queryString;
       $httpBackend.expectGET(url).respond(convesation);
 

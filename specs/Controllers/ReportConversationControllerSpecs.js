@@ -54,7 +54,8 @@
       accessToken = config.getSetting('access_token');
       queryString = 'access_token='+accessToken;
       endPoint = '/cs-pm-report';
-
+      $httpBackend.when('GET', 'html/home.html').respond({});
+      $httpBackend.flush();
 
       modalInstance = {
         // Create a mock object using spies

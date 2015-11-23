@@ -9,6 +9,7 @@ Comstack.PMApp = {
   Settings: {
     "api_url": "https://testpm.com/api",
     "base_url" : "https://testpm.com",
+    "environment": "local",
     "authorization_header": "Basic sdfasdfasdfasd==",
     "access_token": "newToken",
     "a": {

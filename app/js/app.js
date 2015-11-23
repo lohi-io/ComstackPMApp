@@ -10,13 +10,97 @@ var app = angular.module('ComstackPMApp', ['ui.router',
                                            'ui.scroll.jqlite',
                                            'focus-if',
                                            'ComstackPMApp.Directives',
-                                           'ComstackPMApp.Templates']);
+                                           'ComstackPMApp.Templates',
+                                           'ngIdle']);
+
+app.run(function($rootScope, $log, Idle, configurationService, poller, Conversation, User, Message, $state, $filter, $interval){
+
+  Idle.watch();
+
+  $rootScope.pollers = [];
+  $rootScope.countingIdle = {};
+  $rootScope.idleCount = 0;
+  $rootScope.currentIdle = Idle.getIdle();
+
+  $log.debug(Date());
+  $log.debug($rootScope.currentIdle);
+
+
+  $rootScope.$on('IdleStart', function() {
+    // the user appears to have gone idle
+    $log.debug('IdleStart '+Date());
+    $log.debug($rootScope.pollers);
+    idleRun();
+
+    $rootScope.countingIdle = $interval(function() {
+      $log.debug('Interval Run');
+      idleRun();
+    }, $rootScope.currentIdle * 1000);
+
+  });
+
+  $rootScope.$on('IdleEnd', function() {
+    // the user has come back from AFK and is doing stuff. if you are warning them, you can use this to hide the dialog
+    $log.debug('IdleEnd '+Date());
+    $rootScope.idleCount = 0;
+    $interval.cancel($rootScope.countingIdle);
+    schedulePollers(configurationService.defaultPollingIntervals());
+  });
+
+  function idleRun(){
+    $rootScope.idleCount++;
+    var nextIdle = getNextIdle();
+    $log.debug('Next idle'+nextIdle);
+    if(nextIdle != $rootScope.currentIdle){
+      schedulePollers(configurationService.getPollingIntervals(nextIdle));
+    }
+  }
+
+  function getNextIdle(){
+    return configurationService.nextIdleInterval($rootScope.currentIdle * $rootScope.idleCount);
+  }
+
+  function schedulePollers(pollIntervals){
+    $log.debug('Schedule pollers');
+    $log.debug(pollIntervals);
+
+    if(checkPollerStarted('Conversation')){
+      $log.debug('Reschedule Conversation ' + pollIntervals.conversations);
+      poller.get(Conversation, {
+        delay: pollIntervals.conversations * 1000
+      });
+    }
+
+    if(checkPollerStarted('Message')) {
+      $log.debug('Reschedule Message ' + pollIntervals.messages);
+      poller.get(Message, {
+        delay: pollIntervals.messages * 1000
+      });
+    }
+    if(checkPollerStarted('User')) {
+      $log.debug('User ' + pollIntervals.user_is_available);
+      poller.get(User, {
+        delay: pollIntervals.user_is_available * 1000,
+      });
+    }
+
+    $log.debug(poller);
+  }
+
+  function checkPollerStarted(name){
+    var found = $filter('filter')($rootScope.pollers, {name: name});
+    found = $filter('filter')(found, {state: $state.current.name});
+    if(found.length == 0 ){
+        return false;
+    }
+    return found[0].started;
+  }
+});
 
 app.config([
   "$urlRouterProvider",
-  "$stateProvider", 'configurationServiceProvider', '$httpProvider', 'tagsInputConfigProvider', 'pollerConfig', '$logProvider',
-  function ($urlRouterProvider, $stateProvider, configurationServiceProvider, $httpProvider, tagsInputConfigProvider, pollerConfig, $logProvider) {
-
+  "$stateProvider", 'configurationServiceProvider', '$httpProvider', 'tagsInputConfigProvider', 'pollerConfig', '$logProvider', 'IdleProvider',
+  function ($urlRouterProvider, $stateProvider, configurationServiceProvider, $httpProvider, tagsInputConfigProvider, pollerConfig, $logProvider, IdleProvider) {
 
     var settings = configurationServiceProvider.get();
 
@@ -25,6 +109,9 @@ app.config([
     pollerConfig.resetOnStateChange = true;
     $httpProvider.interceptors.push('requestInterceptor');
     $logProvider.debugEnabled(settings.debug_mode);
+    var idleIntervals = configurationServiceProvider.idleIntervals();
+    IdleProvider.idle(idleIntervals[0]);
+    IdleProvider.timeout(false);
 
     var environment = settings.environment;
 

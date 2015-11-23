@@ -70,7 +70,15 @@ serviceMockModule.factory("configurationService", function () {
 
     },
     updateAccessToken: function () {
-    }
+    },
+    defaultPollingIntervals: function(){
+      return  {"conversations": 90,
+        "messages": 45,
+        "available_users": 900,
+        "user_is_available": 45}
+    },
+
+
   };
 });
 

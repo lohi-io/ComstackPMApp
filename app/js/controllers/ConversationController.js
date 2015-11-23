@@ -1,6 +1,6 @@
 app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams', '$filter', '$sce', 'getCurrentUser',
-  'User', 'Conversation', 'configurationService', '$timeout', 'poller', '$anchorScroll', '$location', '$interval', '$log',
-  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout, poller, $anchorScroll, $location, $interval, $log) {
+  'User', 'Conversation', 'configurationService', '$timeout', 'poller', '$anchorScroll', '$location', '$interval', '$log', 'Message', 'pollerRegistration',
+  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout, poller, $anchorScroll, $location, $interval, $log, Message, pollerRegistration) {
 
     $scope.isMobile = $window.isMobile.any;
 
@@ -75,7 +75,9 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
 
 
         // Check if current user has blocked contact every `availabilityDelay` milliseconds.
-        availabilityPoller = poller.get(User, {
+       pollerRegistration.registerPoller('User', $state.current.name);
+
+       availabilityPoller = poller.get(User, {
           action: 'getBlockedUsers',
           argumentsArray: [{
             'filter[user]': contactId
@@ -85,8 +87,9 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         });
 
         // After checking is contact is blocked, determine if they are available.
-        availabilityPoller.promise.then(null, null, function (blockedUsers) {
 
+        availabilityPoller.promise.then(null, null, function (blockedUsers) {
+          $log.debug('Aveilability polling ' + Date());
           $scope.isContactBlocked = blockedUsers.data.length > 0 &&
             $filter('filter')(blockedUsers.data, {user: {id: contactId}}).length === 1;
 
@@ -287,8 +290,10 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       if(newValue !== 0 && oldValue === 0){
         $log.debug('set the poller');
 
-        messagesPoller = poller.get(Conversation, {
-          action: 'getMessages',
+        pollerRegistration.registerPoller('Message', $state.current.name);
+
+        messagesPoller = poller.get(Message, {
+          action: 'get',
           argumentsArray: [{
             id: $stateParams.id,
             range: 50,
@@ -303,7 +308,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
         messagesPoller.promise.then(null, null, function (data) {
           // Reduce DOM thrashing
           var results = [];
-          $log.debug('messages poll try');
+          $log.debug('Message polling ' + Date());
           if (data.data.length == 0) {
             $scope.glued = false;
           }
