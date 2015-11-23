@@ -13,7 +13,8 @@ var app = angular.module('ComstackPMApp', ['ui.router',
                                            'ComstackPMApp.Templates',
                                            'ngIdle']);
 
-app.run(function($rootScope, $log, Idle, configurationService, poller, Conversation, User, Message, $state, $filter, $interval){
+app.run(['$rootScope', '$log', 'Idle', 'configurationService', 'poller', 'Conversation', 'User', 'Message', '$state', '$filter', '$interval',
+  function($rootScope, $log, Idle, configurationService, poller, Conversation, User, Message, $state, $filter, $interval){
 
   Idle.watch();
 
@@ -95,7 +96,7 @@ app.run(function($rootScope, $log, Idle, configurationService, poller, Conversat
     }
     return found[0].started;
   }
-});
+}]);
 
 app.config([
   "$urlRouterProvider",
