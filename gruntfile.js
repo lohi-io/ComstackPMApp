@@ -73,7 +73,6 @@ module.exports = function(grunt){
               'app/js/controllers/UnblockUserController.js',
               'app/js/controllers/ErrorController.js',
               'app/js/services/01_bootstrap.js',
-              'app/js/services/AuthenticationService.js',
               'app/js/services/UserService.js',
               'app/js/services/ConversationService.js',
               'app/js/services/DeleteConversationState.js',
@@ -81,8 +80,9 @@ module.exports = function(grunt){
               'app/js/services/ErrorState.js',
               'app/js/services/BlockUserState.js',
               'app/js/services/UnblockUserState.js',
-              'app/js/services/InterceptorService.js'
-
+              'app/js/services/InterceptorService.js',
+              'app/js/services/MessageService.js',
+              'app/js/services/PollerRegistrationService.js'
             ],
             dest:'app/js/ComstackPMApp.js'
           }
