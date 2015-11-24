@@ -22,6 +22,7 @@ app.run(['$rootScope', '$log', 'Idle', 'configurationService', 'poller', 'Conver
   $rootScope.countingIdle = {};
   $rootScope.idleCount = 0;
   $rootScope.currentIdle = Idle.getIdle();
+  $rootScope.lastPollingIndex = 0;
 
   $log.debug(Date());
   $log.debug($rootScope.currentIdle);
@@ -44,6 +45,7 @@ app.run(['$rootScope', '$log', 'Idle', 'configurationService', 'poller', 'Conver
     // the user has come back from AFK and is doing stuff. if you are warning them, you can use this to hide the dialog
     $log.debug('IdleEnd '+Date());
     $rootScope.idleCount = 0;
+    $rootScope.lastPollingIndex = 0;
     $interval.cancel($rootScope.countingIdle);
     schedulePollers(configurationService.defaultPollingIntervals());
   });
@@ -52,7 +54,8 @@ app.run(['$rootScope', '$log', 'Idle', 'configurationService', 'poller', 'Conver
     $rootScope.idleCount++;
     var nextIdle = getNextIdle();
     $log.debug('Next idle'+nextIdle);
-    if(nextIdle != $rootScope.currentIdle){
+    if(nextIdle != $rootScope.lastPollingIndex){
+      $rootScope.lastPollingIndex = nextIdle;
       schedulePollers(configurationService.getPollingIntervals(nextIdle));
     }
   }
@@ -63,6 +66,7 @@ app.run(['$rootScope', '$log', 'Idle', 'configurationService', 'poller', 'Conver
 
   function schedulePollers(pollIntervals){
     $log.debug('Schedule pollers');
+    $log.debug('Polling index: ' + $rootScope.lastPollingIndex);
     $log.debug(pollIntervals);
 
     if(checkPollerStarted('Conversation')){

@@ -178,12 +178,12 @@ app.provider("configurationService", function () {
     var idleIntervals = this.idleIntervals();
     var lastInterval = idleIntervals[idleIntervals.length - 1];
 
-    idleIntervals = idleIntervals.filter(function(x){return x > current}).sort(function compareNumbers(a, b) {
+    idleIntervals = idleIntervals.filter(function(x){return x <= current}).sort(function compareNumbers(a, b) {
       return a - b;
     });
 
     if(idleIntervals.length > 0){
-      return idleIntervals[0];
+      return idleIntervals[idleIntervals.length-1];
     } else {
       return lastInterval;
     }
