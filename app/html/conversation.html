@@ -136,7 +136,7 @@
       <div class="clearfix">
         <button id="reply-submit" ng-click="submitReply()" type="submit"
                 class="btn btn-default pull-right cs-pm-right message-trigger"
-                ng-disabled="(newMessageForm.replyText.$invalid && newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.maxlength || newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))) || currentUser.preferences.read_only_mode || !isContactAvailable || reply.text.length === 0"
+                ng-disabled="(sendingReply || newMessageForm.replyText.$invalid && newMessageForm.replyText.$dirty && (newMessageForm.replyText.$error.maxlength || newMessageForm.replyText.$error.required || (newMessageForm.replyText.$error.emoji && !allow_emoji))) || currentUser.preferences.read_only_mode || !isContactAvailable || reply.text.length === 0"
                 ng-bind-html="form_reply_submit | htmlsafe"></button>
       </div>
     </div>

@@ -163,6 +163,32 @@
       expect(angular.equals(scope.currentUser, currentUser)).toBeTruthy();
     });
 
+    it('Should track the state of sent replies', function() {
+      //AssumeHttpRequestResponded();
+      expect(scope.sendingReply).toEqual(false);
+      var urlReply = 'https://testpm.com/api/cs-pm/conversations/123/reply?access_token=newToken';
+
+      scope.reply = 'Test message';
+
+      scope.newMessageForm = {
+        $setPristine: function() { /*stub method*/}
+      };
+
+      $httpBackend.when('GET', 'html/home.html').respond({});
+      $httpBackend.expectPOST(urlReply).respond({
+        data: ['test']
+      });
+      $httpBackend.expectGET(urlConversation).respond(conversation);
+      $httpBackend.expectPUT(urlMarkAsRead, {}).respond({});
+      $httpBackend.expectGET(urlMessages+'&after=&before=&range=20').respond(messages);
+
+      scope.submitReply();
+      expect(scope.sendingReply).toEqual(true);
+
+      $httpBackend.flush();
+      expect(scope.sendingReply).toEqual(false);
+    });
+
     //it('Should detect when the contact is available, assuming they are not blocked', function() {
     //  AssumeHttpRequestResponded();
     //

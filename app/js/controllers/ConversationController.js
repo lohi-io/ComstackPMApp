@@ -3,6 +3,7 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
   function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout, poller, $anchorScroll, $location, $interval, $log, Message, pollerRegistration) {
 
     $scope.isMobile = $window.isMobile.any;
+    $scope.sendingReply = false;
 
     var settings = config.get();
 
@@ -234,7 +235,9 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
     };
 
     $scope.submitReply = function () {
+      $scope.sendingReply = true;
       Conversation.reply({id: $stateParams.id}, $scope.reply).$promise.then(function (response) {
+        $scope.sendingReply = false;
         $scope.glued = true;
         //config.setSettingValue('lastMessageId', response.data[0].id);
         //response.data[0].id > $scope.lastMessageId ? $scope.lastMessageId = response.data[0].id : $scope.lastMessageId;
