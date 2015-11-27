@@ -303,9 +303,10 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "                    ng-bind=\"conversation.unread_count\"></span>\n" +
     "            </h4>\n" +
     "            <span ng-switch=\"conversation.unread_count\">\n" +
-    "              <strong ng-switch-default\n" +
+    "              <strong ng-switch-default class=\"cs-pm-message-preview\"\n" +
     "                      ng-bind-html=\"conversation.last_message.text | squish | truncate:70 | htmlsafe \"></strong>\n" +
-    "              <p ng-switch-when=\"0\" ng-bind-html=\"conversation.last_message.text | squish | truncate:70 | htmlsafe \"></p>\n" +
+    "              <p ng-switch-when=\"0\" class=\"cs-pm-message-preview\"\n" +
+    "                 ng-bind-html=\"conversation.last_message.text | squish | truncate:70 | htmlsafe \"></p>\n" +
     "            </span>\n" +
     "          </a>\n" +
     "\n" +

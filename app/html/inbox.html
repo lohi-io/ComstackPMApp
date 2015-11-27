@@ -62,9 +62,10 @@
                     ng-bind="conversation.unread_count"></span>
             </h4>
             <span ng-switch="conversation.unread_count">
-              <strong ng-switch-default
+              <strong ng-switch-default class="cs-pm-message-preview"
                       ng-bind-html="conversation.last_message.text | squish | truncate:70 | htmlsafe "></strong>
-              <p ng-switch-when="0" ng-bind-html="conversation.last_message.text | squish | truncate:70 | htmlsafe "></p>
+              <p ng-switch-when="0" class="cs-pm-message-preview"
+                 ng-bind-html="conversation.last_message.text | squish | truncate:70 | htmlsafe "></p>
             </span>
           </a>
 
