@@ -244,24 +244,24 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "     style=\"margin-top: 10px;\" ng-cloak>\n" +
     "\n" +
     "  <div class=\"cs-pm-new-wrapper new-wrapper\" style=\"height: 300px;\" ng-show=\"isLoading\">\n" +
-    "  <div class=\"clearfix text-center\" style=\"position: relative; top: 50%;\">\n" +
-    "    <a class=\"btn btn-primary btn-load-more\" id=\"loading\" disabled=\"disabled\">\n" +
-    "      <div class=\"sk-circle\">\n" +
-    "        <div class=\"sk-circle1 sk-child\"></div>\n" +
-    "        <div class=\"sk-circle2 sk-child\"></div>\n" +
-    "        <div class=\"sk-circle3 sk-child\"></div>\n" +
-    "        <div class=\"sk-circle4 sk-child\"></div>\n" +
-    "        <div class=\"sk-circle5 sk-child\"></div>\n" +
-    "        <div class=\"sk-circle6 sk-child\"></div>\n" +
-    "        <div class=\"sk-circle7 sk-child\"></div>\n" +
-    "        <div class=\"sk-circle8 sk-child\"></div>\n" +
-    "        <div class=\"sk-circle9 sk-child\"></div>\n" +
-    "        <div class=\"sk-circle10 sk-child\"></div>\n" +
-    "        <div class=\"sk-circle11 sk-child\"></div>\n" +
-    "        <div class=\"sk-circle12 sk-child\"></div>\n" +
-    "      </div>\n" +
-    "    </a>\n" +
-    "  </div>\n" +
+    "    <div class=\"clearfix text-center\" style=\"position: relative; top: 50%;\">\n" +
+    "      <a class=\"btn btn-primary btn-load-more\" id=\"loading\" disabled=\"disabled\">\n" +
+    "        <div class=\"sk-circle\">\n" +
+    "          <div class=\"sk-circle1 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle2 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle3 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle4 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle5 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle6 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle7 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle8 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle9 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle10 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle11 sk-child\"></div>\n" +
+    "          <div class=\"sk-circle12 sk-child\"></div>\n" +
+    "        </div>\n" +
+    "      </a>\n" +
+    "    </div>\n" +
     "  </div>\n" +
     "\n" +
     "  <div id=\"messages\" class=\"page-wrapper cs-pm-page-wrapper\" ng-show=\"conversations.length\">\n" +
@@ -365,7 +365,27 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
 
 
   $templateCache.put('html/message.html',
-    "<div id=\"new-message\" class=\"page-wrapper cs-pm-page-wrapper\" style=\"display: block;\">\n" +
+    "<div class=\"cs-pm-new-wrapper new-wrapper\" style=\"height: 300px;\" ng-show=\"isLoading\">\n" +
+    "  <div class=\"clearfix text-center\" style=\"position: relative; top: 50%;\">\n" +
+    "    <a class=\"btn btn-primary btn-load-more\" id=\"loading\" disabled=\"disabled\">\n" +
+    "      <div class=\"sk-circle\">\n" +
+    "        <div class=\"sk-circle1 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle2 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle3 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle4 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle5 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle6 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle7 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle8 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle9 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle10 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle11 sk-child\"></div>\n" +
+    "        <div class=\"sk-circle12 sk-child\"></div>\n" +
+    "      </div>\n" +
+    "    </a>\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "<div id=\"new-message\" class=\"page-wrapper cs-pm-page-wrapper\" style=\"display: block;\" ng-hide=\"isLoading\">\n" +
     "  <div class=\"messages-header cs-pm__header clearfix\">\n" +
     "    <h2 class=\"pull-left cs-pm-left\"><a ui-sref=\"inbox({page:1})\" class=\"messages-trigger\"><span\n" +
     "      class=\"icomoon icomoon-back cs-pm-icon--back\"></span> Messages</a></h2>\n" +

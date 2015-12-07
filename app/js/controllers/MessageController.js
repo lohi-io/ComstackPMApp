@@ -8,12 +8,16 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers',
     $scope.maxTags = settings.max_participants - 1;
     $scope.isContactsAvailable = true;
 
+    var requiredUsers = $scope.requiredUsers.split(',');
+    var allowed = $scope.maxTags < requiredUsers.length ? $scope.maxTags : requiredUsers.length;
+
+    if (allowed === 1 && requiredUsers.length > 0) {
+      $scope.isLoading = true;
+    }
     // On initialisation, fetch available users and prepare to send messages to any user IDs in the URL.
     getAvailableUsers.get().then(function(availableUsers) {
       $scope.isContactsAvailable = availableUsers.data.length > 0;
       if ($scope.requiredUsers) {
-        var requiredUsers = $scope.requiredUsers.split(',');
-        var allowed = $scope.maxTags < requiredUsers.length ? $scope.maxTags : requiredUsers.length;
 
         if (allowed > 1) {
           // If sending message to more than one person, pre-populate the To field with their names.
@@ -148,6 +152,7 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers',
           // There should only be one, but the API will return an array since it's really a filtered data set.
           $state.go('conversation', {id: response.data[0].id});
         } else {
+          $scope.isLoading = false;
           // Use existing functionality to pre-populate scope.users variable.
           $scope.users.push(contact);
         }

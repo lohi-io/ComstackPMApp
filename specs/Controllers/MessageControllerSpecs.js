@@ -1,5 +1,5 @@
 /* global describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module, kendo */
-(function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module) {
+(function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn) {
 
   describe('MessageCtrl', function () {
     var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config, currentUser,
