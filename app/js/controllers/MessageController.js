@@ -8,17 +8,25 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers',
     $scope.maxTags = settings.max_participants - 1;
     $scope.isContactsAvailable = true;
 
+    // On initialisation, fetch available users and prepare to send messages to any user IDs in the URL.
     getAvailableUsers.get().then(function(availableUsers) {
       $scope.isContactsAvailable = availableUsers.data.length > 0;
-      if($scope.requiredUsers){
-         var requiredUsers = $scope.requiredUsers.split(',');
-         var allowed = $scope.maxTags <  requiredUsers.length ? $scope.maxTags : requiredUsers.length;
-         for(var i = 0; i < allowed; i++){
-           var userAvailable = $filter('filter')(availableUsers.data, {id: requiredUsers[i]});
-           if(userAvailable.length > 0){
-             $scope.users.push(userAvailable[0]);
-           };
-         };
+      if ($scope.requiredUsers) {
+        var requiredUsers = $scope.requiredUsers.split(',');
+        var allowed = $scope.maxTags < requiredUsers.length ? $scope.maxTags : requiredUsers.length;
+
+        if (allowed > 1) {
+          // If sending message to more than one person, pre-populate the To field with their names.
+          for (var i = 0; i < allowed; i++) {
+            var userAvailable = $filter('filter')(availableUsers.data, {id: requiredUsers[i]});
+            if (userAvailable.length > 0) {
+              $scope.users.push(userAvailable[0]);
+            }
+          }
+        } else {
+          // If sending a message to just one person, see if we can redirect to an existing conversation.
+          $scope.prepareMessageForContact($filter('filter')(availableUsers.data, {id: requiredUsers[0]})[0]);
+        }
       }
     });
 
@@ -120,7 +128,31 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers',
           //error handling;
           $log.error(error);
         });
-    }
+    };
+    /**
+     * Prepares app state such that the user can send a message to a given contact.
+     *
+     * This method checks for the existence of a conversation between the current user
+     * and the contact. If one exists, the app enters this Conversation state (with the
+     * conversation ID of the pre-existing conversation). Otherwise, the user is pre-populated
+     * into scope.users
+     * @param {user} contact
+     * @return void
+     */
+    $scope.prepareMessageForContact = function(contact) {
+      Conversation.get({
+        'filter[participants]': contact.id
+      }).$promise.then(function(response) {
+        if (response.data.length) {
+          // There is a conversation with this contact - use the first response.
+          // There should only be one, but the API will return an array since it's really a filtered data set.
+          $state.go('conversation', {id: response.data[0].id});
+        } else {
+          // Use existing functionality to pre-populate scope.users variable.
+          $scope.users.push(contact);
+        }
+      });
+    };
 
   }
 ]);

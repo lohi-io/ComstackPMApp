@@ -3,7 +3,8 @@
 
   describe('MessageCtrl', function () {
     var ctrl, scope, state, $httpBackend, rootScope, availableUsers, Conversation, message, config, currentUser,
-      urlAvailableUsers, requiresHttp, createController, accessToken, base_url, urlApi, stateParams, maxTags, window;
+      urlAvailableUsers, requiresHttp, createController, accessToken, base_url, urlApi, stateParams, window,
+      urlConversations, urlCurrentUser;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
@@ -61,6 +62,7 @@
       config =  $injector.get('configurationService');
 
       scope = _$rootScope_.$new();
+      scope.maxTags = 1;
       spyOn(config, 'getString');
       accessToken = config.getSetting('access_token');
       base_url = config.getSetting('base_url');
@@ -70,14 +72,19 @@
       $httpBackend.when('GET', 'html/home.html').respond({});
       urlApi = config.getSetting('api_url');
 
-      var endPoint = '/cs-pm/users/available-users';
-      var queryString = 'access_token='+accessToken;
-      urlAvailableUsers = urlApi + endPoint + '?' + queryString;
+      var endPoints = {
+        availableUsers: '/cs-pm/users/available-users',
+        conversations: '/cs-pm/conversations',
+        currentUser: '/cs-pm/users/current-user'
+      };
+      var queryString = 'access_token=' + accessToken;
+      urlAvailableUsers = urlApi + endPoints.availableUsers + '?' + queryString;
+      urlConversations = urlApi + endPoints.conversations + '?' + queryString + '&filter%5Bparticipants%5D=1';
+      urlCurrentUser = urlApi + endPoints.currentUser + '?' + queryString;
 
       $httpBackend.expectGET(urlAvailableUsers).respond(availableUsers);
-
-      var urlUser = urlApi+'/cs-pm/users/current-user?'+queryString;
-      $httpBackend.expectGET(urlUser).respond(currentUser);
+      $httpBackend.expectGET(urlCurrentUser).respond(currentUser);
+      $httpBackend.expectGET(urlConversations).respond({data: []});
 
       createController = function() {
         return $controller('MessageCtrl', {
@@ -134,7 +141,6 @@
     });
 
     it('Should pre-populate to field with the users from params, limited to the max participants setting', function() {
-      scope.maxTags = 1;
       expect(scope.users.length).toEqual(1);
       expect(scope.users[0].id).toEqual(1);
     });
@@ -147,6 +153,44 @@
     it('Should have a cancel button', function(){
       expect(scope.cancel).toBeDefined();
       expect(typeof scope.cancel).toEqual('function');
+    });
+
+    it('Should redirect to the conversation if user and contact already have a conversation', function() {
+      var conversationsWithContact = {
+        data: [{
+          id: 149
+        }]
+      };
+      var contact = {
+        id: 1
+      };
+      urlConversations = urlApi + '/cs-pm/conversations?access_token=' + accessToken
+        + '&filter%5Bparticipants%5D=' + contact.id;
+      spyOn(state, 'go');
+      $httpBackend.expectGET(urlConversations).respond(conversationsWithContact);
+
+      scope.prepareMessageForContact(contact);
+
+      $httpBackend.flush();
+      expect(state.go).toHaveBeenCalledWith('conversation', {id: conversationsWithContact.data[0].id});
+    });
+
+    it('Should pre-populate the "To" field with the contact if there is no existing conversation', function() {
+      var contact = {
+        id: 1
+      };
+
+      urlConversations = urlApi + '/cs-pm/conversations?access_token=' + accessToken
+        + '&filter%5Bparticipants%5D=' + contact.id;
+      spyOn(state, 'go');
+      $httpBackend.expectGET(urlConversations).respond({
+        data: []
+      });
+
+      scope.prepareMessageForContact(contact);
+
+      $httpBackend.flush();
+      expect(scope.users).toContain(contact);
     });
 
     it('Should redirect to the friends page when coming from there and cancel', function(){
