@@ -11,7 +11,8 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers',
     var requiredUsers = $scope.requiredUsers.split(',');
     var allowed = $scope.maxTags < requiredUsers.length ? $scope.maxTags : requiredUsers.length;
 
-    if (allowed === 1 && requiredUsers.length > 0) {
+    // If a user ID has been provided, we may be redirecting to a conversation - show a spinner to hide this view.
+    if (allowed === 1 && $stateParams.userId.length > 0) {
       $scope.isLoading = true;
     }
     // On initialisation, fetch available users and prepare to send messages to any user IDs in the URL.
