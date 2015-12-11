@@ -83,7 +83,8 @@ module.exports = function(grunt){
               'app/js/services/UnblockUserState.js',
               'app/js/services/InterceptorService.js',
               'app/js/services/MessageService.js',
-              'app/js/services/PollerRegistrationService.js'
+              'app/js/services/PollerRegistrationService.js',
+              'app/js/services/AlertService.js'
             ],
             dest:'app/js/ComstackPMApp.js'
           }
