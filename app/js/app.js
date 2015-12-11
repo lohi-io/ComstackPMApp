@@ -138,7 +138,7 @@ app.config([
         templateUrl: 'html/home.html'
       })
       .state('inbox', {
-        url: '/inbox/:page?reported',
+        url: '/inbox/:page',
         controller: 'InboxCtrl',
         templateUrl: 'html/inbox.html'
       })
@@ -148,7 +148,7 @@ app.config([
         templateUrl: 'html/message.html'
       })
       .state('conversation', {
-        url: '/conversation/:id?reported',
+        url: '/conversation/:id',
         controller: 'ConversationCtrl',
         templateUrl: 'html/conversation.html'
       })

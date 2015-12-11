@@ -21,7 +21,7 @@ function reportConversationState($state, $modal) {
         $state.go(okDestination.state,
           successParams,
           {
-            reload: okDestination.state,
+            reload: true,
             inherit: false,
             notify: true
           });

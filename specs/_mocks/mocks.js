@@ -29,7 +29,8 @@ serviceMockModule.factory("configurationService", function () {
       "form__text__placeholder": "Write a message...",
       "form__text__validation__empty": "You'll need to enter some text here...",
       "form__text__validation__maxlength": "You can only have @number@ characters per message",
-      "form__new_conversation__submit": "Send"
+      "form__new_conversation__submit": "Send",
+      "text__report_success": "You have reported @participants@"
     }
   };
 
@@ -46,8 +47,17 @@ serviceMockModule.factory("configurationService", function () {
     get: function () {
       return appSettings;
     },
-    getString: function () {
-        return "";
+    getString: function (name, values) {
+      if (!appSettings.strings[name]) {
+        return '';
+      }
+      values = values || {};
+      var regExp = /@(\w*)@/gi;
+      var string = appSettings.strings[name].replace(regExp, function (match) {
+        match = match.replace(/@/gi, '');
+        return values[match];
+      });
+      return string;
     },
     getSetting: function (key) {
       var setting = appSettings;

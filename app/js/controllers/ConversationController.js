@@ -1,6 +1,8 @@
 app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams', '$filter', '$sce', 'getCurrentUser',
-  'User', 'Conversation', 'configurationService', '$timeout', 'poller', '$anchorScroll', '$location', '$interval', '$log', 'Message', 'pollerRegistration',
-  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout, poller, $anchorScroll, $location, $interval, $log, Message, pollerRegistration) {
+  'User', 'Conversation', 'configurationService', '$timeout', 'poller', '$anchorScroll', '$location', '$interval',
+  '$log', 'Message', 'pollerRegistration', 'Alert',
+  function ($scope, $window, $state, $stateParams, $filter, $sce, getCurrentUser, User, Conversation, config, $timeout,
+            poller, $anchorScroll, $location, $interval, $log, Message, pollerRegistration, Alert) {
 
     $scope.isMobile = $window.isMobile.any;
     $scope.sendingReply = false;
@@ -344,6 +346,17 @@ app.controller('ConversationCtrl', ['$scope', '$window', '$state', '$stateParams
       }
     });
 
+    $scope.message = Alert.message;
+    $scope.$watch(function () {
+      return Alert.message;
+    }, function(to, prev) {
+      if (to !== prev) {
+        $scope.message = to;
+      }
+    });
 
+    $scope.dismissAlert = function() {
+      Alert.resetState();
+    };
   }
 ]);

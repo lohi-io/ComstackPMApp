@@ -35,9 +35,9 @@
       </div>
     </div>
 
-    <div class="alert alert-block alert-success" ng-show="reportedConversation">
-      <p class="close" data-dismiss="alert">×</p>
-      <p ng-bind="reportedConversation"></p>
+    <div class="alert alert-block alert-success" ng-show="message">
+      <p class="close" ng-click="dismissAlert()">×</p>
+      <p ng-bind="message"></p>
     </div>
 
     <div class="alert alert-warning" ng-show="currentUser.preferences.read_only_mode && !currentUser.preferences.forced_read_only"

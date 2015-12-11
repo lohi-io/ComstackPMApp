@@ -1,6 +1,6 @@
 app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'getCurrentUser', 'Conversation',
-  'configurationService', '$filter', 'poller', '$log', 'pollerRegistration',
-  function ($scope, $window, $state, $stateParams, userService, Conversation, config, $filter, poller, $log, pollerRegistration) {
+  'configurationService', '$filter', 'poller', '$log', 'pollerRegistration', 'Alert',
+  function ($scope, $window, $state, $stateParams, userService, Conversation, config, $filter, poller, $log, pollerRegistration, Alert) {
 
     var settings = config.get();
 
@@ -134,7 +134,6 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
       calculatePages();
       $scope.isLoading = false;
 
-
       if ($scope.currentUser.preferences.read_only_mode) {
         ConversationsPoller.stop();
       }
@@ -155,5 +154,18 @@ app.controller('InboxCtrl', ['$scope', '$window', '$state', '$stateParams', 'get
 
     $scope.paging.pagesCount = 0;
     $scope.pages = [];
+
+    $scope.message = Alert.message;
+    $scope.$watch(function () {
+      return Alert.message;
+    }, function(to, prev) {
+      if (to !== prev) {
+        $scope.message = to;
+      }
+    });
+
+    $scope.dismissAlert = function() {
+      Alert.resetState();
+    };
   }
 ]);

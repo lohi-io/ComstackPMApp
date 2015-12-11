@@ -2,7 +2,8 @@
 (function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, module) {
 
   describe('ReportConversationCtrl', function () {
-    var ctrl, scope, state, $httpBackend, rootScope, Conversation, message, config, conversation, stateParams, modalInstance, urlApi, queryString, getEnpPoint, deleteEndPoint, endPoint, accessToken;
+    var ctrl, scope, state, $httpBackend, rootScope, Conversation, message, config, conversation, stateParams,
+      modalInstance, urlApi, queryString, getEnpPoint, deleteEndPoint, endPoint, accessToken, Alert;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
     beforeEach(angular.mock.module("ComstackPMApp.ServicesMock"));
@@ -42,6 +43,12 @@
           }]
       };
 
+      Alert = {
+        notify: function(type, affected) {
+          // stub method
+        }
+      };
+
       state = {
         "go": function () {
         }
@@ -74,6 +81,7 @@
         'config': config,
         '$stateParams': stateParams,
         '$modalInstance': modalInstance,
+        'Alert': Alert
        // 'Conversation': Conversation.prototype
       });
 

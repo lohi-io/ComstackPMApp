@@ -63,7 +63,7 @@
       service.activate(templateUrl, okDestination, cancelDestination);
       successHandler(true);
       expect(state.go).toHaveBeenCalledWith('okState', {id: 1}, {
-        reload: 'okState',
+        reload: true,
         inherit: false,
         notify: true
       });

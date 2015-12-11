@@ -1,9 +1,9 @@
 /**
  * Created by fechit01 on 05/10/2015.
  */
-app.controller('ReportConversationCtrl', [
-  '$scope', '$modalInstance', 'Conversation', '$stateParams', 'configurationService', '$log',
-  function ($scope, $modalInstance, Conversation, $stateParams, config, $log) {
+app.controller('ReportConversationCtrl', ['$scope', '$modalInstance', 'Conversation', '$stateParams',
+  'configurationService', '$log', 'Alert',
+  function ($scope, $modalInstance, Conversation, $stateParams, config, $log, Alert) {
 
     var reasonsValues = {
       isSpam: 'spam',
@@ -49,11 +49,10 @@ app.controller('ReportConversationCtrl', [
 
       Conversation.report({}, report, function () {
         $modalInstance.close(true);
-      },
-        function (error) {
-          //error handling;
-          $log.error(error);
-        });
+        Alert.notify('reported', $stateParams.id);
+      }, function (error) {
+        $log.error(error);
+      });
     };
   }
 ]);

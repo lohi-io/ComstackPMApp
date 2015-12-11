@@ -31,9 +31,9 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "      class=\"icomoon icomoon-speech-bubble cs-pm-icon--new-message\"></span> {{ button__new_conversation }}</a></div>\n" +
     "  </div>\n" +
     "\n" +
-    "  <div class=\"alert alert-block alert-success\" ng-show=\"reportedConversation\">\n" +
-    "    <p class=\"close\" data-dismiss=\"alert\">×</p>\n" +
-    "    <p ng-bind=\"reportedConversation\"></p>\n" +
+    "  <div class=\"alert alert-block alert-success\" ng-show=\"message\">\n" +
+    "    <p class=\"close\" ng-click=\"dismissAlert()\">×</p>\n" +
+    "    <p ng-bind=\"message\"></p>\n" +
     "  </div>\n" +
     "\n" +
     "  <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode && !currentUser.preferences.forced_read_only\"\n" +
@@ -276,9 +276,9 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "      </div>\n" +
     "    </div>\n" +
     "\n" +
-    "    <div class=\"alert alert-block alert-success\" ng-show=\"reportedConversation\">\n" +
-    "      <p class=\"close\" data-dismiss=\"alert\">×</p>\n" +
-    "      <p ng-bind=\"reportedConversation\"></p>\n" +
+    "    <div class=\"alert alert-block alert-success\" ng-show=\"message\">\n" +
+    "      <p class=\"close\" ng-click=\"dismissAlert()\">×</p>\n" +
+    "      <p ng-bind=\"message\"></p>\n" +
     "    </div>\n" +
     "\n" +
     "    <div class=\"alert alert-warning\" ng-show=\"currentUser.preferences.read_only_mode && !currentUser.preferences.forced_read_only\"\n" +

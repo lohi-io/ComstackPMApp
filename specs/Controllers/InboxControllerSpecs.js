@@ -2,7 +2,7 @@
 (function (describe, it, expect, inject, angular, beforeEach, afterEach, spyOn) {
 
   describe('InboxCtrl', function () {
-    var ctrl, scope, currentUser, conversations, state, stateParams, fakeUserService;
+    var ctrl, scope, currentUser, conversations, state, stateParams, fakeUserService, Alert;
     var userService, rootScope, $httpBackend, configurationService, accessToken, urlApi, queryString;
 
     beforeEach(angular.mock.module("ComstackPMApp"));
@@ -42,6 +42,13 @@
         "go": function () {
         }
       };
+
+      Alert = {
+        notify: function (type, affected) {
+          // stub method
+        }
+      };
+
       configurationService = _configurationService_;
       spyOn(configurationService, 'getString');
       $httpBackend = _$httpBackend_;
@@ -63,7 +70,8 @@
         '$scope': scope,
         '$state': state,
         '$stateParams': stateParams,
-        'config': configurationService
+        'config': configurationService,
+        'Alert': Alert
       });
       $httpBackend.flush();
     }));
