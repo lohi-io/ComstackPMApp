@@ -20,6 +20,8 @@
           }
 
           if (type === 'reported') {
+            // `affected` is the conversation ID in this scenario.
+            // This will be used to fetch the conversation & determine the other participants' names.
             var currentUser;
             UserService.get().then(function (response) {
               currentUser = response.data;
@@ -31,6 +33,11 @@
                   participants: otherParticipantNames
                 });
               });
+            });
+          } else if (type === 'blocked') {
+            // `affected` is the name of the user who has been blocked.
+            alertsBroadcaster.message = ConfigurationService.getString('text__block_success', {
+              participant: affected
             });
           }
         },

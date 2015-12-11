@@ -1,6 +1,7 @@
 app.controller('BlockUserCtrl', [
-  '$scope', '$modalInstance', '$stateParams', 'configurationService', 'Conversation', 'getCurrentUser', '$filter', 'User', '$log',
-  function ($scope, $modalInstance, $stateParams, config, Conversation, userService, $filter, User, $log) {
+  '$scope', '$modalInstance', '$stateParams', 'configurationService', 'Conversation', 'getCurrentUser', '$filter',
+  'User', '$log', 'Alert',
+  function ($scope, $modalInstance, $stateParams, config, Conversation, userService, $filter, User, $log, Alert) {
 
     var computeUsers = function (conversation) {
       if (angular.isUndefined($scope.currentUser.user)) {
@@ -59,6 +60,7 @@ app.controller('BlockUserCtrl', [
         if (user.isSelected) {
           User.block({user: user.id}, function () {
             user.isBlocked = true;
+            Alert.notify('blocked', user.name);
           }, function (error) {
               $log.debug(error);
           }).$promise.then(function() {
