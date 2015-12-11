@@ -30,7 +30,6 @@
                 alertsBroadcaster.message = ConfigurationService.getString('text__report_success', {
                   participants: otherParticipantNames
                 });
-                $log.info(alertsBroadcaster.message);
               });
             });
           }
