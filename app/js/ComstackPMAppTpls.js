@@ -302,12 +302,10 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "                    class=\"notifications-count\"\n" +
     "                    ng-bind=\"conversation.unread_count\"></span>\n" +
     "            </h4>\n" +
-    "            <span ng-switch=\"conversation.unread_count\">\n" +
-    "              <strong ng-switch-default class=\"cs-pm-message-preview\"\n" +
-    "                      ng-bind-html=\"conversation.last_message.text | squish | truncate:70 | htmlsafe \"></strong>\n" +
-    "              <p ng-switch-when=\"0\" class=\"cs-pm-message-preview\"\n" +
-    "                 ng-bind-html=\"conversation.last_message.text | squish | truncate:70 | htmlsafe \"></p>\n" +
-    "            </span>\n" +
+    "            <strong ng-show=\"conversation.unread_count\" class=\"cs-pm-message-preview\"\n" +
+    "                    ng-bind-html=\"conversation.last_message.text | squish | truncate:70 | htmlsafe \"></strong>\n" +
+    "            <p ng-hide=\"conversation.unread_count\" class=\"cs-pm-message-preview\"\n" +
+    "               ng-bind-html=\"conversation.last_message.text | squish | truncate:70 | htmlsafe \"></p>\n" +
     "          </a>\n" +
     "\n" +
     "          <div class=\"date\">\n" +
