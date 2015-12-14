@@ -81,13 +81,8 @@
       };
 
       $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState) {
-        $log.info($state.$current.name);
-        $log.info($state.includes(toState.name));
-        $log.info($state.includes.call(toState, $state.$current));
-        $log.info('FROM: ' + fromState.name + '; TO: ' + toState.name);
         // Unless we're going between a child state and a parent state, erase the message.
-        if (!$state.includes(toState.name) && !$state.includes.call(toState, $state.$current)) {
-          //!isParentChildStates(toState.name, fromState.name)) {
+        if (!isParentChildStates(toState.name, fromState.name)) {
           alertsBroadcaster.resetState();
         }
       });
