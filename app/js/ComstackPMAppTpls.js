@@ -298,7 +298,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "        <div class=\"cs-pm-body media-body\">\n" +
     "          <a ui-sref=\"conversation({id: conversation.id})\" class=\"message-trigger\">\n" +
     "            <h4 class=\"media-heading\">{{computeHeading(conversation)}}\n" +
-    "              <span ng-show=\"conversation.unread_count != 0\"\n" +
+    "              <span ng-show=\"conversation.unread_count\"\n" +
     "                    class=\"notifications-count\"\n" +
     "                    ng-bind=\"conversation.unread_count\"></span>\n" +
     "            </h4>\n" +

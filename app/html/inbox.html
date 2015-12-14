@@ -57,7 +57,7 @@
         <div class="cs-pm-body media-body">
           <a ui-sref="conversation({id: conversation.id})" class="message-trigger">
             <h4 class="media-heading">{{computeHeading(conversation)}}
-              <span ng-show="conversation.unread_count != 0"
+              <span ng-show="conversation.unread_count"
                     class="notifications-count"
                     ng-bind="conversation.unread_count"></span>
             </h4>
