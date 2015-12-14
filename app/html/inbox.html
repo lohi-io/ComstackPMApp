@@ -46,7 +46,7 @@
          ng-bind-html="text_forced_read_only | htmlsafe"></div>
 
     <ul class="media-list conversations-list">
-      <li class="media cs-pm-conversation" ng-class="{'conversation--unread': conversation.unread_count != 0}"
+      <li class="media cs-pm-conversation" ng-class="{'conversation--unread': conversation.unread_count}"
           ng-repeat="conversation in conversations">
         <div class="media-left cs-pm__avatar pull-left">
           <img class="media-object"

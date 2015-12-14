@@ -287,7 +287,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "         ng-bind-html=\"text_forced_read_only | htmlsafe\"></div>\n" +
     "\n" +
     "    <ul class=\"media-list conversations-list\">\n" +
-    "      <li class=\"media cs-pm-conversation\" ng-class=\"{'conversation--unread': conversation.unread_count != 0}\"\n" +
+    "      <li class=\"media cs-pm-conversation\" ng-class=\"{'conversation--unread': conversation.unread_count}\"\n" +
     "          ng-repeat=\"conversation in conversations\">\n" +
     "        <div class=\"media-left cs-pm__avatar pull-left\">\n" +
     "          <img class=\"media-object\"\n" +
