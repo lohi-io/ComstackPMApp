@@ -109,12 +109,6 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers',
       });
     };
 
-    $scope.safeText = "";
-    $scope.preventUndefined = function(){
-
-    }
-
-
     $scope.save = function () {
 
       $scope.message.recipients = $scope.users.map(function (item) {
