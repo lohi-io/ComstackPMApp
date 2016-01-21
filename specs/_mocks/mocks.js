@@ -77,7 +77,7 @@ serviceMockModule.factory("configurationService", function () {
       return setting;
     },
     setSettingValue: function(name, value){
-
+      appSettings[name] = value;
     },
     updateAccessToken: function () {
     },

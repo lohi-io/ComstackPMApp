@@ -455,7 +455,7 @@ angular.module('ComstackPMApp').run(['$templateCache', function($templateCache) 
     "    </div>\n" +
     "    <div class=\"clearfix\">\n" +
     "      <button type=\"submit\"\n" +
-    "              ng-disabled=\"(newMessageForm.recipients.$invalid || (newMessageForm.message.$invalid && (newMessageForm.message.$error.maxlength || newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji)))) || currentUser.preferences.read_only_mode\"\n" +
+    "              ng-disabled=\"(newMessageForm.recipients.$invalid || (newMessageForm.message.$invalid && (newMessageForm.message.$error.maxlength || newMessageForm.message.$error.required || (newMessageForm.message.$error.emoji && !allow_emoji)))) || sendingMessage || currentUser.preferences.read_only_mode\"\n" +
     "              class=\"btn btn-default pull-right cs-pm-right message-trigger\"\n" +
     "              ng-click=\"save()\" ng-bind=\"form_new_conversation_submit\">\n" +
     "      </button>\n" +

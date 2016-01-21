@@ -42,18 +42,12 @@ module.exports = function (config) {
 
     autoWatch: true,
 
-    frameworks: ['jasmine'],
+    frameworks: [
+      'jasmine',
+      'jasmine-matchers'
+    ],
 
     browsers: ['PhantomJS'],
-
-    plugins: [
-      'karma-phantomjs-launcher',
-      'karma-chrome-launcher',
-      'karma-firefox-launcher',
-      'karma-jasmine',
-      'karma-junit-reporter',
-      'karma-story-reporter'
-    ],
 
     junitReporter: {
       outputFile: 'test_out/unit.xml',

@@ -225,7 +225,21 @@
       expect(config.getString).toHaveBeenCalledWith('text__no_conversations_no_friends');
     });
 
+    describe('Duplicate submission prevention', function () {
+      it('Should prevent additional messages from being processed while a message is being sent', function () {
+        expect(scope.sendingMessage).toBeFalse();
+        scope.save();
+        expect(scope.sendingMessage).toBeTrue();
+      });
 
+      it('Should allow a message to be attempted again should the message fail to be sent', function () {
+        scope.save();
+        config.setSettingValue('http_error', true)
+        $httpBackend.expectPOST(urlApi + '/cs-pm/conversations?access_token=' + accessToken).respond(500, 'Test error');
+        $httpBackend.flush();
+        expect(scope.sendingMessage).toBeFalse();
+      });
+    });
   });
 })(describe, it, expect, inject, angular, beforeEach, afterEach, spyOn, angular.mock.module);
 

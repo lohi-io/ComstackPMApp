@@ -7,6 +7,7 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers',
     $scope.currentUser = {};
     $scope.maxTags = settings.max_participants - 1;
     $scope.isContactsAvailable = true;
+    $scope.sendingMessage = false;
 
     var requiredUsers = $scope.requiredUsers.split(',');
     var allowed = $scope.maxTags < requiredUsers.length ? $scope.maxTags : requiredUsers.length;
@@ -103,30 +104,34 @@ app.controller('MessageCtrl', ['$scope', '$state', 'getAvailableUsers',
                    name: 'not found',
             avatars:{'200-200':''} }];
         }
-          return response.data.map(function (item) {
-            return item;
-          });
+
+        return response.data.map(function (item) {
+          return item;
+        });
       });
     };
 
     $scope.save = function () {
-
+      $scope.sendingMessage = true;
       $scope.message.recipients = $scope.users.map(function (item) {
         return item.id
       });
 
       $scope.message.$save(function (response) {
+        $scope.sendingMessage = false;
         $state.go('conversation', {id: response.data.id},
           {
-          reload: 'conversation',
-          inherit: false,
-          notify: true
-        });
+            reload: 'conversation',
+            inherit: false,
+            notify: true
+          }
+        );
       },
         function (error) {
-          //error handling;
+          $scope.sendingMessage = false;
           $log.error(error);
-        });
+        }
+      );
     };
     /**
      * Prepares app state such that the user can send a message to a given contact.
