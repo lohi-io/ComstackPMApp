@@ -51,6 +51,7 @@ app.provider("configurationService", function () {
       "text__no_available_users": "",
       "text__report_success": 'Your conversation with @participants@ has been reported',
       "text__block_success": "@participant@ is now blocked. They can no longer send you a private message.",
+      "text__unblock_success": "You have unblocked @participant@, you need to add them as a friend to message them again.",
       "text__forced_read_only": "Private messaging has been temporarily disabled.",
       "text__read_only": 'You\'re currently opted out of private messaging, <a href="@base_url@/user/@user_id@/account-settings">click here</a> to go the the account settings form.',
       "text__select_messages_to_delete": "Select the messages you'd like to delete",

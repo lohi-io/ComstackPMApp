@@ -39,6 +39,10 @@
             alertsBroadcaster.message = ConfigurationService.getString('text__block_success', {
               participant: affected
             });
+          } else if (type === 'unblocked') {
+            alertsBroadcaster.message = ConfigurationService.getString('text__unblock_success', {
+              participant: affected
+            });
           }
         },
         resetState: function () {

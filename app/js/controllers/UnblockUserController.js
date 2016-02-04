@@ -1,6 +1,6 @@
 app.controller('UnblockUserCtrl', [
-  '$scope', '$modalInstance', '$stateParams', 'configurationService', 'Conversation', 'getCurrentUser', '$filter', 'User', '$log',
-  function ($scope, $modalInstance, $stateParams, config, Conversation, userService, $filter, User, $log) {
+  '$scope', '$modalInstance', '$stateParams', 'configurationService', 'Conversation', 'getCurrentUser', '$filter', 'User', '$log', 'Alert',
+  function ($scope, $modalInstance, $stateParams, config, Conversation, userService, $filter, User, $log, Alert) {
 
     var computeUsers = function (conversation) {
       var users = [];
@@ -73,6 +73,7 @@ app.controller('UnblockUserCtrl', [
         if (user.isSelected) {
           User.unblock({id: $scope.relations[user.id]}, function () {
             user.isUnblocked = true;
+            Alert.notify('unblocked', user.name);
           }, function (error) {
             $log.error(error);
           }).$promise.then(function() {
